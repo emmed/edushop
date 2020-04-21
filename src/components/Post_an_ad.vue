@@ -1,0 +1,310 @@
+<template>
+  <div>
+    <div class="jumbotron mb-0">
+   
+      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+
+   <b-alert v-model="showDismissibleAlert" variant="success" dismissible>
+      Successfully placed your ad
+    </b-alert>
+
+        <b-container class>
+          <b-row>
+            <b-col cols="5 m-3">
+              <b-form-group id="input-group-2" label-for="input-2">
+                <b-form-input
+                  id="input-2"
+                  v-model="form.title"
+                  required
+                  placeholder="Your ads title"
+                  :state="input_validation"
+                ></b-form-input>
+
+                <b-form-invalid-feedback
+                  :state="input_validation"
+                >Your title must be 5-12 characters long.</b-form-invalid-feedback>
+                <b-form-valid-feedback :state="input_validation">Looks Great!</b-form-valid-feedback>
+              </b-form-group>
+            </b-col>
+
+            <b-col cols="5  m-3">
+              <b-form-group id="input-group-3" label-for="input-3">
+                <b-form-select id="input-3" v-model="form.major" :options="major" required></b-form-select>
+              </b-form-group>
+            </b-col>
+            <b-col cols="5 m-3">
+              <b-form-group id="input-group-3" label-for="input-3">
+                <b-form-select id="input-3" v-model="form.category" :options="category" required></b-form-select>
+              </b-form-group>
+            </b-col>
+
+            <b-col cols="5 m-3">
+              <b-form-group id="input-group-3" label-for="input-3">
+                <b-form-select id="input-3" v-model="form.subject" :options="subject" required></b-form-select>
+              </b-form-group>
+            </b-col>
+
+            <!-- <b-col cols="5 m-3">
+              <b-form-group id="input-group-3" label-for="input-3">
+                <b-form-select id="input-3" v-model="form.school" :options="school" required></b-form-select>
+              </b-form-group>
+            </b-col> -->
+
+<b-col cols="5 m-3">
+<div class="form-group ">
+  <select class="selectpicker form-control" v-model="form.school" :options="school" required >
+  <optgroup label="Erasmushogeschool | EHB">
+    <option>Campus Kaai</option>
+    <option>Campus Bloemberg</option>
+  </optgroup>
+  <optgroup label="Vrije Universiteit Brussel | VUB">
+    <option>Campus Jette</option>
+    <option>Campus Schaarbeek</option>
+   </optgroup>
+  <optgroup label="Katholieke universiteit leuven | KUL">
+    <option>KUL Gent</option>
+    <option>Campus Antwerpen</option>
+   </optgroup>
+</select>
+<small class="form-text text-muted">
+  Select your school
+</small>
+  </div>
+ </b-col>
+
+            <b-col cols="5 m-3">
+              <b-form-group id="input-group-3" label-for="input-3">
+                <b-form-select id="input-3" v-model="form.condition" :options="condition" required></b-form-select>
+              </b-form-group>
+            </b-col>
+
+            <b-col cols="5 m-3">
+              <b-form-group id="input-group-3" label-for="input-3">
+                <b-form-select id="input-3" v-model="form.location" :options="location" required></b-form-select>
+              </b-form-group>
+            </b-col>
+
+            <b-col cols="5 m-3">
+              <b-form-group id="input-group-2" label-for="input-2">
+                <b-form-input
+                  id="input-2"
+                  v-model="form.price"
+                  required
+                  placeholder="Price - €"
+                  :state="input_price"
+                ></b-form-input>
+
+                <b-form-invalid-feedback :state="input_price">You must fill in a price</b-form-invalid-feedback>
+                <b-form-valid-feedback :state="input_price">Done!</b-form-valid-feedback>
+              </b-form-group>
+            </b-col>
+          </b-row>
+
+          <b-row class="mt-4">
+            <b-col cols="11">
+              <b-form-textarea
+                rows="6"
+                id="textarea-default"
+                placeholder="Description"
+                v-model="form.description"
+              ></b-form-textarea>
+            </b-col>
+          </b-row>
+
+        
+  
+
+
+          <b-row class="mb-4">
+            <b-col cols="3" v-for="n in 3" :key="n.id">
+              <b-form-file
+                v-model="form.file"
+                :state="Boolean(form.file)"
+                placeholder="Choose a image or drop it here..."
+                drop-placeholder="Drop image here..."
+                accept=".jpg, .png"
+                class="square_btn"
+              ></b-form-file>
+            </b-col>
+          </b-row>
+        </b-container>
+
+        <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Submit</b-button>
+        <b-button @click="onReset()" type="reset" variant="danger">Reset</b-button>
+      </b-form>
+
+      <b-card class="mt-3" header="Form Data Result">
+        <pre class="m-0">{{ form }}</pre>
+      </b-card>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      form: {
+        title: "",
+        description: "",
+        price: "",
+        category: null,
+        school: null,
+        major: null,
+        subject: null,
+        condition: null,
+        location: null,
+        file: null,
+      },
+      category: [
+        { text: "Select category", value: null },
+        'Books',
+        'eBooks',
+        'Writing material'
+      ],
+       school: [
+      //   { text: "Select school", value: null },
+      //       {
+      //       label: 'Erasmushogeschool | EHB',
+      //       options: [
+      //         { value: { text: 'Campus Kaai' }, text: 'Campus Kaai' },
+      //         { value: { text: 'Campus Bloemberg' }, text: 'Campus Bloemberg' }
+      //       ]
+      //     },
+      //       {
+      //       label: 'Vrije Universiteit Brussel | VUB',
+      //       options: [
+      //         { value: { text: 'Campus Jette' }, text: 'Campus Jette' },
+      //         { value: { text:'Campus Schaarbeek' }, text: 'Campus Schaarbeek'}
+      //       ]
+      //     },
+       
+      //    {
+      //       label: 'Katholieke universiteit leuven | KUL',
+      //       options: [
+      //         { value: {text: 'KUL Gent' }, text: 'KUL Gent' },
+      //         { value: {text:'Campus Antwerpen' }, text: 'Campus Antwerpen' }
+      //       ]
+      //  },
+       ],
+      major: [
+        { text: "Select major", value: null },
+        "IT",
+        "Marketing",
+        "DIFF"
+      ],
+      subject: [
+        { text: "Select subject", value: null },
+        "Mathematics",
+        "Algoritmes",
+        "Analyses"
+      ],
+      condition: [
+        { text: "Select condition", value: null },
+        "New",
+        "Used"
+      ],
+      location: [
+        { text: "Select location", value: null },
+        "Brussel",
+        "Leuven",
+        "Gent",
+        "Antwerpen"
+      ],
+      show: true,
+      showDismissibleAlert: false,
+    };
+  },
+  methods: {
+    onSubmit(evt) {
+      
+      // alert(JSON.stringify(this.form));
+      // console.log(JSON.stringify(this.form));
+       axios.post('http://127.0.0.1:8000/product/',
+       this.form
+       )
+      .then((response) => {
+        // this.$router.push('/post_and_ad');
+console.log("response saved", response);
+})
+.catch((response) => {
+console.log('catch response',response)
+})
+evt.preventDefault();
+    },
+    onReset(evt) {
+      evt.preventDefault();
+      // Reset our form values
+      this.form.title = "";
+      this.form.category = null;
+      this.form.school_ad = null;
+      this.form.major = null;
+      this.form.subject = null;
+      this.form.condition = null;
+      this.form.location = null;
+      // Trick to reset/clear native browser form validation state
+      this.show = false;
+      this.$nextTick(() => {
+        this.show = true;
+      });
+    }
+  },
+  computed: {
+    input_validation() {
+      return this.form.title.length > 4 && this.form.title.length < 13;
+    },
+    input_price() {
+      return this.form.price > 0;
+    }
+  }
+};
+</script>
+
+<style>
+.title {
+  color: #004fff;
+  font-weight: 600;
+  float: left;
+}
+.jumbotron {
+  background-color: whitesmoke;
+}
+.container {
+  margin-bottom: 120px;
+}
+.custom-file-label {
+  position: relative;
+  display: -block;
+  font-weight: bold;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  border-left: solid 4px #668ad8;
+  border-right: solid 4px #668ad8;
+  color: #004fff;
+  padding: 0.5em 1em;
+  height: 150px;
+  background-image: url("../assets/plus.svg");
+  background-size: 40px;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat;
+}
+.custom-file-input:lang(en) ~ .custom-file-label::after {
+  content: none;
+  position: relative;
+  display: -block;
+  font-weight: bold;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  border-left: solid 4px #668ad8;
+  border-right: solid 4px #668ad8;
+  color: #004fff;
+  padding: 0.5em 1em;
+  height: 150px;
+  background-image: url("../assets/plus.svg");
+  background-size: 40px;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat;
+}
+</style>
