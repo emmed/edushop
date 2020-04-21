@@ -7,12 +7,8 @@
         size="lg"
         @click.prevent="$router.go(-1)"
       >
-      dsfsfsqsfds
         <i class="fa fa-chevron-left"></i>
       </b-button>
-sdfqsd
-sdfsdf
-sdfqsdf
 
       <div class="row">
         <div class="col-md-3">
