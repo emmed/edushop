@@ -2,7 +2,7 @@
   <div id="app">
         <Menu/>
     <transition name="moveInUp">
-      <router-view v-bind:lists="lists"></router-view>
+      <router-view v-bind:products="products"></router-view>
     </transition>
      <Footer/>
    </div>
@@ -18,20 +18,22 @@ var url_customer = 'http://127.0.0.1:8000/customer/'
 
 export default {
   name: "App",
+  name: "products",
   components: { Menu, Footer},
   data() {
     return {
-      lists: []
+      products: [],
       /*  Empty array for the api records.
-    Passing the lists via a v-bind in order to render it on the router-view
-
+    Passing the products via a v-bind in order to render it on the router-view
 */
+      customer: []
+      
     }
     
   },
     created() {
-    axios.get(url_product).then(res => (this.lists = res.data))
-    .then(res => console.log("result", res))
+    axios.get(url_product).then(res => (this.products = res.data))
+    .then(res => console.log("producten restults", res))
     .catch(err => console.log("error", err));
     /*
           To check if anything is coming trough, i console log the result:

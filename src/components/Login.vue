@@ -39,7 +39,11 @@
 <!-- sign up -->
 			<div class="for-pwd-htm">
 				<div class="group">
-					<label for="user" class="label">Username or Email</label>
+					<label for="user" class="label">Email</label>
+					<input id="user" type="text" class="input">
+				</div>
+				<div class="group">
+					<label for="user" class="label">Name</label>
 					<input id="user" type="text" class="input">
 				</div>
 			<div class="group" @submit.stop.prevent>

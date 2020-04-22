@@ -3,22 +3,22 @@
      <div class="jumbotron my-0 ">
 
    <h1>homepage</h1>
-<p>{{lists}}</p>
+<p>{{products}}</p>
 <hr>
  
 <div class="row mx-auto ">
- <div class="col-sm-12 col-md-6 col-lg-3" v-bind:key="list.id" v-for="(list, index) in lists"   >
+ <div class="col-sm-12 col-md-6 col-lg-3" v-bind:key="product.id" v-for="(product, index) in products"   >
    <b-card
-   v-if="list.url"
+   v-if="product.url"
     id="my-table"
-    v-bind:title="`${list.title}`"
+    v-bind:title="`${product.title}`"
     img-src="../assets/stock-image.jpg"
     img-alt="Image"
     img-top
-    tag="lists"
-    class="mb-3"
+    tag="products"
+    class="mb-3 blauke-t"
     @click.prevent="goToDetails({index})" type="button">
-<b-card-text>{{list.description}}</b-card-text>
+<b-card-text class="text-muted">{{product.category}}</b-card-text>
   </b-card>
   </div>
 </div>
@@ -42,7 +42,7 @@
  export default {
   name: "Homepage",
   components: { },
-  props: ["lists"],
+  props: ["products"],
   data(){
     return{
      };
@@ -53,8 +53,8 @@
   methods: { 
     // getAll(){
   
-    //   axios.get(url).then(res => this.lists= res.data).catch(err => console.log(err));
-    //   console.log('list output', this.lists);
+    //   axios.get(url).then(res => this.products= res.data).catch(err => console.log(err));
+    //   console.log('product output', this.products);
     // },
 
     goToDetails(index) {
@@ -78,5 +78,6 @@ body {
   margin: 0px;
   padding: 0px;
 }
+ 
  
 </style>
