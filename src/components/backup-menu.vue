@@ -16,6 +16,7 @@
 <script>
 
 var url_category = 'http://127.0.0.1:8000/category/'
+var url_category = 'http://127.0.0.1:8000/category/'
 
 export default {
   name: "Menu",
