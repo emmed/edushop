@@ -12,20 +12,20 @@
               </b-button>
 </div>
         <ul class="navbar-nav flex-row mr-lg-0">
-            <li class="nav-item">
-                 <a class="nav-link pr-2 h5" type="button" @click.prevent="$router.replace({ name: 'login' })">Log in</a>
+        <li class="nav-item">
+                 <a  class="nav-link h5 mr-0" v-if="this.token!=null"><small>{{this.username}}</small>,</a>
             </li>
+        <li class="nav-item">
+                 <a  class="nav-link ml-0 pr-2 h5 font-weight-bold" type="button" @click.prevent="$router.push({ name: 'useradmin' }).catch(err => {})" v-if="this.token!=null">Dasboard</a>
+            </li>
+          <li class="nav-item">
+                 <a  class="nav-link pr-2 h5" type="button" @click.prevent="$router.push({ name: 'sdf' }).catch(err => {})" v-if="this.token!=null" v-on:click="logout()" >{{this.log_status}}</a>
+            </li> 
             <li class="nav-item">
-                <a class="nav-link pr-2 h5" type="button" @click.prevent="$router.replace({ name: 'faq' })">FAQ</a>
+                 <a class="nav-link pr-2 h5" type="button" @click.prevent="$router.push({ name: 'sdf' }).catch(err => {})" v-if="this.token==null">{{this.log_status}}</a>
             </li>
             <li class="nav-item ">
-                <a class="nav-link pr-2 h5" type="button"
-                 >NL
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="">User</a>
-                    <a class="dropdown-item" href="">Login</a>
-                </div>
+                <a class="nav-link pr-2 h5" type="button">NL</a>
             </li>
         </ul>
         <button class="navbar-toggler ml-lg-0  my-3 p-1"   data-toggle="collapse"  data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,14 +62,57 @@
 </template>
 
 <script>
+import axios from 'axios'
+var url_category = 'http://127.0.0.1:8000/category/'
+
 export default {
   name: "Menu",
   components: {},
+  props: [],
+  data() { 
+    return {
+      categories:[],
+      title: '',
+      token: null,
+      log_status: this.token?'log out':'log in',
+      username: '',
+    };
 
-  data() {
-    return {};
+  }, 
+  mounted() {
+    this.$root.$on('logAndToken', (log_status, token, username)  => {
+      this.token = token
+      this.log_status = log_status
+      this.username = username
+      console.log('message received from login + token + username' ,log_status, token, username);
+    })
+  },
+  methods: {
+   sendCategoryName(category_name){
+   this.$root.$emit('message', category_name)
+
+   },
+  logout(){
+                    localStorage.removeItem('logAndToken');
+                    this.token = null;
+                    this.log_status = "Log in"
+                    this.$root.$emit('logAndToken', this.log_status, this.token)
+            }
+  },
+    created() {
+    axios.get(url_category).then(res => (this.categories = res.data))
+    .catch(err => console.log("error", err));
+
+
+    /*   To check if anything is coming trough, i console log the result:
+           .then(res => console.log(res))
+           My records were in the array 'results'
+          */
+
+    // get the Records form the API use Vue detected tool extention via chrome.
   }
 };
+
 </script>
 
 <style >
