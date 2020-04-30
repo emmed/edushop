@@ -18,7 +18,7 @@
     tag="products"
     class="mb-3 blauke-t"
     @click.prevent="goToDetails({index})" type="button">
-<b-card-text class="text-muted">{{product.category}}</b-card-text>
+<b-card-text class="text-muted">{{product.category_name}}</b-card-text>
   </b-card>
   </div>
 </div>

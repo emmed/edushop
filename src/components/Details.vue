@@ -11,7 +11,7 @@
           <i class="fa fa-chevron-left"></i>
         </b-button>
         <div
-          class="col-lg-12 bg-primary py-3 text-white mt-2 text-center text-capitalize h4"
+          class="col-lg-12 bg-primary py-3 text-white mt-2 text-center text-capitalize ddd h4"
         >product details</div>
       </div>
       <div class="row mt-4">
@@ -160,7 +160,7 @@
             class="my-4 col-lg-8 text-muted text-left"
           >{{products[idDetail].description}}</p>
           <ul class="spec text-left ml-3">
-            <li>Category: {{products[idDetail].category}}</li>
+            <li>Category: {{products[idDetail].category_name}}</li>
             <li>Condition: {{products[idDetail].condition}}</li>
             <li>Posted: {{products[idDetail].date_created}}</li>
           </ul>
@@ -173,7 +173,7 @@
           >Buy</b-button>
         </div>
         <h6
-          class="contact-link col-md-4 geel-t text-left"
+          class="contact-link col-md-4 geel-t text-left h5"
           @click.prevent="$router.push({ name: 'contactseller' })"
           type="button"
         >
@@ -254,5 +254,9 @@ p {
 }
 .btn_buy {
   font-weight: 600;
+}
+.ddd{
+
+Border-radius:  5px
 }
 </style>

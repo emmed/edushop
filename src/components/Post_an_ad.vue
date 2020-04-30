@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="jumbotron mb-0">
-   
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-
-   <b-alert v-model="showDismissibleAlert" variant="success" dismissible>
-      Successfully placed your ad
-    </b-alert>
+        <b-alert
+          v-model="showDismissibleAlert"
+          variant="success"
+          dismissible
+        >Successfully placed your ad</b-alert>
 
         <b-container class>
           <b-row>
@@ -27,50 +27,60 @@
               </b-form-group>
             </b-col>
 
-            <b-col cols="5  m-3">
-              <b-form-group id="input-group-3" label-for="input-3">
-                <b-form-select id="input-3" v-model="form.major" :options="major" required></b-form-select>
-              </b-form-group>
-            </b-col>
             <b-col cols="5 m-3">
-              <b-form-group id="input-group-3" label-for="input-3">
-                <b-form-select id="input-3" v-model="form.category" :options="category" required></b-form-select>
-              </b-form-group>
+              <b-form-select v-model="form.major">
+                <option disabled value>Select major</option>
+                <option v-bind:key="major.id" v-for="major in majors">{{major.major}}</option>
+              </b-form-select>
+              <span>Selected: {{ form.major }}</span>
             </b-col>
 
             <b-col cols="5 m-3">
-              <b-form-group id="input-group-3" label-for="input-3">
-                <b-form-select id="input-3" v-model="form.subject" :options="subject" required></b-form-select>
-              </b-form-group>
+              <b-form-select v-model="form.category">
+                <option disabled value>Select category</option>
+                <option v-bind:key="category.id" v-for="category in categories">{{category.name}}</option>
+              </b-form-select>
+              <span>Selected: {{ form.category }}</span>
+            </b-col>
+
+            <b-col cols="5 m-3">
+              <b-form-select v-model="form.subject">
+                <option disabled value>Select subject</option>
+                <option v-bind:key="subject.id" v-for="subject in subjects">{{subject.subject}}</option>
+              </b-form-select>
+              <span>Selected: {{ form.subject }}</span>
             </b-col>
 
             <!-- <b-col cols="5 m-3">
               <b-form-group id="input-group-3" label-for="input-3">
                 <b-form-select id="input-3" v-model="form.school" :options="school" required></b-form-select>
               </b-form-group>
-            </b-col> -->
+            </b-col>-->
 
-<b-col cols="5 m-3">
-<div class="form-group ">
-  <select class="selectpicker form-control" v-model="form.school" :options="school" required >
-  <optgroup label="Erasmushogeschool | EHB">
-    <option>Campus Kaai</option>
-    <option>Campus Bloemberg</option>
-  </optgroup>
-  <optgroup label="Vrije Universiteit Brussel | VUB">
-    <option>Campus Jette</option>
-    <option>Campus Schaarbeek</option>
-   </optgroup>
-  <optgroup label="Katholieke universiteit leuven | KUL">
-    <option>KUL Gent</option>
-    <option>Campus Antwerpen</option>
-   </optgroup>
-</select>
-<small class="form-text text-muted">
-  Select your school
-</small>
-  </div>
- </b-col>
+            <b-col cols="5 m-3">
+              <div class="form-group">
+                <select
+                  class="selectpicker form-control"
+                  v-model="form.school"
+                  :options="school"
+                  required
+                >
+                  <optgroup label="Erasmushogeschool | EHB">
+                    <option>Campus Kaai</option>
+                    <option>Campus Bloemberg</option>
+                  </optgroup>
+                  <optgroup label="Vrije Universiteit Brussel | VUB">
+                    <option>Campus Jette</option>
+                    <option>Campus Schaarbeek</option>
+                  </optgroup>
+                  <optgroup label="Katholieke universiteit leuven | KUL">
+                    <option>KUL Gent</option>
+                    <option>Campus Antwerpen</option>
+                  </optgroup>
+                </select>
+                <small class="form-text text-muted">Select your school</small>
+              </div>
+            </b-col>
 
             <b-col cols="5 m-3">
               <b-form-group id="input-group-3" label-for="input-3">
@@ -111,11 +121,7 @@
             </b-col>
           </b-row>
 
-        
-  
-
-
-          <b-row class="mb-4">
+          <!-- <b-row class="mb-4">
             <b-col cols="3" v-for="n in 3" :key="n.id">
               <b-form-file
                 v-model="form.file"
@@ -126,7 +132,7 @@
                 class="square_btn"
               ></b-form-file>
             </b-col>
-          </b-row>
+          </b-row>-->
         </b-container>
 
         <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Submit</b-button>
@@ -143,9 +149,15 @@
 <script>
 import axios from "axios";
 
+const url_category = "http://127.0.0.1:8000/category/";
+const url_subject = "http://127.0.0.1:8000/subject/";
+const url_major = "http://127.0.0.1:8000/major/";
+const url_condition = "http://127.0.0.1:8000/condition/";
+const url_location = "http://127.0.0.1:8000/location/";
 export default {
   data() {
     return {
+      selected: "",
       form: {
         title: "",
         description: "",
@@ -155,84 +167,56 @@ export default {
         major: null,
         subject: null,
         condition: null,
-        location: null,
-        file: null,
+        location: null
+        // image: null,
       },
-      category: [
-        { text: "Select category", value: null },
-        'Books',
-        'eBooks',
-        'Writing material'
+      categories: [{ text: "Select category", value: null }],
+      school: [
+        //   { text: "Select school", value: null },
+        //       {
+        //       label: 'Erasmushogeschool | EHB',
+        //       options: [
+        //         { value: { text: 'Campus Kaai' }, text: 'Campus Kaai' },
+        //         { value: { text: 'Campus Bloemberg' }, text: 'Campus Bloemberg' }
+        //       ]
+        //     },
+        //       {
+        //       label: 'Vrije Universiteit Brussel | VUB',
+        //       options: [
+        //         { value: { text: 'Campus Jette' }, text: 'Campus Jette' },
+        //         { value: { text:'Campus Schaarbeek' }, text: 'Campus Schaarbeek'}
+        //       ]
+        //     },
+        //    {
+        //       label: 'Katholieke universiteit leuven | KUL',
+        //       options: [
+        //         { value: {text: 'KUL Gent' }, text: 'KUL Gent' },
+        //         { value: {text:'Campus Antwerpen' }, text: 'Campus Antwerpen' }
+        //       ]
+        //  },
       ],
-       school: [
-      //   { text: "Select school", value: null },
-      //       {
-      //       label: 'Erasmushogeschool | EHB',
-      //       options: [
-      //         { value: { text: 'Campus Kaai' }, text: 'Campus Kaai' },
-      //         { value: { text: 'Campus Bloemberg' }, text: 'Campus Bloemberg' }
-      //       ]
-      //     },
-      //       {
-      //       label: 'Vrije Universiteit Brussel | VUB',
-      //       options: [
-      //         { value: { text: 'Campus Jette' }, text: 'Campus Jette' },
-      //         { value: { text:'Campus Schaarbeek' }, text: 'Campus Schaarbeek'}
-      //       ]
-      //     },
-       
-      //    {
-      //       label: 'Katholieke universiteit leuven | KUL',
-      //       options: [
-      //         { value: {text: 'KUL Gent' }, text: 'KUL Gent' },
-      //         { value: {text:'Campus Antwerpen' }, text: 'Campus Antwerpen' }
-      //       ]
-      //  },
-       ],
-      major: [
-        { text: "Select major", value: null },
-        "IT",
-        "Marketing",
-        "DIFF"
-      ],
-      subject: [
-        { text: "Select subject", value: null },
-        "Mathematics",
-        "Algoritmes",
-        "Analyses"
-      ],
-      condition: [
-        { text: "Select condition", value: null },
-        "New",
-        "Used"
-      ],
-      location: [
-        { text: "Select location", value: null },
-        "Brussel",
-        "Leuven",
-        "Gent",
-        "Antwerpen"
-      ],
+      majors: [{ text: "Select major", value: null }],
+      subjects: [{ text: "Select subject", value: null }],
+      condition: [{ text: "Select condition", value: null }],
+      location: [{ text: "Select location", value: null }],
       show: true,
-      showDismissibleAlert: false,
+      showDismissibleAlert: false
     };
   },
   methods: {
     onSubmit(evt) {
-      
       // alert(JSON.stringify(this.form));
       // console.log(JSON.stringify(this.form));
-       axios.post('http://127.0.0.1:8000/product/',
-       this.form
-       )
-      .then((response) => {
-        // this.$router.push('/post_and_ad');
-console.log("response saved", response);
-})
-.catch((response) => {
-console.log('catch response',response)
-})
-evt.preventDefault();
+      axios
+        .post("http://127.0.0.1:8000/product/", this.form)
+        .then(response => {
+          // this.$router.push('/post_and_ad');
+          console.log("response saved", response);
+        })
+        .catch(response => {
+          console.log("catch response", response);
+        });
+      evt.preventDefault();
     },
     onReset(evt) {
       evt.preventDefault();
@@ -258,6 +242,43 @@ evt.preventDefault();
     input_price() {
       return this.form.price > 0;
     }
+  },
+  created() {
+    axios
+      .all([
+        axios.get(url_major),
+        axios.get(url_category),
+        axios.get(url_subject),
+        axios.get(url_condition),
+        axios.get(url_location)
+      ])
+      .then(
+        axios.spread(
+          (majorRes, categoryRes, subjectRes, conditionRes, locationRes) => {
+            
+            (this.majors = majorRes.data),
+              (this.categories = categoryRes.data),
+              (this.subjects = subjectRes.data),
+              (this.conditions = conditionRes.data),
+              (this.locations = locationRes.data),
+              console.log(
+                "chunk of responses",
+                categoryRes,
+                subjectRes,
+                majorRes,
+                conditionRes,
+                locationRes
+              );
+          }
+        )
+      )
+      .catch(err => console.log("error", err));
+
+    //   axios
+    //     .get(url_category)
+    //     .then(res => (this.categories = res.data))
+    //     .catch(err => console.log("error", err));
+    // }
   }
 };
 </script>

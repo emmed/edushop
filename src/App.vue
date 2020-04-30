@@ -7,18 +7,15 @@
      <Footer/>
    </div>
 </template>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
 import axios from "axios";
 import Menu from "./components/Menu.vue";
 import Footer from "./components/Footer.vue";
  
 var url_product = 'http://127.0.0.1:8000/product/'
-var url_customer = 'http://127.0.0.1:8000/customer/'
 
 export default {
   name: "App",
-  name: "products",
   components: { Menu, Footer},
   data() {
     return {
@@ -26,7 +23,6 @@ export default {
       /*  Empty array for the api records.
     Passing the products via a v-bind in order to render it on the router-view
 */
-      customer: []
       
     }
     

@@ -17,22 +17,21 @@
     <div class="col-sm-9 col-md-9 ">
 
 
-        <b-card no-body class="overflow-hidden dff my-5" style="max-width: 640px;" v-for="n in 3" :key="n.id">
+        <b-card no-body class="overflow-hidden dff my-5" style="max-width: 640px;"
+         v-bind:key="product.id" v-for="(product, index) in products"  
+         @click.prevent="goToDetails({index})" type="button">
     <b-row no-gutters>
       <b-col md="6">
         <b-card  img-src="../assets/stock-image.jpg" alt="Image" class="rounded-0"></b-card>
       </b-col>
       <b-col md="6">
         <b-card-body >
-          <div class="title blauke-t h5">Python the 4th edition</div>
+          <div class="title blauke-t h5">{{product.title}}</div>
 
            <b-card-text class="pull-left ty mt-2 text-muted">
-            This is a wider card with supporting text as a natural lead-in to additional content.
-            This content is a little bit longer. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ea, ullam eum, similique id excepturi libero nemo consectetur iure, iste exp
-            edita eaque totam repudiandae est quo doloribus vero accusamus. Quis, aut.
- 
+           {{product.description}}o accusamus. Quis, aut.
           </b-card-text>
-              <h4 class="pull-right blauke-t ">€23,43</h4>
+              <h4 class="pull-right blauke-t">€{{product.price}}</h4>
         </b-card-body>
       </b-col>
     </b-row>
@@ -52,25 +51,31 @@
  
 import axios from "axios";
 
-var url = 'http://localhost:8000/post/'
+var url_product = 'http://localhost:8000/product/'
 
 export default {
   name: "List",
-  components: { },
   data(){
     return{
-    lists: [],
-        title: '',
-        list: '',
-    }
+  products:[],
+  category_name: '',
+  }
   },
   mounted(){
-    this.getAll();
+    
+    this.$root.$on("message", (category_name) => {
+      this.category_name = category_name
+      console.log(
+        "message received from menu with category name",
+        category_name
+      );
+    });
   },
-  methods: {
-    getAll(){
-      axios.get(url).then(res => (this.list=res.data));
-  }
+  created() {
+    axios
+      .get(url_product)
+      .then(res => (this.products = res.data))
+      .catch(err => console.log("error", err));
   }
 };
 
