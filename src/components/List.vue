@@ -3,7 +3,7 @@
 <div class="jumbotron hk p-4 ">
         <div class="d-flex justify-content-center h-100 my-5 ">
         <div class="searchbar">
-          <input class="search_input " type="text" name="" placeholder="Search...">
+          <input class="search_input " type="text" name="" placeholder="Search..."  v-model="search">
           <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
         </div>
     </div>
@@ -18,7 +18,7 @@
 
 
         <b-card no-body class="overflow-hidden dff my-5" style="max-width: 640px;"
-         v-bind:key="product.id" v-for="(product, index) in products"  
+         v-bind:key="product.id" v-for="(product, index) in filterProduct"  
          @click.prevent="goToDetails({index})" type="button">
     <b-row no-gutters>
       <b-col md="6">
@@ -59,6 +59,7 @@ export default {
     return{
   products:[],
   category_name: '',
+  search:'',
   }
   },
   mounted(){
@@ -76,7 +77,14 @@ export default {
       .get(url_product)
       .then(res => (this.products = res.data))
       .catch(err => console.log("error", err));
-  }
+  },
+  computed: {
+    filterProduct: function() {
+      // this function will return the match the user input with news title.
+      return this.products.filter(product => {
+        return product.title.toLowerCase().match(this.search.toLowerCase());
+      });
+    }}
 };
 
 </script>
