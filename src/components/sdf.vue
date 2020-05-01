@@ -103,6 +103,7 @@ export default {
   data() {
     return {
       username: "",
+      user_id: null,
       password: "",
       repeat: "",
       submitted: false,
@@ -119,14 +120,15 @@ export default {
         })
         .then(res => {
           this.token = res.data.token;
-          this.log_status = "Log out";
-          this.$root.$emit("logAndToken", this.log_status, this.token, this.username);
+          this.log_status = "Log out"
+          this.$root.$emit("logAndToken", this.log_status, this.token, this.username, this.user_id);
           console.log(
             "Login data:",
             res,
             this.username,
             this.password,
-            this.token
+            this.token,
+            this.user_id,
           );
           localStorage.setItem("logAndToken", this.token, this.username);
         });
@@ -163,7 +165,7 @@ export default {
   },
   computed: {
     input_validation() {
-      return this.password.length > 4 && this.password.length < 13;
+      return this.password.length > 5 && this.password.length < 13;
     }
   },validators: {
       password: function (value) {

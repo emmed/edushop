@@ -106,18 +106,21 @@ export default {
       token: null,
       log_status: this.token ? "log out" : "log in",
       username: "",
+      user_id: null,
     };
   },
   mounted() {
-    this.$root.$on("logAndToken", (log_status, token, username) => {
+    this.$root.$on("logAndToken", (log_status, token, username, user_id) => {
       this.token = token;
       this.log_status = log_status;
       this.username = username;
+      this.user_id = user_id;
       console.log(
-        "message received from login + token + username",
+        "message received from login + token + username + user_id",
         log_status,
         token,
-        username
+        username,
+        user_id
       );
     });
   },

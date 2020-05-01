@@ -82,16 +82,20 @@
               </div>
             </b-col>
 
-            <b-col cols="5 m-3">
-              <b-form-group id="input-group-3" label-for="input-3">
-                <b-form-select id="input-3" v-model="form.condition" :options="condition" required></b-form-select>
-              </b-form-group>
+           <b-col cols="5 m-3">
+              <b-form-select v-model="form.condition">
+                <option disabled value>Select condition</option>
+                <option v-bind:key="condition.id" v-for="condition in conditions">{{condition.condition}}</option>
+              </b-form-select>
+              <span>Selected: {{ form.condition }}</span>
             </b-col>
 
-            <b-col cols="5 m-3">
-              <b-form-group id="input-group-3" label-for="input-3">
-                <b-form-select id="input-3" v-model="form.location" :options="location" required></b-form-select>
-              </b-form-group>
+             <b-col cols="5 m-3">
+              <b-form-select v-model="form.location">
+                <option disabled value>Select location</option>
+                <option v-bind:key="location.id" v-for="location in locations">{{location.location}}</option>
+              </b-form-select>
+              <span>Selected: {{ form.location }}</span>
             </b-col>
 
             <b-col cols="5 m-3">
@@ -157,17 +161,24 @@ const url_location = "http://127.0.0.1:8000/location/";
 export default {
   data() {
     return {
-      selected: "",
       form: {
+        response: [],
+        category_name: '',
+        user_id:'',
         title: "",
         description: "",
         price: "",
         category: null,
         school: null,
-        major: null,
+        user: null,
         subject: null,
+        subject_link: '',
+        major: null,
+        major_link: null,
         condition: null,
-        location: null
+        condition_link: null,
+        location: null,
+        location_link: null
         // image: null,
       },
       categories: [{ text: "Select category", value: null }],
@@ -197,18 +208,45 @@ export default {
       ],
       majors: [{ text: "Select major", value: null }],
       subjects: [{ text: "Select subject", value: null }],
-      condition: [{ text: "Select condition", value: null }],
-      location: [{ text: "Select location", value: null }],
+      conditions: [{ text: "Select condition", value: null }],
+      locations: [{ text: "Select location", value: null }],
       show: true,
       showDismissibleAlert: false
     };
   },
-  methods: {
+  methods: {  
     onSubmit(evt) {
-      // alert(JSON.stringify(this.form));
-      // console.log(JSON.stringify(this.form));
-      axios
-        .post("http://127.0.0.1:8000/product/", this.form)
+      if(this.form.category_name == 'Books'){
+        this.form.category = 'http://127.0.0.1:8000/category/1/'
+      }
+      if(this.form.category_name == 'eBooks'){
+        this.form.category = 'http://127.0.0.1:8000/category/2/'
+      }
+      if(this.form.category_name == 'Writing materials'){
+        this.form.category = 'http://127.0.0.1:8000/category/3/'
+      }
+      if(this.form.category_name == 'Summaries'){
+        this.form.category = 'http://127.0.0.1:8000/category/4/'
+      }
+ 
+      console.log("linkKK", this.form.subject_link)
+        axios.post("http://127.0.0.1:8000/product/",
+        {
+        category_name: this.form.category_name,
+        user_id:2,
+        title: this.form.title,
+        description: this.form.description,
+        price: this.form.price,
+        category: this.form.category,
+        school: this.form.school,
+        user: 'http://127.0.0.1:8000/users/1/',
+        subject: 'http://127.0.0.1:8000/subject/2/',
+        major: 'http://127.0.0.1:8000/major/2/',
+        condition: 'http://127.0.0.1:8000/condition/2/',
+        location: 'http://127.0.0.1:8000/location/2/'
+        }
+        
+        )
         .then(response => {
           // this.$router.push('/post_and_ad');
           console.log("response saved", response);
@@ -244,6 +282,19 @@ export default {
     }
   },
   created() {
+
+  var link = this
+        axios.get('http://127.0.0.1:8000/subject/?search=' + this.form.subject)
+        .then(response => {
+           var str = []
+         str.push(response.data[0].url)
+        link.form.subject_link = str[0]
+
+        console.log("------sublijectt",link.form.subject_link)
+        })
+        console.log("subjects_link =",this.form.subject_link)
+
+
     axios
       .all([
         axios.get(url_major),
@@ -256,7 +307,8 @@ export default {
         axios.spread(
           (majorRes, categoryRes, subjectRes, conditionRes, locationRes) => {
             
-            (this.majors = majorRes.data),
+                
+              (this.majors = majorRes.data),
               (this.categories = categoryRes.data),
               (this.subjects = subjectRes.data),
               (this.conditions = conditionRes.data),
