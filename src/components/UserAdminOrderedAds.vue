@@ -1,7 +1,7 @@
 <template>
     <div>
 
-<h1>bought ads</h1>
+<h1>ordered ads</h1>
 
     </div>
 </template>

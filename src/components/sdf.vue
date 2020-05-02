@@ -2,10 +2,10 @@
   <div>
     <div class="login-wrap">
       <div class="login-html">
-        <input id="tab-1" type="radio" name="tab" class="sign-in" checked>
+        <input id="tab-1" type="radio" name="tab" class="sign-in" v-on:click="clearLogin()" checked>
         <label for="tab-1" class="tab">Log in</label>
-        <input id="tab-2" type="radio" name="tab" class="for-pwd">
-        <label for="tab-2" class="tab">Sign up</label>
+        <input id="tab-2" type="radio" name="tab" class="for-pwd" v-on:click="clearLogin()">
+        <label for="tab-2" class="tab" >Sign up</label>
 
         <div class="login-form">
           <b-form @submit.prevent="login" v-if="token==null">
@@ -43,21 +43,21 @@
             <div class="for-pwd-htm">
               <div class="group">
                 <label for="user" class="label">Username</label>
-                <input id="user" type="text" class="input" required v-model="username_new">
+                <input id="user" type="text" class="input" required v-model="username">
               </div>
-              <div class="group" :class="{error: validation.hasError('password_new')}">
+              <div class="group" :class="{error: validation.hasError('password')}">
                 <label for="pass" class="label">Password</label>
                 <input
                   id="pass"
                   type="password"
                   class="input"
                   data-type="password"
-                  v-model="password_new"
+                  v-model="password"
                   required
                   :state="input_validation"
                 >
-                <password v-model="password_new" :strength-meter-only="true"/>
-                <div class="message pt-2">{{ validation.firstError('password_new') }}</div>
+                <password v-model="password" :strength-meter-only="true"/>
+                <div class="message pt-2">{{ validation.firstError('password') }}</div>
               </div>
               <b-form-invalid-feedback :state="input_validation" class="mb-4">
                 Your password must be 6-12 characters long. contain letters and numbers, and must not
@@ -105,10 +105,10 @@ export default {
   data() {
     return {
       username: "",
-      username_new: '',
+    
       user_id: null,
       password: "",
-      password_new: "",
+     
       repeat: "",
       submitted: false,
       token: null,
@@ -117,8 +117,7 @@ export default {
   },
   methods: {
     login() {
-      axios
-        .post("http://127.0.0.1:8000/auth/", {
+      axios.post("http://127.0.0.1:8000/auth/", {
           username: this.username,
           password: this.password
         })
@@ -141,56 +140,49 @@ export default {
             this.user_id
           );
           localStorage.setItem("logAndToken", this.token, this.username);
-        });
-      this.$router.push({ name: "homepage" }).catch(err => {
+         this.$router.push({ name: "homepage" }).catch(err => {
         localStorage.removeItem("logAndToken");
         console.log("error loginn", err);
       });
+        });
+     
+    },
+    clearLogin(){
+      this.username = "",
+      this.password = ""
     },
     register() {
-      console.log("username/new",this.username);
-      axios
-        .post("http://127.0.0.1:8000/users/", {
-          username_new: this.username,
-          password_new: this.password
+      axios.post("http://127.0.0.1:8000/users/", {
+          username: this.username,
+          password: this.password,
         })
-        .then(res => {
+      .then(res => {
           console.log("res after .then()",res)
-           this.token = res.data.token;
+          this.token = res.data.token;
           this.log_status = "Log out";
-          this.$root.$emit(
-            "logAndToken",
-            this.log_status,
-            this.token,
-            this.username,
-            this.user_id
-          );
+          // this.$root.$emit(
+          //   "logAndToken",
+          //   this.log_status,
+          //   this.token,
+          //   this.username,
+          //   this.user_id
+          // );
           console.log(
             "Login NEW::: user:",
             res,
             this.username,
-            this.username_new,
             this.password,
             this.token,
             this.user_id
           );
-          localStorage.setItem("logAndToken", this.token, this.username);
-        })
-      // this.$router.push({ name: "homepage" }).catch(err => {
-      //   localStorage.removeItem("logAndToken");
-      //   console.log("error loginn", err);
-      // })
        
-        .catch(err =>{ console.log(err)
+        }).catch(err =>{ console.log(err)
         
-            this.submitted = true;
-
-        localStorage.removeItem("logAndToken");
+        this.submitted = true;
         console.log("error loginn", err);
-          console.log("res:::", this.password_new, this.username_new, "hallokes", this.password, this.username)
-      //this.$router.push({ name: "useradmin" });
+        console.log("res:::", this.password, this.username)
         });
-  
+         
     },
     submit: function() {
       this.submitted = true;
@@ -203,20 +195,20 @@ export default {
   },
   computed: {
     input_validation() {
-      return this.password_new.length > 5 && this.password_new.length < 13;
+      return this.password.length > 5 && this.password.length < 13;
     }
   },
   validators: {
-    password_new: function(value) {
+    password: function(value) {
       return Validator.value(value)
         .required()
         .minLength(6);
     },
-    "repeat, password_new": function(repeat, password_new) {
+    "repeat, password": function(repeat, password) {
       if (this.submitted || this.validation.isTouched("repeat")) {
         return Validator.value(repeat)
           .required()
-          .match(password_new);
+          .match(password);
       }
     }
   }

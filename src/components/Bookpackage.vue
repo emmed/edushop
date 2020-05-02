@@ -80,9 +80,12 @@
                  
                 </div>                    
                    
-    <b-card img-src="../assets/stock-image.jpg" img-alt="Card image" img-left class="mb-3" v-for="n in 3" :key="n.id" >
-      <b-card-text>
-        Some quick example text to build on the card and make up the bulk of the card's content.
+    <b-card img-src="../assets/stock-image.jpg" img-alt="Card image" img-left class="mb-3" v-bind:key="product.id" v-for="product in products" >
+    
+        <h5 class="blauke-t pull-left mr-3">{{product.title}}</h5>
+      <b-card-text class="ty mt-5 text-muted">       
+         {{product.description}}
+        
       </b-card-text>
     </b-card>
                  
@@ -97,7 +100,7 @@
  
 export default {
   name: "Bookpackage",
-  components: {},
+  props: ['products'],
 data() {
       return {
         form: {

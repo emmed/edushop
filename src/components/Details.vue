@@ -192,20 +192,31 @@
 </template>
 
 <script>
+
+import axios from "axios";
+
+var url_product = 'http://127.0.0.1:8000/product/?search='
+
 export default {
   name: "Details",
-  components: {},
-    props: ["products"],
     // passaing the array as a prop from the parent App.vue to the child component
     data() {
       return {
+        products: [],
+        category_id: this.$route.params.category_id,
         idDetail: this.$route.params.details_id 
         /* Made an instance in the data return function in order to 
         call the data from the API, and loop in it. AND avoid mutating the initial property 
         Afterwards being able to do text interpolation two curl braces  {{ }} and for nested iterated values [] .
         */
       }
-    }
+    }, 
+    mounted(){
+    axios
+      .get(url_product + this.category_id)
+      .then(res => (this.products = res.data))
+      .catch(err => console.log("error", err));
+  },
 };
 </script>
 

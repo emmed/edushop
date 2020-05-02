@@ -39,7 +39,7 @@
           <a
             class="nav-link pr-2 h5"
             type="button"
-            @click.prevent="$router.push({ name: 'sdf' }).catch(err => {})"
+            @click.prevent="$router.push({ name: 'login' }).catch(err => {})"
             v-if="this.token!=null"
             v-on:click="logout()"
           >{{this.log_status}}</a>
@@ -48,10 +48,11 @@
           <a
             class="nav-link pr-2 h5"
             type="button"
-            @click.prevent="$router.push({ name: 'sdf' }).catch(err => {})"
+            @click.prevent="$router.push({ name: 'login' }).catch(err => {})"
             v-if="this.token==null"
           >{{this.log_status}}</a>
         </li>
+    
         <li class="nav-item">
           <a class="nav-link pr-2 h5" type="button">NL</a>
         </li>
@@ -70,7 +71,7 @@
     <nav class="navbar navbar-expand-md">
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item px-2 h5" v-bind:key="category.id" v-for="category in categories">
+          <li class="nav-item px-2 h5" v-on:click="sendCategoryName(category.name)" v-bind:key="category.id" v-for="category in categories">
             <a
               class="nav-link" 
               @click.prevent="$router.push({ name: 'list' }).catch(err => {})"
@@ -126,6 +127,7 @@ export default {
   },
   methods: {
     sendCategoryName(category_name) {
+      console.log("nameee",category_name)
       this.$root.$emit("message", category_name);
     },
     logout() {

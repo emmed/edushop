@@ -24,12 +24,12 @@ export const router = new VueRouter({
       component: Homepage,
     },
     {
-      path: '/details/:details_id',
+      path: '/details/:details_id/:category_id',
       name: 'details',
       component: Details
     },
     {
-      path: '/list',
+      path: '/list/',
       name: 'list',
       component: List,
     },

@@ -32,6 +32,8 @@
            {{product.description}}o accusamus. Quis, aut.
           </b-card-text>
               <h4 class="pull-right blauke-t">€{{product.price}}</h4>
+              <br>
+              <h4 class="pull-right blauke-t">{{product.category_name}}</h4>
         </b-card-body>
       </b-col>
     </b-row>
@@ -51,7 +53,7 @@
  
 import axios from "axios";
 
-var url_product = 'http://localhost:8000/product/'
+var url_product = 'http://127.0.0.1:8000/product/?search='
 
 export default {
   name: "List",
@@ -63,20 +65,24 @@ export default {
   }
   },
   mounted(){
-    
     this.$root.$on("message", (category_name) => {
       this.category_name = category_name
-      console.log(
-        "message received from menu with category name",
-        category_name
-      );
-    });
-  },
-  created() {
+        console.log("eerste tekst", this.category_name)
     axios
-      .get(url_product)
+      .get(url_product + category_name)
       .then(res => (this.products = res.data))
       .catch(err => console.log("error", err));
+    });
+  },
+  methods: {
+    goToDetails(index) {
+      console.log("seroos", this.category_name)
+      this.$router.push({
+        path: `details/${index["index"]}/${this.category_name}`
+
+      });
+      console.log(index);
+    }
   },
   computed: {
     filterProduct: function() {

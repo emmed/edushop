@@ -9,37 +9,22 @@
       
            <b-row class="mb-5 justify-content-center">
 
-            <b-col cols="3" >
-    <b-card class="text-center cardss" @click.prevent="$router.replace({ name: 'useradmin_placed_ads' })" type="button">
-        <h2 class="blauke-t  display-4">45</h2>
-        <b-card-text class="blauke-t">Placed ads</b-card-text>
+            <b-col cols="3" v-bind:key="state.id" v-for="state in states">
+    <b-card class="text-center cardss" @click.prevent="$router.replace({ name: 'useradmin_placed_ads' })" type="button" >
+        <h2 class="blauke-t  display-4">71</h2>
+        <b-card-text class="blauke-t">{{state.state}}</b-card-text>
       </b-card>
             </b-col>
 
 
-            <b-col cols="3" >
-    <b-card class="text-center cardss"  @click.prevent="$router.replace({ name: 'useradmin_bought_ads' })" type="button">
-        <h2 class="blauke-t display-4">3</h2>
-        <b-card-text class="blauke-t">Bought ads</b-card-text>
-      </b-card>
-            </b-col>
-
-            <b-col cols="3" >
-    <b-card class="text-center cardss" @click.prevent="$router.replace({ name: 'useradmin_pending_ads' })" type="button">
-         <h2 class="blauke-t display-4">12</h2>
-        <b-card-text class="blauke-t">Pending ads</b-card-text>
-       </b-card>
-             </b-col>
-            
-            
             
             </b-row>
-       <h4 class="pull-left blauke-t my-5">Last 3 ads</h4>
+       <h4 class="pull-left blauke-t my-5">Last Placed 3 ads</h4>
         <table id="cart" class="table table-hover table-condensed" style="background-color: gainsboro;">
             <thead class="thead-dark">
                 <tr>
                     <th style="width:50%" class="h4"><strong>Posts</strong></th>
-                    <th style="width:10%" class="h4"><strong>Date</strong></th>
+                    <th style="width:10%" class="h4"><strong>Price</strong></th>
                     <th style="width:8%"></th>
                     <th style="width:22%" class="text-center h4"><strong>Status</strong></th>
                     <th style="width:10%"></th>
@@ -47,22 +32,22 @@
             </thead>
  
             <tbody>
-                <tr v-for="n in 3" :key="n.id">
+                <tr v-bind:key="product.id" v-for="product in products.slice(0,3)">
                     <td data-th="Product">
                         <div class="row" >
                              <div class="col-sm-9">
-                                <h4 class="blauke-t " @click.prevent="$router.replace({ name: 'details' })" type="button"> Book Python </h4>
-                                <p class=""> Lorem, ipsum dolor sit amet consectetur adipisicing !</p>
+                                <h4 class="blauke-t " @click.prevent="$router.replace({ name: 'details' })" type="button"> {{product.title}}</h4>
+                                <p class="text-muted"> {{product.description}}</p>
                             </div>
                         </div>
                     </td>
-                    <td data-th="Price">€ ></td>
+                    <td data-th="Price">€{{product.price}} </td>
                     <td data-th="Quantity">
                     </td>
-                    <td data-th="Subtotal" class="text-center">€ ></td>
+                    <td data-th="Subtotal" class="text-center">{{product.state}}</td>
                     <td class="actions" data-th="">
-                          <button class="btn btn-primary btn-lg m-3" @click.prevent="$router.replace({ name: 'homepage' })"><i class="fa fa-edit"></i></button> 
-                         <button class="btn btn-danger btn-lg" @click.prevent="$router.replace({ name: 'details' })"><i class="fa fa-trash-o"></i></button> 
+                          <button class="btn btn-primary btn-lg m-3" ><i class="fa fa-edit"></i></button> 
+                         <button class="btn btn-danger btn-lg" ><i class="fa fa-trash-o"></i></button> 
                     </td>
 
                 </tr>
@@ -87,28 +72,26 @@
 </template>
 
 <script>
+import axios from "axios";
+
+const state_url = 'http://127.0.0.1:8000/state/'
 export default {
  name: "Useradmin",
-  components: {},
+ props:["products"],
 data() {
       return {
-        form: {
-          title: '',
-          category: null,
-          school: null,
-          major: null,
-          subject: null,
-          condition: null,
-          location: null,
-          file: null,
-          descripiton: '',
-          price: null
-},
-        category: [{ text: 'Select category', value: null }, 'Books', 'E-books', 'Writing material'],
-        
+          states: [],
         show: true
       }
-  }
+  },
+  created() {
+    axios.get(state_url)
+      .then(res => (this.states = res.data, console.log("states,, ", res.data)
+      )
+      )
+      .catch(err => console.log("error", err));
+  },
+
 }
 </script>
 
