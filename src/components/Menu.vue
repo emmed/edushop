@@ -111,7 +111,6 @@ export default {
   data() {
     return {
       categories: [],
-      title: "",
       token: localStorage.getItem('logAndToken') || null,
       log_status: this.token ? "log out" : "log in",
       username: "",
@@ -137,6 +136,7 @@ export default {
     sendCategoryName(category_name) {
       console.log("nameee",category_name)
       this.$root.$emit("message", category_name);
+      
     },
     logout() {
       localStorage.removeItem("logAndToken");

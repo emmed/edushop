@@ -2,7 +2,7 @@
   <div>
     <div class="jumbotron mb-0">
       <!-- <div v-if="this.token!=null"> -->
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show" >
+      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
         <b-alert
           v-model="showDismissibleAlert"
           variant="success"
@@ -83,20 +83,29 @@
               </div>
             </b-col>
 
-           <b-col cols="5 m-3">
+            <b-col cols="5 m-3">
               <b-form-select v-model="form.condition">
                 <option disabled value>Select condition</option>
-                <option v-bind:key="condition.id" v-for="condition in conditions">{{condition.condition}}</option>
+                <option
+                  v-bind:key="condition.id"
+                  v-for="condition in conditions"
+                >{{condition.condition}}</option>
               </b-form-select>
               <span>Selected: {{ form.condition }}</span>
             </b-col>
 
-             <b-col cols="5 m-3">
+            <b-col cols="5 m-3">
               <b-form-select v-model="form.location">
                 <option disabled value>Select location</option>
-                <option v-bind:key="location.id" v-for="location in locations">{{location.location}}</option>
+                <option
+                  v-bind:key="location.id"
+                  v-for="location in locations"
+                  v-on:click="saveLocation()"
+                >{{location.location}}</option>
               </b-form-select>
-              <span>Selected: {{ form.location }}</span>
+              <span>
+                <small>Selected: {{ form.location }}</small>
+              </span>
             </b-col>
 
             <b-col cols="5 m-3">
@@ -143,22 +152,25 @@
         <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Submit</b-button>
         <b-button @click="onReset()" type="reset" variant="danger">Reset</b-button>
       </b-form>
-<!-- </div> -->
+      <!-- </div> -->
       <b-card class="mt-3" header="Form Data Result">
         <pre class="m-0">{{ form }}</pre>
       </b-card>
 
       <!-- <div v-if="this.token==null">Log in first</div> -->
     </div>
-
-
-
   </div>
 </template>
 
 <script>
 import axios from "axios";
 
+// var selectedMajorID;
+// var selectedSubjectID;
+// var selectedConditionID;
+// var selectedLocationID;
+// var selectedSchoolID;
+// var selectedCategoryID;
 const url_category = "http://127.0.0.1:8000/category/";
 const url_subject = "http://127.0.0.1:8000/subject/";
 const url_major = "http://127.0.0.1:8000/major/";
@@ -167,10 +179,16 @@ const url_location = "http://127.0.0.1:8000/location/";
 export default {
   data() {
     return {
+      selectedMajorID: null,
+      selectedSubjectID: null,
+      selectedConditionID: null,
+      selectedLocationID: null,
+      selectedSchoolID: null,
+      selectedCategoryID: null,
       form: {
         response: [],
-        category_name: '',
-        user_id:'',
+        //    category_name: "",
+        user_id: "",
         title: "",
         description: "",
         price: "",
@@ -180,7 +198,7 @@ export default {
         subject: null,
         major: null,
         condition: null,
-        location: null,
+        location: null
         // image: null,
       },
       categories: [{ text: "Select category", value: null }],
@@ -220,25 +238,84 @@ export default {
       user_id: null
     };
   },
-  methods: {  
+  methods: {
+    //     saveLocation(){
+    // for (let i in this.locations) {
+    //     if ( this.locations[i].location == this.form.location) {
+    // 	this.selectedLocationID = this.locations[i].id
+    //   console.log("id",this.selectedLocationID)
+    // 	console.log("locations",this.locations[i].location)
+    //     }
+    // }
+    //     },
     onSubmit(evt) {
-   
-        axios.post("http://127.0.0.1:8000/product/",
-        {
-        category_name: this.form.category_name,
-        user_id:2,
-        title: this.form.title,
-        description: this.form.description,
-        price: this.form.price,
-        // category_name: "eBooks",
-        school: this.form.school,
-        user: 1,
-        subject: this.form.subject,
-        major: this.form.major,
-        condition: this.form.condition,
-        location: this.form.location
+      // for (var prop in this.course) {
+      //   if (this.course.hasOwnProperty(prop)) {
+      //     console.log(this.course[prop]);
+      //   }
+      // }
+
+      for (let i in this.majors) {
+        if (this.majors[i].major == this.form.major) {
+          this.selectedMajorID = this.majors[i].id;
+          console.log("id", this.selectedMajorID);
+          console.log("major", this.majors[i].major);
         }
-        
+      }
+      for (let i in this.subjects) {
+        if (this.subjects[i].subject == this.form.subject) {
+          this.selectedSubjectID = this.subjects[i].id;
+          console.log("id", this.selectedSubjectID);
+          console.log("subject", this.subjects[i].subject);
+        }
+      }
+      for (let i in this.conditions) {
+        if (this.conditions[i].condition == this.form.condition) {
+          this.selectedConditionID = this.conditions[i].id;
+          console.log("id", this.selectedConditionID);
+          console.log("condition", this.conditions[i].condition);
+        }
+      }
+
+      for (let i in this.locations) {
+        if (this.locations[i].location == this.form.location) {
+          this.selectedLocationID = this.locations[i].id;
+          console.log("id", this.selectedLocationID);
+          console.log("location", this.locations[i].location);
+        }
+      }
+
+      for (let i in this.categories) {
+        if (this.categories[i].name == this.form.category) {
+          this.selectedCategoryID = this.categories[i].id;
+          console.log("id", this.selectedCategoryID);
+          console.log("category", this.categories[i].name);
+        }
+      }
+      for (let i in this.categories) {
+        if (this.categories[i].name == this.form.category) {
+          this.selectedCategoryID = this.categories[i].id;
+          console.log("id", this.selectedCategoryID);
+          console.log("category", this.categories[i].name);
+        }
+      }
+
+      axios
+        .post(
+          "http://127.0.0.1:8000/product/",
+          {
+            category: this.form.category,
+            condition: this.form.condition,
+            major: this.form.major,
+            location: this.form.location,
+            subject: this.form.subject,
+            title: this.form.title,
+            description: this.form.description,
+            price: this.form.price,
+            school: this.form.school,
+            user: 1,
+          },
+          console.log("post cat Id", this.selectedCategoryID)
         )
         .then(response => {
           // this.$router.push('/post_and_ad');
@@ -275,7 +352,7 @@ export default {
     }
   },
   created() {
-     this.$root.$on("logAndToken", (log_status, token, username, user_id) => {
+    this.$root.$on("logAndToken", (log_status, token, username, user_id) => {
       this.token = token;
       this.log_status = log_status;
       this.username = username;
@@ -289,8 +366,8 @@ export default {
       );
     });
 
-
-    axios.all([
+    axios
+      .all([
         axios.get(url_major),
         axios.get(url_category),
         axios.get(url_subject),
@@ -299,9 +376,8 @@ export default {
       ])
       .then(
         axios.spread(
-          (majorRes, categoryRes, subjectRes,  conditionRes, locationRes) => {
-            
-              (this.majors = majorRes.data),
+          (majorRes, categoryRes, subjectRes, conditionRes, locationRes) => {
+            (this.majors = majorRes.data),
               (this.categories = categoryRes.data),
               (this.subjects = subjectRes.data),
               (this.conditions = conditionRes.data),

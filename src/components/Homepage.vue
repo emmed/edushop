@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="jumbotron my-0">
-      <!-- <h1>Homepage</h1> -->
-      <!-- <p>{{this.products}}</p> -->
+ 
+     <p>{{this.products}}</p> 
       <hr>
       <div class="row mx-auto">
         <div
