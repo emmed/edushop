@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-blue flex-row">
       <a class="navbar-brand">
         <b-img
-          @click.prevent="$router.push({ name: 'homepage' })"
+          @click.prevent="$router.push({ name: 'homepage' }).catch(err => {})"
           src="../assets/logos.png"
           fluid
           alt="Fluid image"
@@ -16,7 +16,7 @@
         <b-button
           size="lg"
           class="btn_post_ad"
-          @click.prevent="$router.push({ name: 'post_an_ad' })"
+          @click.prevent="$router.push({ name: 'post_an_ad' }).catch(err => {})"
         >
           <b-img class="mr-2 kl" src="../assets/post_an_ad.png" width="20"></b-img>Post an ad
         </b-button>
@@ -33,7 +33,7 @@
             type="button"
             @click.prevent="$router.push({ name: 'useradmin' }).catch(err => {})"
             v-if="this.token!=null"
-          >Dasboard</a>
+          >Dashboard</a>
         </li>
         <li class="nav-item">
           <a
@@ -51,6 +51,14 @@
             @click.prevent="$router.push({ name: 'login' }).catch(err => {})"
             v-if="this.token==null"
           >{{this.log_status}}</a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link pr-2 h5"
+            type="button"
+            @click.prevent="$router.push({ name: 'faq' }).catch(err => {})"
+            
+          >Faq</a>
         </li>
     
         <li class="nav-item">
@@ -84,7 +92,7 @@
             class="btn_package my-2 my-sm-0"
             variant="outline-warning"
             size="lg"
-            @click.prevent="$router.replace({ name: 'bookpackage' })"
+            @click.prevent="$router.replace({ name: 'bookpackage' }).catch(err => {})"
           >Find your book package</b-button>
         </div>
       </div>
@@ -104,7 +112,7 @@ export default {
     return {
       categories: [],
       title: "",
-      token: null,
+      token: localStorage.getItem('logAndToken') || null,
       log_status: this.token ? "log out" : "log in",
       username: "",
       user_id: null,
@@ -197,6 +205,7 @@ export default {
     line-height: 27px;
   }
 }
+
 
 .navbar .navbar-brand {
   color: #ffbf00;

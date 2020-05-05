@@ -2,24 +2,22 @@
   <div id="app">
         <Menu/>
     <transition name="moveInUp">
-      <router-view v-bind:products="products"></router-view>
+      <router-view></router-view>
     </transition>
      <Footer/>
    </div>
 </template>
 <script>
-import axios from "axios";
 import Menu from "./components/Menu.vue";
 import Footer from "./components/Footer.vue";
  
-var url_product = 'http://127.0.0.1:8000/product/'
+
 
 export default {
   name: "App",
   components: { Menu, Footer},
   data() {
     return {
-      products: [],
       /*  Empty array for the api records.
     Passing the products via a v-bind in order to render it on the router-view
 */
@@ -28,9 +26,12 @@ export default {
     
   },
     created() {
-    axios.get(url_product).then(res => (this.products = res.data))
-    .then(res => console.log("producten restults", res))
-    .catch(err => console.log("error", err));
+    // axios.get(url_product).then(res => (this.products = res.data))
+    // .then(res => console.log("producten restults", res))
+    // .catch(err => console.log("error", err));
+
+
+    
     /*
           To check if anything is coming trough, i console log the result:
            .then(res => console.log(res))

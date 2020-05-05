@@ -113,7 +113,7 @@ export default {
       password: "",
       repeat: "",
       submitted: false,
-      token: null,
+      token: localStorage.getItem('logAndToken') || null,
 			log_status: "",
 			showAlert: false  
     };

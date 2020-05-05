@@ -9,47 +9,27 @@
             <div class="col-8 ">
                 <div class="content-section">
                   <h2 class="blauke-t pt-4">Frequently asked questions</h2>
+                  <!-- search bar -->
   <div class="d-flex justify-content-center h-100 my-5 ">
         <div class="searchbar">
           <input class="search_input " type="text" name="" placeholder="Search...">
           <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
         </div>
     </div>
-    
+                  <!-- end search bar -->
 
-  <div class="card">
-  <button type="button" class="btn btn-primary mt-4" data-toggle="collapse" data-target="#demo">How to buy products</button>
-  <div id="demo" class="collapse mt-3">
-      <p class="text-left text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit molestias ea sit iste consectetur eos quibusdam nulla non explicabo labore
-           officiis odio reiciendis ratione velit minima, placeat ut, culpa laboriosam.</p>
-   
+  <div class="card" v-bind:key="faq.id"
+          v-for="(faq, index) in faqs">
+  <button :data-target="'#demo' + index"  class="btn btn-primary mt-4 font-weight-bold"
+   data-toggle="collapse">{{faq.question}}</button>
+  <div v-bind:id="['demo'+index]" class="collapse mt-3">
+      <p class="text-left text-muted">{{faq.answer}}</p>
   </div>
-   </div>
+</div>
 
-
-  <div class="card">
-  <button type="button" class="btn btn-primary mt-4" data-toggle="collapse" data-target="#demo3">How to sell products</button>
-  <div id="demo3" class="collapse mt-3">
-      <p class="text-left text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit molestias ea sit iste consectetur eos quibusdam nulla non explicabo labore
-           officiis odio reiciendis ratione velit minima, placeat ut, culpa laboriosam.</p>
-   
-  </div>
-   </div>
-
-
-    <div class="card">
-    <button type="button" class="btn btn-primary mt-4" data-toggle="collapse" data-target="#demo2">Be careful when u buy a product.</button>
-  <div id="demo2" class="collapse mt-3">
-      <p class="text-left text-muted">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam saepe ex magni, aperiam porro rem nemo nostrum ratione adipisci incidunt repellendus do
-        lor! Voluptatibus ipsa, architecto exercitationem iure facere a dolores.</p>
-  
-  </div>
-  </div>
-
-            </div>
-            </div>
-
-            <div class="col-3 has-4-items">
+</div>
+</div>
+            <div class="col-3 has-4-items" >
                 <div class="sidebar-item ">
                     <div class="make-me-sticky ">
                         <h4 class=" font-weight-bold">Didn't find the anwser?</h4>
@@ -58,26 +38,37 @@
                         <b-button  variant="primary">Contact</b-button>
                     </div>
                 </div>
-               
-              
             </div>
-
-     
-
-
-        </div>
+       </div>
     </div>
 </article>
-
- 
 </div>
 
    </div>
 </template>
 
 <script>
+
+import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
+uuidv4();
+const url_faq = 'http://127.0.0.1:8000/faq/'
+
 export default {
-name: "Faq"
+name: "Faq",
+ data(){
+    return{
+  faqs:[],
+  }
+  },
+  methods: {
+    },
+  created(){
+     axios
+      .get(url_faq)
+      .then(res => (this.faqs = res.data), console.log("FAQ", this.faqs))
+      .catch(err => console.log("error", err));
+  }
 }
 </script>
 

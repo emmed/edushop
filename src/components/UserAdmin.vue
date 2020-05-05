@@ -36,8 +36,8 @@
                     <td data-th="Product">
                         <div class="row" >
                              <div class="col-sm-9">
-                                <h4 class="blauke-t " @click.prevent="$router.replace({ name: 'details' })" type="button"> {{product.title}}</h4>
-                                <p class="text-muted"> {{product.description}}</p>
+                                <h4 class="blauke-t" @click.prevent="$router.replace({ name: 'details' })" type="button"> {{product.title}}</h4>
+                                <p class="text-muted ml-2"> {{product.description}}</p>
                             </div>
                         </div>
                     </td>
@@ -74,23 +74,43 @@
 <script>
 import axios from "axios";
 
-const state_url = 'http://127.0.0.1:8000/state/'
+const url_state = 'http://127.0.0.1:8000/state/'
+const url_product = 'http://127.0.0.1:8000/product/'
 export default {
  name: "Useradmin",
- props:["products"],
 data() {
       return {
           states: [],
+          products: [],
         show: true
       }
   },
   created() {
-    axios.get(state_url)
-      .then(res => (this.states = res.data, console.log("states,, ", res.data)
-      )
+          axios
+      .all([
+        axios.get(url_state),
+        axios.get(url_product)
+      ])
+      .then(
+        axios.spread(
+          (stateRes, productRes) => {
+              (this.states = stateRes.data),
+              (this.products = productRes.data["results"]),
+              console.log(
+                "chunk of responses",
+                stateRes,
+                productRes
+              );
+          }
+        )
       )
       .catch(err => console.log("error", err));
-  },
+  }
+//     axios.get(state_url)
+//       .then(res => (this.states = res.data["results"],
+//        console.log("states,, ", res.data)))
+//       .catch(err => console.log("error", err));
+//   },
 
 }
 </script>

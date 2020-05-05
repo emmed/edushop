@@ -22,24 +22,25 @@
         </div>
          <div class="col-md-9" >
           <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-            <b-col cols="8">
+            <b-col cols="8" :class="{error: validation.hasError('email')}">
+             
               <b-form-group id="input-group-2" label-for="input-2">
                 <b-form-input
                   id="input-2"
-                  v-model="form.email"
+                  v-model="email"
                   required
                   placeholder="Your E-mail address"
-                  :state="input_validation"
+                
                 ></b-form-input>
-
-                <b-form-invalid-feedback :state="input_validation">Must be a valid Email.</b-form-invalid-feedback>
-                <b-form-valid-feedback :state="input_validation">That's better!</b-form-valid-feedback>
+ <div class="message my-2">{{ validation.firstError('email') }}</div>
+                <!-- <b-form-invalid-feedback :state="input_validation">Must be a valid Email.</b-form-invalid-feedback>
+                <b-form-valid-feedback :state="input_validation">That's better!</b-form-valid-feedback> -->
               </b-form-group>
             </b-col>
 
             <b-col cols="8">
               <b-form-group id="input-group-2" label-for="input-2">
-                <b-form-input id="input-2" v-model="form.subject" required placeholder="Subject"  ></b-form-input>
+                <b-form-input id="input-2" v-model="subject" required placeholder="Subject"  ></b-form-input>
                 
               </b-form-group>
             </b-col>
@@ -49,7 +50,7 @@
                 rows="6"
                 id="textarea-default"
                 placeholder="Description"
-                v-model="form.description"
+                v-model="description"
                 required
                ></b-form-textarea>
               
@@ -62,7 +63,7 @@
           </b-form>
         </div>
         <b-card class="mt-3" header="Form Data Result">
-          <pre class="m-0">{{ form }}</pre>
+          <pre class="m-0">email:{{ email }}, subject:{{subject}}, description:{{description}}</pre>
         </b-card>
       </div>
     </div>
@@ -70,19 +71,26 @@
 </template>
 
 <script>
+
+import Vue from "vue";
+import SimpleVueValidation from "simple-vue-validator";
+const Validator = SimpleVueValidation.Validator;
+Vue.use(SimpleVueValidation);
+
 export default {
     
   name: "ContactSeller",
   data() {
     return {
         
-      form: {
+      
         email: "",
         subject: "",
         descripiton: "",
          
-       },
-      show: true
+      
+      show: true,
+      showAlert: false  
     };
   },
   methods: {
@@ -90,6 +98,14 @@ export default {
       evt.preventDefault();
       alert(JSON.stringify(this.form));
   
+    },
+    submit: function () {
+        this.$validate()
+          .then(function (success) {
+            if (success) {
+              alert('Validation succeeded!');
+            }
+          });
     },
     onReset(evt) {
       evt.preventDefault();
@@ -111,7 +127,12 @@ export default {
        return  this.form.email.length > 4;
     }
 
-  }
+  },
+  validators: {
+      email: function (value) {
+        return Validator.value(value).required().email();
+      }
+    },
   
 }
 </script>

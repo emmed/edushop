@@ -32,8 +32,7 @@
            {{product.description}}o accusamus. Quis, aut.
           </b-card-text>
               <h4 class="pull-right blauke-t">€{{product.price}}</h4>
-              <br>
-              <h4 class="pull-right blauke-t">{{product.category_name}}</h4>
+             
         </b-card-body>
       </b-col>
     </b-row>
@@ -53,7 +52,7 @@
  
 import axios from "axios";
 
-var url_product = 'http://127.0.0.1:8000/product/?search='
+const url_product = 'http://127.0.0.1:8000/product/?search='
 
 export default {
   name: "List",
@@ -70,13 +69,12 @@ export default {
         console.log("eerste tekst", this.category_name)
     axios
       .get(url_product + category_name)
-      .then(res => (this.products = res.data))
+      .then(res => (this.products = res.data["results"]))
       .catch(err => console.log("error", err));
     });
   },
   methods: {
     goToDetails(index) {
-      console.log("seroos", this.category_name)
       this.$router.push({
         path: `details/${index["index"]}/${this.category_name}`
 

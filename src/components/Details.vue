@@ -195,7 +195,7 @@
 
 import axios from "axios";
 
-var url_product = 'http://127.0.0.1:8000/product/?search='
+var url_product = ''
 
 export default {
   name: "Details",
@@ -212,10 +212,19 @@ export default {
       }
     }, 
     mounted(){
+      if(this.category_id == "homepage"){
+        url_product = 'http://127.0.0.1:8000/product/'
+        axios
+      .get(url_product )
+      .then(res => (this.products = res.data["results"]))
+      .catch(err => console.log("error", err));
+      }else{
+      url_product = 'http://127.0.0.1:8000/product/?search='
     axios
       .get(url_product + this.category_id)
-      .then(res => (this.products = res.data))
+      .then(res => (this.products = res.data["results"]))
       .catch(err => console.log("error", err));
+  }
   },
 };
 </script>

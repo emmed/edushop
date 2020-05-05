@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="jumbotron mb-0">
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <!-- <div v-if="this.token!=null"> -->
+      <b-form @submit="onSubmit" @reset="onReset" v-if="show" >
         <b-alert
           v-model="showDismissibleAlert"
           variant="success"
@@ -142,11 +143,16 @@
         <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Submit</b-button>
         <b-button @click="onReset()" type="reset" variant="danger">Reset</b-button>
       </b-form>
-
+<!-- </div> -->
       <b-card class="mt-3" header="Form Data Result">
         <pre class="m-0">{{ form }}</pre>
       </b-card>
+
+      <!-- <div v-if="this.token==null">Log in first</div> -->
     </div>
+
+
+
   </div>
 </template>
 
@@ -172,13 +178,9 @@ export default {
         school: null,
         user: null,
         subject: null,
-        subject_link: '',
         major: null,
-        major_link: null,
         condition: null,
-        condition_link: null,
         location: null,
-        location_link: null
         // image: null,
       },
       categories: [{ text: "Select category", value: null }],
@@ -211,25 +213,16 @@ export default {
       conditions: [{ text: "Select condition", value: null }],
       locations: [{ text: "Select location", value: null }],
       show: true,
-      showDismissibleAlert: false
+      showDismissibleAlert: false,
+      token: null,
+      log_status: null,
+      username: null,
+      user_id: null
     };
   },
   methods: {  
     onSubmit(evt) {
-      if(this.form.category_name == 'Books'){
-        this.form.category = 'http://127.0.0.1:8000/category/1/'
-      }
-      if(this.form.category_name == 'eBooks'){
-        this.form.category = 'http://127.0.0.1:8000/category/2/'
-      }
-      if(this.form.category_name == 'Writing materials'){
-        this.form.category = 'http://127.0.0.1:8000/category/3/'
-      }
-      if(this.form.category_name == 'Summaries'){
-        this.form.category = 'http://127.0.0.1:8000/category/4/'
-      }
- 
-      console.log("linkKK", this.form.subject_link)
+   
         axios.post("http://127.0.0.1:8000/product/",
         {
         category_name: this.form.category_name,
@@ -237,13 +230,13 @@ export default {
         title: this.form.title,
         description: this.form.description,
         price: this.form.price,
-        category: this.form.category,
+        // category_name: "eBooks",
         school: this.form.school,
-        user: 'http://127.0.0.1:8000/users/1/',
-        subject: 'http://127.0.0.1:8000/subject/2/',
-        major: 'http://127.0.0.1:8000/major/2/',
-        condition: 'http://127.0.0.1:8000/condition/2/',
-        location: 'http://127.0.0.1:8000/location/2/'
+        user: 1,
+        subject: this.form.subject,
+        major: this.form.major,
+        condition: this.form.condition,
+        location: this.form.location
         }
         
         )
@@ -282,21 +275,22 @@ export default {
     }
   },
   created() {
+     this.$root.$on("logAndToken", (log_status, token, username, user_id) => {
+      this.token = token;
+      this.log_status = log_status;
+      this.username = username;
+      this.user_id = user_id;
+      console.log(
+        "message received from login + token + username + user_id",
+        log_status,
+        token,
+        username,
+        user_id
+      );
+    });
 
-  var link = this
-        axios.get('http://127.0.0.1:8000/subject/?search=' + this.form.subject)
-        .then(response => {
-           var str = []
-         str.push(response.data[0].url)
-        link.form.subject_link = str[0]
 
-        console.log("------sublijectt",link.form.subject_link)
-        })
-        console.log("subjects_link =",this.form.subject_link)
-
-
-    axios
-      .all([
+    axios.all([
         axios.get(url_major),
         axios.get(url_category),
         axios.get(url_subject),
@@ -305,9 +299,8 @@ export default {
       ])
       .then(
         axios.spread(
-          (majorRes, categoryRes, subjectRes, conditionRes, locationRes) => {
+          (majorRes, categoryRes, subjectRes,  conditionRes, locationRes) => {
             
-                
               (this.majors = majorRes.data),
               (this.categories = categoryRes.data),
               (this.subjects = subjectRes.data),
@@ -325,12 +318,6 @@ export default {
         )
       )
       .catch(err => console.log("error", err));
-
-    //   axios
-    //     .get(url_category)
-    //     .then(res => (this.categories = res.data))
-    //     .catch(err => console.log("error", err));
-    // }
   }
 };
 </script>
