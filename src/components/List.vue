@@ -80,12 +80,13 @@ export default {
 
       });
       console.log(index);
+
     }
   },
   computed: {
     filterProduct: function() {
       // this function will return the match the user input with news title.
-      return this.products.filter(product => {
+        return this.products.filter(product => {
         return product.title.toLowerCase().match(this.search.toLowerCase());
       });
     }}

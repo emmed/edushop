@@ -101,6 +101,7 @@ name: "Faq",
   height: 100%;
 }
 
+
 .make-me-sticky {
   position: -webkit-sticky;
   position: sticky;
@@ -137,9 +138,10 @@ article {
 .sidebar-item  {
   background: #ffbf00;
   min-width: 100%;
-   margin: 0 auto;
+  margin: 0 auto;
   padding: 10px 0 100px;
   border-bottom: solid 1px #fff;
+  border-radius: 1rem;
 }
  
  

@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="jumbotron my-0">
- 
-     <p>{{this.products}}</p> 
+<!--  
+     <p>{{this.products}}</p>  -->
       <hr>
       <div class="row mx-auto">
         <div
@@ -33,6 +33,7 @@
         :per-page="perPage"
         first-number size="lg" align="fill"
       ></b-pagination> -->
+      
     </div>
   </div>
 </template>

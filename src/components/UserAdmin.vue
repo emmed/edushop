@@ -9,10 +9,10 @@
       
            <b-row class="mb-5 justify-content-center">
 
-            <b-col cols="3" v-bind:key="state.id" v-for="state in states">
+            <b-col cols="3" v-bind:key="productOrder.id" v-for="productOrder in productOrders">
     <b-card class="text-center cardss" @click.prevent="$router.replace({ name: 'useradmin_placed_ads' })" type="button" >
         <h2 class="blauke-t  display-4">71</h2>
-        <b-card-text class="blauke-t">{{state.state}}</b-card-text>
+        <b-card-text class="blauke-t">{{productOrder.state}}</b-card-text>
       </b-card>
             </b-col>
 
@@ -32,7 +32,7 @@
             </thead>
  
             <tbody>
-                <tr v-bind:key="product.id" v-for="product in products.slice(0,3)">
+                <tr v-bind:key="product.id" v-for="(product, index) in products.slice(0,3)">
                     <td data-th="Product">
                         <div class="row" >
                              <div class="col-sm-9">
@@ -42,14 +42,14 @@
                         </div>
                     </td>
                     <td data-th="Price">€{{product.price}} </td>
-                    <td data-th="Quantity">
-                    </td>
-                    <td data-th="Subtotal" class="text-center">{{product.state}}</td>
+                    <!-- <td data-th="Quantity"></td> -->
+                    
+                    <td v-bind:key="productOrder.id" v-for="productOrder in productOrders" data-th="Subtotal" class="text-center">{{productOrder.state}}</td>
                     <td class="actions" data-th="">
-                          <button class="btn btn-primary btn-lg m-3" ><i class="fa fa-edit"></i></button> 
-                         <button class="btn btn-danger btn-lg" ><i class="fa fa-trash-o"></i></button> 
+                          <button v-on:click="updateProduct()" class="btn btn-primary btn-lg m-3" @click.prevent="$router.push({ name: 'post_an_ad' })" ><i class="fa fa-edit"></i></button> 
+                         <button v-on:click="deleteProduct(product.id, index)" class="btn btn-danger btn-lg" ><i class="fa fa-trash-o"></i></button> 
                     </td>
-
+ 
                 </tr>
             </tbody>
 
@@ -73,32 +73,42 @@
 
 <script>
 import axios from "axios";
-
-const url_state = 'http://127.0.0.1:8000/state/'
+//import {TokenService} from '../storage/service'
+const url_productOrder = 'http://127.0.0.1:8000/productOrder/'
 const url_product = 'http://127.0.0.1:8000/product/'
 export default {
  name: "Useradmin",
 data() {
       return {
-          states: [],
+          productOrders: [],
           products: [],
         show: true
       }
   },
+  methods:{
+      deleteProduct(id, index){
+          console.log(index, "index")
+      axios.delete(`http://127.0.0.1:8000/product/${id}`)
+      .then(this.products.splice(index,1))
+      //window.location.reload()
+      },
+
+ updateProduct(){}
+  },
   created() {
-          axios
+    axios
       .all([
-        axios.get(url_state),
+        axios.get(url_productOrder),
         axios.get(url_product)
       ])
       .then(
         axios.spread(
           (stateRes, productRes) => {
-              (this.states = stateRes.data),
+              (this.productOrders = stateRes.data),
               (this.products = productRes.data["results"]),
               console.log(
                 "chunk of responses",
-                stateRes,
+                stateRes, 
                 productRes
               );
           }

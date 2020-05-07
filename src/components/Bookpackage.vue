@@ -43,7 +43,7 @@
             </b-col>
 
             <b-col cols=" m-3">
-             <b-form-select v-model="form.category">
+              <b-form-select v-model="form.category">
                 <option disabled value>Select category</option>
                 <option v-bind:key="category.id" v-for="category in categories">{{category.name}}</option>
               </b-form-select>
@@ -58,7 +58,7 @@
               <span>Selected: {{ form.subject }}</span>
             </b-col>
             <div class="group">
-              <b-button class="btn_find" size="lg" variant="warning">Find</b-button>
+              <b-button v-on:click="onSubmit()" class="btn_find" size="lg" variant="warning">Find</b-button>
             </div>
             <div class="hr"></div>
           </div>
@@ -80,6 +80,9 @@
             >
               <h5 class="blauke-t pull-left mr-3">{{product.title}}</h5>
               <b-card-text class="ty mt-5 text-muted">{{product.description}}</b-card-text>
+              <b-card-text class="ty mt-5 text-muted">{{product.category}}</b-card-text>
+              <b-card-text class="ty mt-5 text-muted">major: {{product.major}}</b-card-text>
+              <b-card-text class="ty mt-5 text-muted">subject: {{product.subejct}}</b-card-text>
             </b-card>
           </div>
         </div>
@@ -124,10 +127,28 @@ export default {
     };
   },
   methods: {
-    // onSubmit(evt){
-    //   axios.get("http://127.0.0.1:8000/product/",
-    // },
-      goToDetails(index) {
+    onSubmit() {
+      console.log("knop onSubmit werkt");
+      var url = ""
+      if (this.form.category) {
+        url = url + "category__name=" + this.form.category;
+      }
+      if (this.form.major) {
+        url = url + "&major__major=" + this.form.major;
+      }
+      if (this.form.subject) {
+        url = url + "&subject__subject=" + this.form.subject;
+      }
+      if (this.form.school) {
+        url = url + "&school=" + this.form.school;
+      }
+            console.log(url_product + "?" + url,"=>url");
+  axios
+      .get(url_product + "?" + url) 
+      .then(res => (this.products = res.data["results"]), console.log(this.products,'products'))
+      .catch(err => console.log("error", err));
+    },
+    goToDetails(index) {
       this.$router.push({
         path: `details/${index["index"]}/${this.category}`
         //path: `details/${index["index"]}`
@@ -147,7 +168,8 @@ export default {
       ])
       .then(
         axios.spread(
-          (productRes,
+          (
+            productRes,
             majorRes,
             categoryRes,
             subjectRes,
