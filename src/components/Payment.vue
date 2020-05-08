@@ -94,9 +94,6 @@ name: "Payment",
 }
 
 /* Ignore This, just coloring */
-body {
-  background: #fff;
-}
 
 article {
   background: #f1f1f1;

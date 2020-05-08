@@ -165,12 +165,6 @@
 <script>
 import axios from "axios";
 
-// var selectedMajorID;
-// var selectedSubjectID;
-// var selectedConditionID;
-// var selectedLocationID;
-// var selectedSchoolID;
-// var selectedCategoryID;
 const url_category = "http://127.0.0.1:8000/category/";
 const url_subject = "http://127.0.0.1:8000/subject/";
 const url_major = "http://127.0.0.1:8000/major/";
@@ -179,12 +173,7 @@ const url_location = "http://127.0.0.1:8000/location/";
 export default {
   data() {
     return {
-      selectedMajorID: null,
-      selectedSubjectID: null,
-      selectedConditionID: null,
-      selectedLocationID: null,
-      selectedSchoolID: null,
-      selectedCategoryID: null,
+  
       form: {
         response: [],
         //    category_name: "",
@@ -203,28 +192,7 @@ export default {
       },
       categories: [{ text: "Select category", value: null }],
       school: [
-        //   { text: "Select school", value: null },
-        //       {
-        //       label: 'Erasmushogeschool | EHB',
-        //       options: [
-        //         { value: { text: 'Campus Kaai' }, text: 'Campus Kaai' },
-        //         { value: { text: 'Campus Bloemberg' }, text: 'Campus Bloemberg' }
-        //       ]
-        //     },
-        //       {
-        //       label: 'Vrije Universiteit Brussel | VUB',
-        //       options: [
-        //         { value: { text: 'Campus Jette' }, text: 'Campus Jette' },
-        //         { value: { text:'Campus Schaarbeek' }, text: 'Campus Schaarbeek'}
-        //       ]
-        //     },
-        //    {
-        //       label: 'Katholieke universiteit leuven | KUL',
-        //       options: [
-        //         { value: {text: 'KUL Gent' }, text: 'KUL Gent' },
-        //         { value: {text:'Campus Antwerpen' }, text: 'Campus Antwerpen' }
-        //       ]
-        //  },
+  
       ],
       majors: [{ text: "Select major", value: null }],
       subjects: [{ text: "Select subject", value: null }],
@@ -239,66 +207,8 @@ export default {
     };
   },
   methods: {
-    //     saveLocation(){
-    // for (let i in this.locations) {
-    //     if ( this.locations[i].location == this.form.location) {
-    // 	this.selectedLocationID = this.locations[i].id
-    //   console.log("id",this.selectedLocationID)
-    // 	console.log("locations",this.locations[i].location)
-    //     }
-    // }
-    //     },
+
     onSubmit(evt) {
-      // for (var prop in this.course) {
-      //   if (this.course.hasOwnProperty(prop)) {
-      //     console.log(this.course[prop]);
-      //   }
-      // }
-
-      for (let i in this.majors) {
-        if (this.majors[i].major == this.form.major) {
-          this.selectedMajorID = this.majors[i].id;
-          console.log("id", this.selectedMajorID);
-          console.log("major", this.majors[i].major);
-        }
-      }
-      for (let i in this.subjects) {
-        if (this.subjects[i].subject == this.form.subject) {
-          this.selectedSubjectID = this.subjects[i].id;
-          console.log("id", this.selectedSubjectID);
-          console.log("subject", this.subjects[i].subject);
-        }
-      }
-      for (let i in this.conditions) {
-        if (this.conditions[i].condition == this.form.condition) {
-          this.selectedConditionID = this.conditions[i].id;
-          console.log("id", this.selectedConditionID);
-          console.log("condition", this.conditions[i].condition);
-        }
-      }
-
-      for (let i in this.locations) {
-        if (this.locations[i].location == this.form.location) {
-          this.selectedLocationID = this.locations[i].id;
-          console.log("id", this.selectedLocationID);
-          console.log("location", this.locations[i].location);
-        }
-      }
-
-      for (let i in this.categories) {
-        if (this.categories[i].name == this.form.category) {
-          this.selectedCategoryID = this.categories[i].id;
-          console.log("id", this.selectedCategoryID);
-          console.log("category", this.categories[i].name);
-        }
-      }
-      for (let i in this.categories) {
-        if (this.categories[i].name == this.form.category) {
-          this.selectedCategoryID = this.categories[i].id;
-          console.log("id", this.selectedCategoryID);
-          console.log("category", this.categories[i].name);
-        }
-      }
 
       axios
         .post(
@@ -315,7 +225,7 @@ export default {
             school: this.form.school,
             user: 1,
           },
-          console.log("post cat Id", this.selectedCategoryID)
+      
         )
         .then(response => {
           // this.$router.push('/post_and_ad');

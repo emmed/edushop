@@ -160,7 +160,7 @@
             class="my-4 col-lg-8 text-muted text-left"
           >{{products[idDetail].description}}</p>
           <ul class="spec text-left ml-3">
-            <li>Category: {{products[idDetail].category_name}}</li>
+            <li>Category: {{products[idDetail].category}}</li>
             <li>Condition: {{products[idDetail].condition}}</li>
             <li>Posted: {{products[idDetail].date_created}}</li>
           </ul>

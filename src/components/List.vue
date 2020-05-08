@@ -71,6 +71,7 @@ export default {
       .get(url_product + category_name)
       .then(res => (this.products = res.data["results"]), console.log(this.products,'products'))
       .catch(err => console.log("error", err));
+
     });
   },
   methods: {

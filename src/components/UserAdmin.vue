@@ -46,7 +46,7 @@
                     
                     <td v-bind:key="productOrder.id" v-for="productOrder in productOrders" data-th="Subtotal" class="text-center">{{productOrder.state}}</td>
                     <td class="actions" data-th="">
-                          <button v-on:click="updateProduct()" class="btn btn-primary btn-lg m-3" @click.prevent="$router.push({ name: 'post_an_ad' })" ><i class="fa fa-edit"></i></button> 
+                          <button v-on:click="updateProduct(product.id, index)" class="btn btn-primary btn-lg m-3" @click.prevent="$router.push({ name: 'sdf' })" ><i class="fa fa-edit"></i></button> 
                          <button v-on:click="deleteProduct(product.id, index)" class="btn btn-danger btn-lg" ><i class="fa fa-trash-o"></i></button> 
                     </td>
  
@@ -93,7 +93,10 @@ data() {
       //window.location.reload()
       },
 
- updateProduct(){}
+ updateProduct(id, index){
+   console.log(id, ":id  ", index, "index ")
+   this.$root.$emit("prodUpdate", id, index)
+ }
   },
   created() {
     axios

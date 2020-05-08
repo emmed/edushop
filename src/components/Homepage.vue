@@ -3,7 +3,6 @@
     <div class="jumbotron my-0">
 <!--  
      <p>{{this.products}}</p>  -->
-      <hr>
       <div class="row mx-auto">
         <div
           class="col-sm-12 col-md-6 col-lg-3"
@@ -21,7 +20,7 @@
             @click.prevent="goToDetails({index})"
             type="button"
           >
-            <b-card-text class="text-muted">{{product.category_name}}</b-card-text>
+            <b-card-text class="text-muted">{{product.location}}</b-card-text>
           </b-card>
         </div>
       </div>
@@ -33,7 +32,7 @@
         :per-page="perPage"
         first-number size="lg" align="fill"
       ></b-pagination> -->
-      
+
     </div>
   </div>
 </template>

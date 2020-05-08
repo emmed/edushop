@@ -1,405 +1,384 @@
 <template>
   <div>
-    <div class="login-wrap">
-      <div class="login-html">
-        <input id="tab-1" type="radio" name="tab" class="sign-in" v-on:click="clearLogin()" checked>
-        <label for="tab-1" class="tab">Log in</label>
-        <input id="tab-2" type="radio" name="tab" class="for-pwd" v-on:click="clearLogin()">
-        <label for="tab-2" class="tab" >Sign up</label>
+    <div class="jumbotron mb-0">
+      <!-- <div v-if="this.token!=null"> -->
+      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+        <b-alert
+          v-model="showDismissibleAlert"
+          variant="success"
+          dismissible
+        >Successfully placed your ad</b-alert>
 
-        <div class="login-form">
-          <b-form @submit.prevent="login" v-if="token==null">
-            <div class="sign-in-htm">
-              <div class="group">
-                <label for="user" class="label">Username</label>
-                <input id="user" type="text" class="input" required v-model="username">
-              </div>
-              <div class="group">
-                <label for="pass" class="label">Password</label>
-                <input
-                  id="pass"
-                  type="password"
-                  class="input"
-                  data-type="password"
-                  v-model="password"
+        <b-container class>
+          <b-row>
+            <b-col cols="5 m-3">
+              <b-form-group id="input-group-2" label-for="input-2">
+                <b-form-input
+                  id="input-2"
+                  v-model="form.title"
                   required
-                >
-              </div>
-              <div class="group">
-                <input type="submit" class="button" value="Log in">
-              </div>
-              <div class="hr"></div>
-              <div class="group">
-                <a href="#" class="label2" value="Reset Password">Forgot Password</a>
-              </div>
-            </div>
-          </b-form>
-
-          <!-- end form -->
-
-          <!-- sign up/register -->
-
-          <b-form @submit.prevent="register" v-if="token==null">
-            <div class="for-pwd-htm">
-              <div class="group">
-                <label for="user" class="label">Username</label>
-                <input id="user" type="text" class="input" required v-model="username">
-              </div>
-              <div class="group" :class="{error: validation.hasError('password')}">
-                <label for="pass" class="label">Password</label>
-                <input
-                  id="pass"
-                  type="password"
-                  class="input"
-                  data-type="password"
-                  v-model="password"
-                  required
+                  placeholder="Your ads title"
                   :state="input_validation"
-                >
-                <password v-model="password" :strength-meter-only="true"/>
-                <div class="message pt-2">{{ validation.firstError('password') }}</div>
-              </div>
-              <b-form-invalid-feedback :state="input_validation" class="mb-4">
-                Your password must be 6-12 characters long. contain letters and numbers, and must not
-                contain spaces or emoji.
-              </b-form-invalid-feedback>
-              <b-form-valid-feedback :state="input_validation" class="mb-4">Looks Great!</b-form-valid-feedback>
-              <div class="group" :class="{error: validation.hasError('repeat')}">
-                <label for="pass" class="label">Confrim Password</label>
-                <input
-                  id="pass"
-                  type="password"
-                  class="input"
-                  data-type="password"
-                  v-model="repeat"
-                  required
+                ></b-form-input>
+    
+                <b-form-invalid-feedback
                   :state="input_validation"
-                >
-                <div class="message pt-2">{{ validation.firstError('repeat') }}</div>
-              </div>
+                >Your title must be 5-12 characters long.</b-form-invalid-feedback>
+                <b-form-valid-feedback :state="input_validation">Looks Great!</b-form-valid-feedback>
+              </b-form-group>
+            </b-col>
+            <b-col cols="5 m-3">
+              <b-form-select v-model="form.major">
+                <option disabled value>Select major</option>
+                <option v-bind:key="major.id" v-for="major in majors">{{major.major}}</option>
+              </b-form-select>
+              <span>Selected: {{ form.major }}</span>
+            </b-col>
 
-              <div class="group">
-                <input type="submit" class="button" value="Sign up!">
+            <b-col cols="5 m-3">
+              <b-form-select v-model="form.category">
+                <option disabled value>Select category</option>
+                <option v-bind:key="category.id" v-for="category in categories">{{category.name}}</option>
+              </b-form-select>
+              <span>Selected: {{ form.category }}</span>
+            </b-col>
+
+            <b-col cols="5 m-3">
+              <b-form-select v-model="form.subject">
+                <option disabled value>Select subject</option>
+                <option v-bind:key="subject.id" v-for="subject in subjects">{{subject.subject}}</option>
+              </b-form-select>
+              <span>Selected: {{ form.subject }}</span>
+            </b-col>
+
+            <!-- <b-col cols="5 m-3">
+              <b-form-group id="input-group-3" label-for="input-3">
+                <b-form-select id="input-3" v-model="form.school" :options="school" required></b-form-select>
+              </b-form-group>
+            </b-col>-->
+
+            <b-col cols="5 m-3">
+              <div class="form-group">
+                <select
+                  class="selectpicker form-control"
+                  v-model="form.school"
+                  :options="school"
+                  required
+                >
+                  <optgroup label="Erasmushogeschool | EHB">
+                    <option>Campus Kaai</option>
+                    <option>Campus Bloemberg</option>
+                  </optgroup>
+                  <optgroup label="Vrije Universiteit Brussel | VUB">
+                    <option>Campus Jette</option>
+                    <option>Campus Schaarbeek</option>
+                  </optgroup>
+                  <optgroup label="Katholieke universiteit leuven | KUL">
+                    <option>KUL Gent</option>
+                    <option>Campus Antwerpen</option>
+                  </optgroup>
+                </select>
+                <small class="form-text text-muted">Select your school</small>
               </div>
-              <div class="hr"></div>
-            </div>
-          </b-form>
-        </div>
-      </div>
+            </b-col>
+
+            <b-col cols="5 m-3">
+              <b-form-select v-model="form.condition">
+                <option disabled value>Select condition</option>
+                <option
+                  v-bind:key="condition.id"
+                  v-for="condition in conditions"
+                >{{condition.condition}}</option>
+              </b-form-select>
+              <span>Selected: {{ form.condition }}</span>
+            </b-col>
+
+            <b-col cols="5 m-3">
+              <b-form-select v-model="form.location">
+                <option value>Select location</option>
+                <option
+                  v-bind:key="location.id"
+                  v-for="location in locations"
+                  v-on:click="saveLocation()"
+                >{{location.location}}</option>
+              </b-form-select>
+              <span>
+                <small>Selected: {{ form.location }}</small>
+              </span>
+            </b-col>
+
+            <b-col cols="5 m-3">
+              <b-form-group id="input-group-2" label-for="input-2">
+                <b-form-input
+                  id="input-2"
+                  v-model="form.price"
+                  required
+                  placeholder="Price - €"
+                  :state="input_price"
+                ></b-form-input>
+
+                <b-form-invalid-feedback :state="input_price">You must fill in a price</b-form-invalid-feedback>
+                <b-form-valid-feedback :state="input_price">Done!</b-form-valid-feedback>
+              </b-form-group>
+            </b-col>
+          </b-row>
+
+          <b-row class="mt-4">
+            <b-col cols="11">
+              <b-form-textarea
+                rows="6"
+                id="textarea-default"
+                placeholder="Description"
+                v-model="form.description"
+              ></b-form-textarea>
+            </b-col>
+          </b-row>
+     
+          <!-- <b-row class="mb-4">
+            <b-col cols="3" v-for="n in 3" :key="n.id">
+              <b-form-file
+                v-model="form.file"
+                :state="Boolean(form.file)"
+                placeholder="Choose a image or drop it here..."
+                drop-placeholder="Drop image here..."
+                accept=".jpg, .png"
+                class="square_btn"
+              ></b-form-file>
+            </b-col>
+          </b-row>-->
+        </b-container>
+
+        <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Submit</b-button>
+        <b-button @click="onReset()" type="reset" variant="danger">Reset</b-button>
+      </b-form>
+      <!-- </div> -->
+      <b-card class="mt-3" header="Form Data Result">
+        <pre class="m-0">{{ form }}</pre>
+      </b-card>
+
+      <!-- <div v-if="this.token==null">Log in first</div> -->
     </div>
   </div>
 </template>
 
-
 <script>
 import axios from "axios";
-import Vue from "vue";
-import SimpleVueValidation from "simple-vue-validator";
-const Validator = SimpleVueValidation.Validator;
-Vue.use(SimpleVueValidation);
-import Password from "vue-password-strength-meter";
-
+const url_category = "http://127.0.0.1:8000/category/";
+const url_subject = "http://127.0.0.1:8000/subject/";
+const url_major = "http://127.0.0.1:8000/major/";
+const url_condition = "http://127.0.0.1:8000/condition/";
+const url_location = "http://127.0.0.1:8000/location/";
 export default {
-  name: "login",
-  components: { Password },
   data() {
     return {
-      username: "",
-    
-      user_id: null,
-      password: "",
-     
-      repeat: "",
-      submitted: false,
+      form: {
+        response: [],
+        user_id: null,
+        title: "",
+        description: "",
+        price: "",
+        category: null,
+        school: null,
+        user: null,
+        subject: null,
+        major: null,
+        condition: null,
+        location: null
+        // image: null,
+      },
+      product: [],
+      categories: [],
+      school: [],
+      majors: [],
+      subjects: [],
+      conditions: [],
+      locations: [],
+      show: true,
+      showDismissibleAlert: false,
       token: null,
-      log_status: ""
+      log_status: null,
+      username: null,
+      user_id: null,
+      id: null,
+      index: null
     };
   },
+  mounted() {
+   
+  },
   methods: {
-    login() {
-      axios.post("http://127.0.0.1:8000/auth/", {
-          username: this.username,
-          password: this.password
+    onSubmit(evt) {
+    
+      axios
+        .post("http://127.0.0.1:8000/product/", {
+          category: this.form.category,
+          condition: this.form.condition,
+          major: this.form.major,
+          location: this.form.location,
+          subject: this.form.subject,
+          title: this.form.title,
+          description: this.form.description,
+          price: this.form.price,
+          school: this.form.school,
+          user: this.form.user_id
         })
-        .then(res => {
-          this.token = res.data.token;
-          this.log_status = "Log out";
-          this.$root.$emit(
-            "logAndToken",
-            this.log_status,
-            this.token,
-            this.username,
-            this.user_id
-          );
-          console.log(
-            "Login data:",
-            res,
-            this.username,
-            this.password,
-            this.token,
-            this.user_id
-          );
-          localStorage.setItem("logAndToken", this.token, this.username);
-         this.$router.push({ name: "homepage" }).catch(err => {
-        localStorage.removeItem("logAndToken");
-        console.log("error loginn", err);
-      });
-        });
-     
-    },
-    clearLogin(){
-      this.username = "",
-      this.password = ""
-    },
-    register() {
-      axios.post("http://127.0.0.1:8000/users/", {
-          username: this.username,
-          password: this.password,
+        .then(response => {
+          // this.$router.push('/post_and_ad');
+          console.log("response saved", response);
         })
-      .then(res => {
-          console.log("res after .then()",res)
-          this.token = res.data.token;
-          this.log_status = "Log out";
-          // this.$root.$emit(
-          //   "logAndToken",
-          //   this.log_status,
-          //   this.token,
-          //   this.username,
-          //   this.user_id
-          // );
-          console.log(
-            "Login NEW::: user:",
-            res,
-            this.username,
-            this.password,
-            this.token,
-            this.user_id
-          );
-       
-        }).catch(err =>{ console.log(err)
-        
-        this.submitted = true;
-        console.log("error loginn", err);
-        console.log("res:::", this.password, this.username)
+        .catch(response => {
+          console.log("catch response", response);
         });
-         
+      evt.preventDefault();
     },
-    submit: function() {
-      this.submitted = true;
-      this.$validate().then(function(success) {
-        if (success) {
-          alert("Validation succeeded!");
-        }
+    onReset(evt) {
+      evt.preventDefault();
+      // Reset our form values
+      this.form.title = "";
+      this.form.category = null;
+      this.form.school_ad = null;
+      this.form.major = null;
+      this.form.subject = null;
+      this.form.condition = null;
+      this.form.location = null;
+      // Trick to reset/clear native browser form validation state
+      this.show = false;
+      this.$nextTick(() => {
+        this.show = true;
       });
     }
   },
   computed: {
     input_validation() {
-      return this.password.length > 5 && this.password.length < 13;
+      return this.form.title.length > 4 && this.form.title.length < 13;
+    },
+    input_price() {
+      return this.form.price > 0;
     }
   },
-  validators: {
-    password: function(value) {
-      return Validator.value(value)
-        .required()
-        .minLength(6);
-    },
-    "repeat, password": function(repeat, password) {
-      if (this.submitted || this.validation.isTouched("repeat")) {
-        return Validator.value(repeat)
-          .required()
-          .match(password);
-      }
-    }
+  created() {
+    this.$root.$on("logAndToken", (log_status, token, username, user_id) => {
+      this.token = token;
+      this.log_status = log_status;
+      this.username = username;
+      this.user_id = user_id;
+      console.log(
+        "message received from login + token + username + user_id",
+        log_status,
+        token,
+        username,
+        user_id
+      );
+    });
+    // dynamically rendering selects
+    axios
+      .all([
+        axios.get(url_major),
+        axios.get(url_category),
+        axios.get(url_subject),
+        axios.get(url_condition),
+        axios.get(url_location)
+      ])
+      .then(
+        axios.spread(
+          (majorRes, categoryRes, subjectRes, conditionRes, locationRes) => {
+            (this.majors = majorRes.data),
+              (this.categories = categoryRes.data),
+              (this.subjects = subjectRes.data),
+              (this.conditions = conditionRes.data),
+              (this.locations = locationRes.data),
+              console.log(
+                "chunk of responses",
+                categoryRes,
+                subjectRes,
+                majorRes,
+                conditionRes,
+                locationRes
+              );
+          }
+        )
+      )
+      .catch(err => console.log("error", err));
+
+
+
+ this.$root.$on("prodUpdate", (id, index) => {
+      this.id = id;
+      this.index = index;
+      console.log("eerste testke", this.id, this.index);
+      axios
+        .get("http://127.0.0.1:8000/product/" +id)
+        .then(
+          res => [
+          this.product = res.data,
+          console.log(this.product, "product2"),
+          console.log(res.data, "res"),
+          this.form.category = this.product.category,
+          this.form.condition = this.product.condition,
+          this.form.major = this.product.major,
+          this.form.location = this.product.location,
+          this.form.subject = this.product.subject,
+          this.form.title = this.product.title,
+          this.form.description = this.product.description,
+          this.form.price = this.product.price,
+          this.form.school = this.product.school,
+          this.form.user_id = this.product.user_id,
+          console.log(this.product, "product"),
+          console.log(this.form.category, "categorys"),
+
+          ])
+         
+    });
+
+
+
   }
 };
 </script>
 
 <style>
-.message {
-  color: red;
+.title {
+  color: #004fff;
+  font-weight: 600;
+  float: left;
 }
-
-:after,
-:before {
-  box-sizing: border-box;
+.jumbotron {
+  background-color: whitesmoke;
 }
-.clearfix:after,
-.clearfix:before {
-  content: "";
-  display: table;
+.container {
+  margin-bottom: 120px;
 }
-.clearfix:after {
-  clear: both;
-  display: block;
-}
-a {
-  color: inherit;
+.custom-file-label {
+  position: relative;
+  display: -block;
+  font-weight: bold;
+  padding: 0.5em 1em;
   text-decoration: none;
+  border-left: solid 4px #668ad8;
+  border-right: solid 4px #668ad8;
+  color: #004fff;
+  padding: 0.5em 1em;
+  height: 150px;
+  background-image: url("../assets/plus.svg");
+  background-size: 40px;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat;
 }
-
-.login-wrap {
-  width: 100%;
-  margin: auto;
-  max-width: 510px;
-  min-height: 610px;
+.custom-file-input:lang(en) ~ .custom-file-label::after {
+  content: none;
   position: relative;
-  background: no-repeat center;
-  background-size: cover;
-  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24),
-    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  display: -block;
+  font-weight: bold;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  border-left: solid 4px #668ad8;
+  border-right: solid 4px #668ad8;
+  color: #004fff;
+  padding: 0.5em 1em;
+  height: 150px;
+  background-image: url("../assets/plus.svg");
+  background-size: 40px;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat;
 }
-.login-html {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  padding: 90px 70px 50px 70px;
-  background: rgba(0, 0, 0, 0.808);
-}
-.login-html .sign-in-htm,
-.login-html .for-pwd-htm {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: absolute;
-  -webkit-transform: rotateY(180deg);
-  transform: rotateY(180deg);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-transition: all 0.4s linear;
-  transition: all 0.4s linear;
-}
-.login-html .sign-in,
-.login-html .for-pwd,
-.login-form .group .check {
-  display: none;
-}
-.login-html .tab,
-.login-form .group .label,
-.login-form .group .button {
-  text-transform: uppercase;
-  color: rgba(159, 165, 159, 0.801);
-}
-.login-html .tab {
-  font-size: 22px;
-  margin-right: 15px;
-  padding-bottom: 5px;
-  margin: 0 15px 10px 0;
-  display: inline-block;
-  border-bottom: 2px solid transparent;
-}
-
-.login-html .sign-in:checked + .tab,
-.login-html .for-pwd:checked + .tab {
-  color: #fff;
-  border-color: #ffbf00;
-}
-.login-form {
-  min-height: 345px;
-  position: relative;
-  -webkit-perspective: 1000px;
-  perspective: 1000px;
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-}
-.login-form .group {
-  margin-bottom: 15px;
-}
-.login-form .group .label,
-.login-form .group .input,
-.login-form .group .button {
-  width: 100%;
-  color: #fff;
-  display: block;
-}
-.login-form .group .input,
-.login-form .group .button {
-  border: none;
-  padding: 15px 20px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-}
-.login-form .group input[data-type="password"] {
-  -webkit-text-security: circle;
-}
-.login-form .group .label {
-  color: #aaa;
-  font-size: 12px;
-}
-.login-form .group .label2 {
-  color: rgb(223, 223, 223);
-  font-size: 18px;
-}
-.login-form .group .button {
-  background: #ffbf00;
-}
-.login-form .group label .icon {
-  width: 15px;
-  height: 15px;
-  border-radius: 2px;
-  position: relative;
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.1);
-}
-.login-form .group label .icon:before,
-.login-form .group label .icon:after {
-  content: "";
-  width: 10px;
-  height: 2px;
-  background: #fff;
-  position: absolute;
-  -webkit-transition: all 0.2s ease-in-out 0s;
-  transition: all 0.2s ease-in-out 0s;
-}
-.login-form .group label .icon:before {
-  left: 3px;
-  width: 5px;
-  bottom: 6px;
-  -webkit-transform: scale(0) rotate(0);
-  transform: scale(0) rotate(0);
-}
-.login-form .group label .icon:after {
-  top: 6px;
-  right: 0;
-  -webkit-transform: scale(0) rotate(0);
-  transform: scale(0) rotate(0);
-}
-.login-form .group .check:checked + label {
-  color: #fff;
-}
-.login-form .group .check:checked + label .icon {
-  background: #004fff;
-}
-.login-form .group .check:checked + label .icon:before {
-  -webkit-transform: scale(1) rotate(45deg);
-  transform: scale(1) rotate(45deg);
-}
-.login-form .group .check:checked + label .icon:after {
-  -webkit-transform: scale(1) rotate(-45deg);
-  transform: scale(1) rotate(-45deg);
-}
-.login-html
-  .sign-in:checked
-  + .tab
-  + .for-pwd
-  + .tab
-  + .login-form
-  .sign-in-htm {
-  -webkit-transform: rotate(0);
-  transform: rotate(0);
-}
-.login-html .for-pwd:checked + .tab + .login-form .for-pwd-htm {
-  -webkit-transform: rotate(0);
-  transform: rotate(0);
-}
-
-.hr {
-  height: 2px;
-  margin: 60px 0 50px 0;
-  background: rgba(255, 255, 255, 0.2);
-}
-.foot-lnk {
-  text-align: center;
-}
-</style> 
+</style>

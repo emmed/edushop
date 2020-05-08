@@ -79,10 +79,11 @@
               type="button"
             >
               <h5 class="blauke-t pull-left mr-3">{{product.title}}</h5>
-              <b-card-text class="ty mt-5 text-muted">{{product.description}}</b-card-text>
-              <b-card-text class="ty mt-5 text-muted">{{product.category}}</b-card-text>
-              <b-card-text class="ty mt-5 text-muted">major: {{product.major}}</b-card-text>
-              <b-card-text class="ty mt-5 text-muted">subject: {{product.subejct}}</b-card-text>
+              <b-card-text class="ty mt-5">
+               <p class="text-muted"> {{product.description}}</p>
+                <br>
+               <p class="mt-5 font-weight-bold">{{product.major}}</p>
+                </b-card-text>
             </b-card>
           </div>
         </div>
