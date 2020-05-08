@@ -46,10 +46,9 @@
                     
                     <td v-bind:key="productOrder.id" v-for="productOrder in productOrders" data-th="Subtotal" class="text-center">{{productOrder.state}}</td>
                     <td class="actions" data-th="">
-                          <button v-on:click="updateProduct(product.id, index)" class="btn btn-primary btn-lg m-3" @click.prevent="$router.push({ name: 'sdf' })" ><i class="fa fa-edit"></i></button> 
+                          <button class="btn btn-primary btn-lg m-3" @click.prevent="$router.push({ path: `update/${index}/${product.id}`})" ><i class="fa fa-edit"></i></button> 
                          <button v-on:click="deleteProduct(product.id, index)" class="btn btn-danger btn-lg" ><i class="fa fa-trash-o"></i></button> 
                     </td>
- 
                 </tr>
             </tbody>
 
@@ -58,10 +57,7 @@
                 <tr class="">
                     <td class="text-left"><strong> </strong></td>
                 </tr>
-                 
-            
-                   
- 
+                
             </tfoot>
  
         </table>
@@ -93,10 +89,7 @@ data() {
       //window.location.reload()
       },
 
- updateProduct(id, index){
-   console.log(id, ":id  ", index, "index ")
-   this.$root.$emit("prodUpdate", id, index)
- }
+ 
   },
   created() {
     axios
@@ -119,11 +112,6 @@ data() {
       )
       .catch(err => console.log("error", err));
   }
-//     axios.get(state_url)
-//       .then(res => (this.states = res.data["results"],
-//        console.log("states,, ", res.data)))
-//       .catch(err => console.log("error", err));
-//   },
 
 }
 </script>

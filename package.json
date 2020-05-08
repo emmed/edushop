@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -15,6 +16,7 @@
     "simple-vue-validator": "^0.16.0",
     "uuid": "^8.0.0",
     "vue": "^2.6.11",
+    "vue-i18n": "^8.17.3",
     "vue-password-strength-meter": "^1.7.2",
     "vue-router": "^3.1.6",
     "zxcvbn": "^4.4.2"
@@ -34,6 +36,7 @@
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
     "vue-cli-plugin-bootstrap-vue": "~0.6.0",
+    "vue-cli-plugin-i18n": "~1.0.1",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

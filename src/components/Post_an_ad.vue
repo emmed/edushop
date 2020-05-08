@@ -223,7 +223,7 @@ export default {
             description: this.form.description,
             price: this.form.price,
             school: this.form.school,
-            user: 1,
+            user: this.form.user,
           },
       
         )

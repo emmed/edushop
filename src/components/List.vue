@@ -78,7 +78,6 @@ export default {
     goToDetails(index) {
       this.$router.push({
         path: `details/${index["index"]}/${this.category_name}`
-
       });
       console.log(index);
 

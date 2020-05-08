@@ -15,7 +15,6 @@
             img-src="../assets/stock-image.jpg"
             img-alt="Image"
             img-top
-            tag="products"
             class="mb-3 blauke-t"
             @click.prevent="goToDetails({index})"
             type="button"

@@ -17,28 +17,7 @@ export default {
   name: "App",
   components: { Menu, Footer},
   data() {
-    return {
-      /*  Empty array for the api records.
-    Passing the products via a v-bind in order to render it on the router-view
-*/
-      
-    }
-    
-  },
-    created() {
-    // axios.get(url_product).then(res => (this.products = res.data))
-    // .then(res => console.log("producten restults", res))
-    // .catch(err => console.log("error", err));
-
-
-    
-    /*
-          To check if anything is coming trough, i console log the result:
-           .then(res => console.log(res))
-           My records were in the array 'results'
-          */
-  
-    // get the Records form the API use Vue detected tool extention via chrome.
+    return {}
   }
 };
 </script>

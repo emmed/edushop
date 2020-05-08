@@ -2,7 +2,7 @@
   <div>
     <div class="jumbotron mb-0">
       <!-- <div v-if="this.token!=null"> -->
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <b-form @submit="onSubmit" v-if="show">
         <b-alert
           v-model="showDismissibleAlert"
           variant="success"
@@ -20,7 +20,7 @@
                   placeholder="Your ads title"
                   :state="input_validation"
                 ></b-form-input>
-    
+
                 <b-form-invalid-feedback
                   :state="input_validation"
                 >Your title must be 5-12 characters long.</b-form-invalid-feedback>
@@ -133,7 +133,7 @@
               ></b-form-textarea>
             </b-col>
           </b-row>
-     
+
           <!-- <b-row class="mb-4">
             <b-col cols="3" v-for="n in 3" :key="n.id">
               <b-form-file
@@ -148,8 +148,8 @@
           </b-row>-->
         </b-container>
 
-        <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Submit</b-button>
-        <b-button @click="onReset()" type="reset" variant="danger">Reset</b-button>
+        <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Update</b-button>
+      
       </b-form>
       <!-- </div> -->
       <b-card class="mt-3" header="Form Data Result">
@@ -169,6 +169,7 @@ const url_major = "http://127.0.0.1:8000/major/";
 const url_condition = "http://127.0.0.1:8000/condition/";
 const url_location = "http://127.0.0.1:8000/location/";
 export default {
+  name: "sdf",
   data() {
     return {
       form: {
@@ -186,6 +187,8 @@ export default {
         location: null
         // image: null,
       },
+      product_id: this.$route.params.product_id,
+      product_index: this.$route.params.index,
       product: [],
       categories: [],
       school: [],
@@ -199,18 +202,14 @@ export default {
       log_status: null,
       username: null,
       user_id: null,
-      id: null,
-      index: null
     };
   },
-  mounted() {
-   
-  },
+  mounted() {},
   methods: {
     onSubmit(evt) {
-    
       axios
-        .post("http://127.0.0.1:8000/product/", {
+        .put("http://127.0.0.1:8000/product/", {
+          id: this.product_id,
           category: this.form.category,
           condition: this.form.condition,
           major: this.form.major,
@@ -231,22 +230,7 @@ export default {
         });
       evt.preventDefault();
     },
-    onReset(evt) {
-      evt.preventDefault();
-      // Reset our form values
-      this.form.title = "";
-      this.form.category = null;
-      this.form.school_ad = null;
-      this.form.major = null;
-      this.form.subject = null;
-      this.form.condition = null;
-      this.form.location = null;
-      // Trick to reset/clear native browser form validation state
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
-    }
+
   },
   computed: {
     input_validation() {
@@ -257,6 +241,7 @@ export default {
     }
   },
   created() {
+    
     this.$root.$on("logAndToken", (log_status, token, username, user_id) => {
       this.token = token;
       this.log_status = log_status;
@@ -270,6 +255,7 @@ export default {
         user_id
       );
     });
+
     // dynamically rendering selects
     axios
       .all([
@@ -277,16 +263,41 @@ export default {
         axios.get(url_category),
         axios.get(url_subject),
         axios.get(url_condition),
-        axios.get(url_location)
+        axios.get(url_location),
+        axios.get("http://127.0.0.1:8000/product/" + this.product_id)
       ])
       .then(
         axios.spread(
-          (majorRes, categoryRes, subjectRes, conditionRes, locationRes) => {
+          (
+            majorRes,
+            categoryRes,
+            subjectRes,
+            conditionRes,
+            locationRes,
+            res
+          ) => {
             (this.majors = majorRes.data),
               (this.categories = categoryRes.data),
               (this.subjects = subjectRes.data),
               (this.conditions = conditionRes.data),
               (this.locations = locationRes.data),
+              [
+                (this.product = res.data),
+                console.log(this.product, "product2"),
+                console.log(res.data, "res"),
+                (this.form.category = this.product.category),
+                (this.form.condition = this.product.condition),
+                (this.form.major = this.product.major),
+                (this.form.location = this.product.location),
+                (this.form.subject = this.product.subject),
+                (this.form.title = this.product.title),
+                (this.form.description = this.product.description),
+                (this.form.price = this.product.price),
+                (this.form.school = this.product.school),
+                (this.form.user_id = this.product.user_id),
+                console.log(this.product, "product"),
+                console.log(this.form.category, "categorys")
+              ],
               console.log(
                 "chunk of responses",
                 categoryRes,
@@ -300,38 +311,30 @@ export default {
       )
       .catch(err => console.log("error", err));
 
-
-
- this.$root.$on("prodUpdate", (id, index) => {
-      this.id = id;
-      this.index = index;
-      console.log("eerste testke", this.id, this.index);
-      axios
-        .get("http://127.0.0.1:8000/product/" +id)
-        .then(
-          res => [
-          this.product = res.data,
-          console.log(this.product, "product2"),
-          console.log(res.data, "res"),
-          this.form.category = this.product.category,
-          this.form.condition = this.product.condition,
-          this.form.major = this.product.major,
-          this.form.location = this.product.location,
-          this.form.subject = this.product.subject,
-          this.form.title = this.product.title,
-          this.form.description = this.product.description,
-          this.form.price = this.product.price,
-          this.form.school = this.product.school,
-          this.form.user_id = this.product.user_id,
-          console.log(this.product, "product"),
-          console.log(this.form.category, "categorys"),
-
-          ])
-         
-    });
-
-
-
+    // this.$root.$on("prodUpdate", (id, index) => {
+    //   this.id = id;
+    //   this.index = index;
+    //   console.log("eerste testke", this.id, this.index);
+    //   axios
+    //     .get("http://127.0.0.1:8000/product/" + id)
+    //     .then(res => [
+    //       (this.product = res.data),
+    //       console.log(this.product, "product2"),
+    //       console.log(res.data, "res"),
+    //       (this.form.category = this.product.category),
+    //       (this.form.condition = this.product.condition),
+    //       (this.form.major = this.product.major),
+    //       (this.form.location = this.product.location),
+    //       (this.form.subject = this.product.subject),
+    //       (this.form.title = this.product.title),
+    //       (this.form.description = this.product.description),
+    //       (this.form.price = this.product.price),
+    //       (this.form.school = this.product.school),
+    //       (this.form.user_id = this.product.user_id),
+    //       console.log(this.product, "product"),
+    //       console.log(this.form.category, "categorys")
+    //     ]);
+    // });
   }
 };
 </script>

@@ -29,6 +29,11 @@ export const router = new VueRouter({
       component: Details
     },
     {
+      path: '/update/:index/:product_id',
+      name: 'sdf',
+      component: sdf
+    },
+    {
       path: '/list/',
       name: 'list',
       component: List,
