@@ -13,11 +13,8 @@
         ></b-img>
       </a>
       <div class="mr-auto">
-        <b-button
-          size="lg"
-          class="btn_post_ad"
-          @click.prevent="$router.push({ name: 'post_an_ad' }).catch(err => {})"
-        >
+        <b-button size="lg" class="btn_post_ad" v-on:click="postAd()">
+          <!-- @click.prevent="$router.push({ name: 'post_an_ad' }).catch(err => {})" -->
           <b-img class="mr-2 kl" src="../assets/post_an_ad.png" width="20"></b-img>Post an ad
         </b-button>
       </div>
@@ -57,10 +54,9 @@
             class="nav-link pr-2 h5"
             type="button"
             @click.prevent="$router.push({ name: 'faq' }).catch(err => {})"
-            
           >Faq</a>
         </li>
-    
+
         <li class="nav-item">
           <a class="nav-link pr-2 h5" type="button">NL</a>
         </li>
@@ -79,9 +75,14 @@
     <nav class="navbar navbar-expand-md">
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item px-2 h5" v-on:click="sendCategoryName(category.name)" v-bind:key="category.id" v-for="category in categories">
+          <li
+            class="nav-item px-2 h5"
+            v-on:click="sendCategoryName(category.name)"
+            v-bind:key="category.id"
+            v-for="category in categories"
+          >
             <a
-              class="nav-link" 
+              class="nav-link"
               @click.prevent="$router.push({ name: 'list' }).catch(err => {})"
               type="button"
             >{{category.name}}</a>
@@ -111,38 +112,31 @@ export default {
   data() {
     return {
       categories: [],
-      token: localStorage.getItem('logAndToken') || null,
-      log_status: this.token ? "log out" : "log in",
-      username: "",
-      user_id: null,
+      token: localStorage.getItem("token") || null,
+      log_status: localStorage.getItem("token") ? "log out" : "log in",
+      username: localStorage.getItem("userName"),
+      user_id: localStorage.getItem("userId")
     };
   },
-  mounted() {
-    this.$root.$on("logAndToken", (log_status, token, username, user_id) => {
-      this.token = token;
-      this.log_status = log_status;
-      this.username = username;
-      this.user_id = user_id;
-      console.log(
-        "message received from login + token + username + user_id",
-        log_status,
-        token,
-        username,
-        user_id
-      );
-    });
-  },
   methods: {
+    postAd() {
+      if (localStorage.getItem("token") != null) {
+        this.$router.push({ name: "post_an_ad" });
+      } else {
+        this.$router.push({ name: "login" });
+      }
+    },
     sendCategoryName(category_name) {
-      console.log("nameee",category_name)
+      console.log("nameee", category_name);
       this.$root.$emit("message", category_name);
-      
     },
     logout() {
-      localStorage.removeItem("logAndToken");
+      localStorage.removeItem("token");
+      localStorage.removeItem("logStatus");
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userId");
       this.token = null;
       this.log_status = "Log in";
-      this.$root.$emit("logAndToken", this.log_status, this.token);
     }
   },
   created() {
@@ -205,7 +199,6 @@ export default {
     line-height: 27px;
   }
 }
-
 
 .navbar .navbar-brand {
   color: #ffbf00;

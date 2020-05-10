@@ -135,18 +135,17 @@
             </b-col>
           </b-row>
 
-          <!-- <b-row class="mb-4">
-            <b-col cols="3" v-for="n in 3" :key="n.id">
+          <b-row class="mb-4">
+            <b-col cols="4">
               <b-form-file
-                v-model="form.file"
-                :state="Boolean(form.file)"
+                v-model="form.image"
+                :state="Boolean(form.image)"
                 placeholder="Choose a image or drop it here..."
                 drop-placeholder="Drop image here..."
-                accept=".jpg, .png"
                 class="square_btn"
               ></b-form-file>
             </b-col>
-          </b-row>-->
+          </b-row>
         </b-container>
 
         <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Submit</b-button>
@@ -176,7 +175,6 @@ export default {
   
       form: {
         response: [],
-        //    category_name: "",
         user_id: "",
         title: "",
         description: "",
@@ -187,8 +185,8 @@ export default {
         subject: null,
         major: null,
         condition: null,
-        location: null
-        // image: null,
+        location: null,
+        image: null,
       },
       categories: [{ text: "Select category", value: null }],
       school: [
@@ -224,6 +222,7 @@ export default {
             price: this.form.price,
             school: this.form.school,
             user: this.form.user,
+            image: this.form.image,
           },
       
         )

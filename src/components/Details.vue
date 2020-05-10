@@ -16,82 +16,7 @@
       </div>
       <div class="row mt-4">
         <div class="col-lg-1 text-center">
-          <ul class="nav nav-tabs row text-center pro-details" id="myTab" role="tablist">
-            <li class="nav-item col-lg-12 mb-2">
-              <img
-                class="img-fluid active h-100"
-                src="https://pbs.twimg.com/media/ENktSOKU0AA9Y-6.jpg"
-                id="home-tab"
-                data-toggle="tab"
-                href="#home"
-                role="tab"
-                aria-controls="home"
-                aria-selected="true"
-              >
-            </li>
-            <li class="nav-item col-lg-12 mb-2">
-              <img
-                class="img-fluid h-100"
-                id="profile-tab"
-                data-toggle="tab"
-                href="#profile"
-                role="tab"
-                aria-controls="profile"
-                aria-selected="false"
-                src="https://pbs.twimg.com/media/ENktSOTUEAELNMN.jpg"
-              >
-            </li>
-            <li class="nav-item col-lg-12 mb-2 mb-4">
-              <div style="height:50px">
-                <img
-                  class="img-fluid h-100"
-                  src="../assets/stock-image.jpg"
-                  id="contact-tab"
-                  data-toggle="tab"
-                  href="#contact"
-                  role="tab"
-                  aria-controls="contact"
-                  aria-selected="false"
-                >
-              </div>
-            </li>
-            <li class="nav-item col-lg-12 mb-2 mb-4">
-              <img
-                class="img-fluid h-100"
-                src="../assets/vue-logo.png"
-                id="product-tab"
-                data-toggle="tab"
-                href="#product"
-                role="tab"
-                aria-controls="product"
-                aria-selected="false"
-              >
-            </li>
-            <li class="nav-item col-lg-12 mb-2 mb-4">
-              <img
-                class="img-fluid h-100"
-                src="https://pbs.twimg.com/media/EOYIp0DUUAA29Ft?format=jpg&name=small"
-                id="productTwo-tab"
-                data-toggle="tab"
-                href="#productTwo"
-                role="tab"
-                aria-controls="productTwo"
-                aria-selected="false"
-              >
-            </li>
-            <li class="nav-item col-lg-12 mb-2 mb-4">
-              <img
-                class="img-fluid h-100"
-                src="https://pbs.twimg.com/media/EOYIp0JVUAANGFD?format=jpg&name=small"
-                id="productThree-tab"
-                data-toggle="tab"
-                href="#productThree"
-                role="tab"
-                aria-controls="productThree"
-                aria-selected="false"
-              >
-            </li>
-          </ul>
+
         </div>
         <div class="col-lg-4 text-center border-right border-secondery">
           <div
@@ -104,53 +29,10 @@
               role="tabpanel"
               aria-labelledby="home-tab"
             >
-              <img class="img-fluid" src="../assets/post_an_ad.png">
-            </div>
-            <div
-              class="tab-pane fade col-lg-12 mb-4"
-              id="profile"
-              role="tabpanel"
-              aria-labelledby="profile-tab"
-            >
-              <img class="img-fluid" src="../assets/stock-image.jpg">
-            </div>
-            <div
-              class="tab-pane fade col-lg-12 mb-4"
-              id="contact"
-              role="tabpanel"
-              aria-labelledby="contact-tab"
-            >
-              <img class="img-fluid" src="https://pbs.twimg.com/media/ENktSONUEAAm6k1.jpg">
-            </div>
-            <div
-              class="tab-pane fade col-lg-12 mb-4"
-              id="product"
-              role="tabpanel"
-              aria-labelledby="product-tab"
-            >
-              <img class="img-fluid" src="../assets/vue-logo.png">
-            </div>
-            <div
-              class="tab-pane fade col-lg-12 mb-4"
-              id="productTwo"
-              role="tabpanel"
-              aria-labelledby="productTwo-tab"
-            >
-              <img
-                class="img-fluid"
-                src="https://pbs.twimg.com/media/EOYIp0DUUAA29Ft?format=jpg&name=small"
-              >
-            </div>
-            <div
-              class="tab-pane fade col-lg-12 mb-4"
-              id="productThree"
-              role="tabpanel"
-              aria-labelledby="productThree-tab"
-            >
-              <img
-                class="img-fluid"
-                src="https://pbs.twimg.com/media/EOYIp0JVUAANGFD?format=jpg&name=small"
-              >
+            <b-card
+  
+            ></b-card>
+              <img class="img-fluid" >
             </div>
           </div>
         </div>
@@ -202,6 +84,7 @@ export default {
     // passaing the array as a prop from the parent App.vue to the child component
     data() {
       return {
+        image: '',
         products: [],
         category_id: this.$route.params.category_id,
         idDetail: this.$route.params.details_id 

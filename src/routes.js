@@ -14,9 +14,7 @@ import ContactSeller from './components/ContactSeller.vue';
 import Payment from './components/Payment.vue';
 import Faq from './components/Faq.vue';
 
-
 Vue.use(VueRouter);
-
 export const router = new VueRouter({
   routes: [{
       path: '/',
@@ -51,7 +49,7 @@ export const router = new VueRouter({
     {
       path: '/login',
       name: 'login',
-      component: Login,
+      component:Login,
     },
     {
       path: '/bookpackage',

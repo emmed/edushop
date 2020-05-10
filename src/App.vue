@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!-- v-if="['post_an_ad'].includes($route.name)" -->
         <Menu/>
     <transition name="moveInUp">
       <router-view></router-view>

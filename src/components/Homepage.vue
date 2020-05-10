@@ -11,8 +11,8 @@
         >
           <b-card
             id="my-table"
-            v-bind:title="`${product.title}`"
-            img-src="../assets/stock-image.jpg"
+            :title="`${product.title}`"
+            :img-src="`${product.image}`"
             img-alt="Image"
             img-top
             class="mb-3 blauke-t"

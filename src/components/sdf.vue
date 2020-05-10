@@ -5,9 +5,9 @@
       <b-form @submit="onSubmit" v-if="show">
         <b-alert
           v-model="showDismissibleAlert"
-          variant="success"
+          variant="info"
           dismissible
-        >Successfully placed your ad</b-alert>
+        >Successfully updated your ad</b-alert>
 
         <b-container class>
           <b-row>
@@ -146,6 +146,7 @@
               ></b-form-file>
             </b-col>
           </b-row>-->
+
         </b-container>
 
         <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Update</b-button>
@@ -174,13 +175,12 @@ export default {
     return {
       form: {
         response: [],
-        user_id: null,
+        user: null,
         title: "",
         description: "",
         price: "",
         category: null,
         school: null,
-        user: null,
         subject: null,
         major: null,
         condition: null,
@@ -201,15 +201,46 @@ export default {
       token: null,
       log_status: null,
       username: null,
-      user_id: null,
+      user: null,
     };
   },
-  mounted() {},
+  mounted() {
+    // var useriD;
+    // var loginUsername = this.username;
+          
+    //       axios
+    //         .get(`http://127.0.0.1:8000/users/`)
+    //         .then(function(response) {
+    //           response.data.forEach(function(user) {
+    //             if (user.username == loginUsername) {
+    //               useriD = user.id;
+    //             }
+    //           });
+    //           console.log(useriD, "loginUsername");
+    //         })
+    //         .catch(err => console.log("error", err));
+
+    this.$root.$on("logAndToken", (log_status, token, username, user) => {
+      this.token = token;
+      this.log_status = log_status;
+      this.username = username;
+      this.user = user;
+      console.log(
+        "message received from login + token + username + user_id",
+        log_status,
+        token,
+        username,
+        user
+      );
+    });
+
+
+  },
   methods: {
     onSubmit(evt) {
       axios
-        .put("http://127.0.0.1:8000/product/", {
-          id: this.product_id,
+        .put("http://127.0.0.1:8000/product/" + this.product_id + "/", {
+          // id: this.product_id,
           category: this.form.category,
           condition: this.form.condition,
           major: this.form.major,
@@ -219,12 +250,15 @@ export default {
           description: this.form.description,
           price: this.form.price,
           school: this.form.school,
-          user: this.form.user_id
+          user: this.form.user
         })
         .then(response => {
           // this.$router.push('/post_and_ad');
           console.log("response saved", response);
+          console.log("id", this.form.user)
         })
+        console.log("id buiten de then", this.form.user)
+
         .catch(response => {
           console.log("catch response", response);
         });
@@ -241,21 +275,7 @@ export default {
     }
   },
   created() {
-    
-    this.$root.$on("logAndToken", (log_status, token, username, user_id) => {
-      this.token = token;
-      this.log_status = log_status;
-      this.username = username;
-      this.user_id = user_id;
-      console.log(
-        "message received from login + token + username + user_id",
-        log_status,
-        token,
-        username,
-        user_id
-      );
-    });
-
+ 
     // dynamically rendering selects
     axios
       .all([
@@ -283,7 +303,6 @@ export default {
               (this.locations = locationRes.data),
               [
                 (this.product = res.data),
-                console.log(this.product, "product2"),
                 console.log(res.data, "res"),
                 (this.form.category = this.product.category),
                 (this.form.condition = this.product.condition),
@@ -294,7 +313,7 @@ export default {
                 (this.form.description = this.product.description),
                 (this.form.price = this.product.price),
                 (this.form.school = this.product.school),
-                (this.form.user_id = this.product.user_id),
+                (this.form.user = this.product.user),
                 console.log(this.product, "product"),
                 console.log(this.form.category, "categorys")
               ],
