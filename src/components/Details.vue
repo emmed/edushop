@@ -3,7 +3,7 @@
     <div class="jumbotron">
       <div class="row">
         <b-button
-          class="btn_buy pull-left "
+          class="btn_buy pull-left"
           variant="primary"
           size="lg"
           @click.prevent="$router.go(-1)"
@@ -15,32 +15,32 @@
         >product details</div>
       </div>
       <div class="row mt-4">
-        <div class="col-lg-1 text-center">
-
-        </div>
+        <div class="col-lg-1 text-center"></div>
         <div class="col-lg-4 text-center border-right border-secondery">
-          <div
-            class="tab-content row h-100 d-flex justify-content-center align-items-center"
+          <b-card
+            class="tab-content row h-100 d-flex justify-content-center align-items-center fff   mr-3"
             id="myTabContent"
+            :img-src="`${products[idDetail].image}`"
           >
-            <div
+            <!-- <div
               class="tab-pane fade show active col-lg-12 mb-4"
               id="home"
               role="tabpanel"
               aria-labelledby="home-tab"
             >
-            <b-card
-  
-            ></b-card>
-              <img class="img-fluid" >
-            </div>
-          </div>
+              <b-card
+                id="my-table"
+                
+                img-alt="Image"
+                img-top
+                class="mb-3 blauke-t"
+              ></b-card>
+            </div> -->
+          </b-card>
         </div>
         <div class="col-lg-7">
           <h5 class="blauke-t text-left ml-3">{{products[idDetail].title}}</h5>
-          <p
-            class="my-4 col-lg-8 text-muted text-left"
-          >{{products[idDetail].description}}</p>
+          <p class="my-4 col-lg-8 text-muted text-left">{{products[idDetail].description}}</p>
           <ul class="spec text-left ml-3">
             <li>Category: {{products[idDetail].category}}</li>
             <li>Condition: {{products[idDetail].condition}}</li>
@@ -48,7 +48,7 @@
           </ul>
           <p class="h4 prijs blauke-t text-left">€{{products[idDetail].price}}</p>
           <b-button
-            class="btn_buy prijs pull-left "
+            class="btn_buy prijs pull-left"
             variant="primary"
             size="lg"
             @click.prevent="$router.push({ name: 'payment' })"
@@ -74,45 +74,47 @@
 </template>
 
 <script>
-
 import axios from "axios";
 
-var url_product = ''
+var url_product = "";
 
 export default {
   name: "Details",
-    // passaing the array as a prop from the parent App.vue to the child component
-    data() {
-      return {
-        image: '',
-        products: [],
-        category_id: this.$route.params.category_id,
-        idDetail: this.$route.params.details_id 
-        /* Made an instance in the data return function in order to 
+  // passaing the array as a prop from the parent App.vue to the child component
+  data() {
+    return {
+      image: "",
+      products: [],
+      category_id: this.$route.params.category_id,
+      idDetail: this.$route.params.details_id
+      /* Made an instance in the data return function in order to 
         call the data from the API, and loop in it. AND avoid mutating the initial property 
         Afterwards being able to do text interpolation two curl braces  {{ }} and for nested iterated values [] .
         */
-      }
-    }, 
-    mounted(){
-      if(this.category_id == "homepage"){
-        url_product = 'http://127.0.0.1:8000/product/'
-        axios
-      .get(url_product )
-      .then(res => (this.products = res.data["results"]))
-      .catch(err => console.log("error", err));
-      }else{
-      url_product = 'http://127.0.0.1:8000/product/?search='
-    axios
-      .get(url_product + this.category_id)
-      .then(res => (this.products = res.data["results"]))
-      .catch(err => console.log("error", err));
-  }
+    };
   },
+  mounted() {
+    if (this.category_id == "homepage") {
+      url_product = "http://127.0.0.1:8000/product/";
+      axios
+        .get(url_product)
+        .then(res => (this.products = res.data["results"]))
+        .catch(err => console.log("error", err));
+    } else {
+      url_product = "http://127.0.0.1:8000/product/?search=";
+      axios
+        .get(url_product + this.category_id)
+        .then(res => (this.products = res.data["results"]))
+        .catch(err => console.log("error", err));
+    }
+  }
 };
 </script>
 
 <style>
+.fff{
+  border: none;
+}
 .jumbotron {
   background-color: white;
 }
@@ -158,8 +160,9 @@ p {
 .btn_buy {
   font-weight: 600;
 }
-.ddd{
-
-Border-radius:  5px
+.ddd {
+  border-radius: 5px;
 }
 </style>
+
+

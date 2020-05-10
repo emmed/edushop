@@ -27,18 +27,13 @@
               </li>
               <li>
                 <a
-                  @click.prevent="$router.push({ name: 'bookpackage' }).catch(err => {})"
+                  @click.prevent="$router.push({ name: 'bookpackage' }).catch(err => {})" type="button"
                 >Bookpackage</a>
               </li>
               <li>
-                <a @click.prevent="$router.push({ name: 'faq' }).catch(err => {})">FAQ</a>
+                <a @click.prevent="$router.push({ name: 'faq' }).catch(err => {})" type="button">FAQ</a>
               </li>
-              <li>
-                <a>Get Started</a>
-              </li>
-              <li>
-                <a>Videos</a>
-              </li>
+           
             </ul>
           </div>
           <div class="col-xs-12 col-sm-4 col-md-4">

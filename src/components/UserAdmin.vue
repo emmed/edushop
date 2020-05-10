@@ -19,7 +19,7 @@
 
             
             </b-row>
-       <h4 class="pull-left blauke-t my-5">Last Placed 3 ads</h4>
+       <h4 class="pull-left blauke-t my-5">Last Placed ads</h4>
         <table id="cart" class="table table-hover table-condensed" style="background-color: gainsboro;">
             <thead class="thead-dark">
                 <tr>
