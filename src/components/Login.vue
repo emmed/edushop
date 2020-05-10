@@ -162,10 +162,7 @@ export default {
         })
         .catch(err => {
           this.showAlert = true;
-          // localStorage.removeItem("token");
-          //  localStorage.removeItem("logStatus");
-          // localStorage.removeItem("userName");
-          // localStorage.removeItem("userId");
+
           console.log("error loginn", err);
         });
     },

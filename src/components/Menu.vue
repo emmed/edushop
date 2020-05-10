@@ -19,6 +19,9 @@
         </b-button>
       </div>
       <ul class="navbar-nav flex-row mr-lg-0">
+               <li class="nav-item">
+                         <a class="nav-link" href="winkelwagen.php"><span class="badge badge-warning">{{this.wgCounter}}</span> <i class="fa fa-shopping-cart fa-lg"></i>    
+</a></li>    
         <li class="nav-item">
           <a class="nav-link h5 mr-0" v-if="this.token!=null">
             <small>{{this.username}}</small>,
@@ -115,7 +118,8 @@ export default {
       token: localStorage.getItem("token") || null,
       log_status: localStorage.getItem("token") ? "log out" : "log in",
       username: localStorage.getItem("userName"),
-      user_id: localStorage.getItem("userId")
+      user_id: localStorage.getItem("userId"),
+      wgCounter: 0,
     };
   },
   methods: {
@@ -149,6 +153,7 @@ export default {
 </script>
 
 <style >
+
 .btn_post_ad {
   background-color: white;
   color: #004fff;

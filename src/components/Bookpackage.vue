@@ -69,7 +69,7 @@
               <h3 class="panel-title mb-4 blauke">Dashboard</h3>
             </div>
             <b-card
-              img-src="../assets/stock-image.jpg"
+              
               img-alt="Card image"
               img-left
               class="mb-3"
@@ -77,6 +77,7 @@
               v-for="product in products"
               @click.prevent="goToDetails({index})"
               type="button"
+              :img-src="`${product.image}`"
             >
               <h5 class="blauke-t pull-left mr-3">{{product.title}}</h5>
               <b-card-text class="ty mt-5">

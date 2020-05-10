@@ -22,20 +22,7 @@
             id="myTabContent"
             :img-src="`${products[idDetail].image}`"
           >
-            <!-- <div
-              class="tab-pane fade show active col-lg-12 mb-4"
-              id="home"
-              role="tabpanel"
-              aria-labelledby="home-tab"
-            >
-              <b-card
-                id="my-table"
-                
-                img-alt="Image"
-                img-top
-                class="mb-3 blauke-t"
-              ></b-card>
-            </div> -->
+    
           </b-card>
         </div>
         <div class="col-lg-7">
@@ -51,8 +38,8 @@
             class="btn_buy prijs pull-left"
             variant="primary"
             size="lg"
-            @click.prevent="$router.push({ name: 'payment' })"
-          >Buy</b-button>
+            v-on:click="addToCart()"
+          >Add to cart</b-button>
         </div>
         <h6
           class="contact-link col-md-4 geel-t text-left h5"
@@ -86,7 +73,8 @@ export default {
       image: "",
       products: [],
       category_id: this.$route.params.category_id,
-      idDetail: this.$route.params.details_id
+      idDetail: this.$route.params.details_id,
+      wgArray:[],
       /* Made an instance in the data return function in order to 
         call the data from the API, and loop in it. AND avoid mutating the initial property 
         Afterwards being able to do text interpolation two curl braces  {{ }} and for nested iterated values [] .
@@ -107,6 +95,16 @@ export default {
         .then(res => (this.products = res.data["results"]))
         .catch(err => console.log("error", err));
     }
+  },
+  methods: {
+    addToCart(){
+      this.wgArray.push(this.products[this.idDetail]); 
+      console.log("wgArrayn a", this.wgArray)
+      localStorage.setItem("wgItem", JSON.stringify(this.wgArray));
+    },
+removeRow(index){
+   this.wgArray.splice(index, 1)
+}
   }
 };
 </script>

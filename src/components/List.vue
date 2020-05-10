@@ -19,10 +19,11 @@
 
         <b-card no-body class="overflow-hidden dff my-5" style="max-width: 640px;"
          v-bind:key="product.id" v-for="(product, index) in filterProduct"  
-         @click.prevent="goToDetails({index})" type="button">
+         @click.prevent="goToDetails({index})" type="button"
+         >
     <b-row no-gutters>
       <b-col md="6">
-        <b-card  img-src="../assets/stock-image.jpg" alt="Image" class="rounded-0"></b-card>
+        <b-card  :img-src="`${product.image}`" alt="Image" class="rounded-0"></b-card>
       </b-col>
       <b-col md="6">
         <b-card-body >
