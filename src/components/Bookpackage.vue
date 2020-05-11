@@ -58,7 +58,8 @@
               <span>Selected: {{ form.subject }}</span>
             </b-col>
             <div class="group">
-              <b-button v-on:click="onSubmit()" class="btn_find" size="lg" variant="warning">Find</b-button>
+              <b-button v-on:click="onSubmit()" class="btn_find m-2" size="lg" variant="warning">Find</b-button>
+              <b-button v-on:click="onReset()" class="btn_find" size="lg" variant="info">Reset</b-button>
             </div>
             <div class="hr"></div>
           </div>
@@ -150,6 +151,19 @@ export default {
       .then(res => (this.products = res.data["results"]), console.log(this.products,'products'))
       .catch(err => console.log("error", err));
     },
+    onReset() {
+      
+        // Reset our form values
+        this.form.category = null
+        this.form.major = null
+        this.form.subject = null
+        this.form.school = null
+        // Trick to reset/clear native browser form validation state
+        this.show = false
+        this.$nextTick(() => {
+          this.show = true
+        })
+      },
     goToDetails(index) {
       this.$router.push({
         path: `details/${index["index"]}/${this.category}`
