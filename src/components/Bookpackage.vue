@@ -68,11 +68,10 @@
             <div class="panel-heading">
               <h3 class="panel-title mb-4 blauke">Dashboard</h3>
             </div>
+            <div class="row ">
             <b-card
-              
-              img-alt="Card image"
-              img-left
-              class="mb-3"
+             style="max-width: 340px;"
+              class="m-3 "
               v-bind:key="product.id"
               v-for="product in products"
               @click.prevent="goToDetails({index})"
@@ -82,10 +81,11 @@
               <h5 class="blauke-t pull-left mr-3">{{product.title}}</h5>
               <b-card-text class="ty mt-5">
                <p class="text-muted"> {{product.description}}</p>
-                <br>
+                
                <p class="mt-5 font-weight-bold">{{product.major}}</p>
                 </b-card-text>
             </b-card>
+            </div>
           </div>
         </div>
       </div>
@@ -230,5 +230,9 @@ export default {
 .panel-heading span {
   margin-top: -20px;
   font-size: 15px;
+}
+@media only screen and (max-width: 600px) {
+   .jumbotron{
+background: red;  }
 }
 </style>
