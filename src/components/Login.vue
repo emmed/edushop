@@ -115,7 +115,7 @@ export default {
   data() {
     return {
       username: "",
-      user_id: null,
+      user: null,
       password: "",
       repeat: "",
       submitted: false,
@@ -142,7 +142,7 @@ export default {
             this.log_status,
             this.token,
             this.username,
-            this.user_id
+            this.user
           );
           console.log(
             "Login data:",
@@ -150,12 +150,12 @@ export default {
             this.username,
             this.password,
             this.token,
-            this.user_id
+            this.user
           );
           localStorage.setItem("token", this.token);
           localStorage.setItem("logStatus", this.log_status);
           localStorage.setItem("userName", this.username);
-          localStorage.setItem("userId", this.user_id);
+          localStorage.setItem("userId", this.user);
           
           this.$router.push({ name: "homepage" });
          history.go(0)
@@ -186,7 +186,6 @@ export default {
             this.username,
             this.password,
             this.token,
-            this.user_id
           );
         })
         .catch(err => {

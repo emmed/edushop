@@ -20,7 +20,7 @@
       </div>
       <ul class="navbar-nav flex-row mr-lg-0">
                <li class="nav-item">
-                         <a class="nav-link" href="winkelwagen.php"><span class="badge badge-warning">{{this.wgCounter}}</span> <i class="fa fa-shopping-cart fa-lg"></i>    
+                         <a @click.prevent="$router.push({ name: 'shoppingcart' }).catch(err => {})" class="nav-link"><span class="badge badge-warning">{{this.wgCounter}}</span> <i class="fa fa-shopping-cart fa-lg"></i>    
 </a></li>    
         <li class="nav-item">
           <a class="nav-link h5 mr-0" v-if="this.token!=null">
@@ -121,6 +121,11 @@ export default {
       user_id: localStorage.getItem("userId"),
       wgCounter: 0,
     };
+  },
+  mounted(){
+    if(localStorage.getItem("wgItem")){
+      this.wgCounter ++;
+    }
   },
   methods: {
     postAd() {

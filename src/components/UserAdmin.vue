@@ -78,7 +78,7 @@ data() {
       return {
           productOrders: [],
           products: [],
-        show: true
+          show: true
       }
   },
   methods:{

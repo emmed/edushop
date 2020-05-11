@@ -170,7 +170,7 @@ const url_major = "http://127.0.0.1:8000/major/";
 const url_condition = "http://127.0.0.1:8000/condition/";
 const url_location = "http://127.0.0.1:8000/location/";
 export default {
-  name: "sdf",
+  name: "update",
   data() {
     return {
       form: {

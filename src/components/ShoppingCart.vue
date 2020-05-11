@@ -56,7 +56,7 @@
                       </h4>
                     </div>
                     <div class="col-xs-3">
-                      <b-button type="button" class="btn btn-warning">Checkout</b-button>
+                      <b-button type="button" class=" btn_package btn-warning">Checkout</b-button>
                     </div>
                   </div>
                 </div>
@@ -71,7 +71,7 @@
 
 <script>
 export default {
-  name: "Payment",
+  name: "shoppingcart",
   data() {
     return {};
   }
