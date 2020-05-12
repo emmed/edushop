@@ -74,7 +74,9 @@ export default {
       products: [],
       category_id: this.$route.params.category_id,
       idDetail: this.$route.params.details_id,
-      wgArray:[],
+       items: [],
+      items2: []
+    
       /* Made an instance in the data return function in order to 
         call the data from the API, and loop in it. AND avoid mutating the initial property 
         Afterwards being able to do text interpolation two curl braces  {{ }} and for nested iterated values [] .
@@ -98,9 +100,26 @@ export default {
   },
   methods: {
     addToCart(){
-      this.wgArray.push(this.products[this.idDetail]); 
-      console.log("wgArrayn a", this.wgArray)
-      localStorage.setItem("wgItem", JSON.stringify(this.wgArray));
+      if(localStorage.getItem("wgItem") != null){
+        this.items = []
+
+        this.items.push(localStorage.getItem("wgItem"))
+
+        this.items2 = this.items[0].split(',')
+
+        this.items2.push(this.products[this.idDetail].id.toString());
+        localStorage.setItem("lengthCart", this.items2.length);
+
+        console.log(this.items2, "itmes")
+        localStorage.setItem("wgItem",this.items2);
+
+        }
+        else {
+     
+      this.items.push(this.products[this.idDetail].id.toString()); 
+      localStorage.setItem("lengthCart", 1);
+       localStorage.setItem("wgItem", this.items);
+        }
     },
 removeRow(index){
    this.wgArray.splice(index, 1)

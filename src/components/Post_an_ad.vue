@@ -135,7 +135,7 @@
             </b-col>
           </b-row>
 
-          <b-row class="mb-4">
+          <!-- <b-row class="mb-4">
             <b-col cols="4">
               <b-form-file
                 v-model="form.image"
@@ -145,7 +145,7 @@
                 class="square_btn"
               ></b-form-file>
             </b-col>
-          </b-row>
+          </b-row> -->
         </b-container>
 
         <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Submit</b-button>
@@ -186,7 +186,7 @@ export default {
         major: null,
         condition: null,
         location: null,
-        image: null,
+        //image: null,
       },
       categories: [{ text: "Select category", value: null }],
       school: [
@@ -198,10 +198,11 @@ export default {
       locations: [{ text: "Select location", value: null }],
       show: true,
       showDismissibleAlert: false,
-      token: null,
-      log_status: null,
-      username: null,
-      user_id: null
+      token: localStorage.getItem("token"),
+      log_status: localStorage.getItem("logStatus"),
+      username: localStorage.getItem("userName"),
+      user_id: localStorage.getItem("userid")
+
     };
   },
   methods: {
@@ -222,7 +223,7 @@ export default {
             price: this.form.price,
             school: this.form.school,
             user: this.form.user,
-            image: this.form.image,
+           // image: this.form.image,
           },
       
         )
@@ -261,19 +262,19 @@ export default {
     }
   },
   created() {
-    this.$root.$on("logAndToken", (log_status, token, username, user_id) => {
-      this.token = token;
-      this.log_status = log_status;
-      this.username = username;
-      this.user_id = user_id;
-      console.log(
-        "message received from login + token + username + user_id",
-        log_status,
-        token,
-        username,
-        user_id
-      );
-    });
+    // this.$root.$on("logAndToken", (log_status, token, username, user_id) => {
+    //   this.token = token;
+    //   this.log_status = log_status;
+    //   this.username = username;
+    //   this.user_id = user_id;
+    //   console.log(
+    //     "message received from login + token + username + user_id",
+    //     log_status,
+    //     token,
+    //     username,
+    //     user_id
+    //   );
+    // });
 
     axios
       .all([

@@ -19,7 +19,7 @@
             @click.prevent="goToDetails({index})"
             type="button"
           >
-            <b-card-text class="text-muted">{{product.location}}</b-card-text>
+            <b-card-text class="text-muted">{{product.location}} </b-card-text>
           </b-card>
         </div>
       </div>

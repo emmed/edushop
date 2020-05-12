@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-xs-6">
                       <div class="col-xs-2">
-                        <button type="button" class="btn btn-link btn-xs">
+                        <button type="button" class="btn btn-link">
                           <i class="fa fa-trash"></i>
                         </button>
                       </div>
@@ -74,6 +74,18 @@ export default {
   name: "shoppingcart",
   data() {
     return {};
+  },
+  methods:{
+      deleteProduct(){
+        var removeCartItemButton = document.getElementsByClassName('btn-link')
+        console.log(removeCartItemButton)
+        for(let i = 0; i <  removeCartItemButton.length; i++){
+            var button = removeCartItemButton[i]
+            button.addEventListener('click', function(){
+                console.log('clicked')
+            })
+        }
+      },
   }
 };
 </script>

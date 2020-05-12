@@ -122,12 +122,18 @@ export default {
       token: localStorage.getItem("logAndToken"),
       log_status: "",
       showAlert: false,
-      users: []
+      id: null,
     };
   },
   methods: {
     login() {
-   
+      try {
+        axios.get('http://127.0.0.1:8000/users/?search=' + this.username)
+          .then(res => {
+            console.log(res.data,"ressss")
+          localStorage.setItem("userid", res.data["0"].id);
+          this.id = res.data["0"].id
+          }),
       axios
         .post("http://127.0.0.1:8000/auth/", {
           username: this.username,
@@ -136,35 +142,38 @@ export default {
         .then(res => {
           this.token = res.data.token;
           this.log_status = "Log out";
-          console.log("res", res.data)
+
+
           this.$root.$emit(
             "logAndToken",
             this.log_status,
             this.token,
             this.username,
-            this.user
+            this.id
           );
+
           console.log(
-            "Login data:",
+            "emitted log data:",
             res,
             this.username,
             this.password,
             this.token,
-            this.user
           );
           localStorage.setItem("token", this.token);
           localStorage.setItem("logStatus", this.log_status);
-          localStorage.setItem("userName", this.username);
-          localStorage.setItem("userId", this.user);
-          
-          this.$router.push({ name: "homepage" });
-         history.go(0)
-        })
+          localStorage.setItem("userName", this.username);          
+         this.$router.push({ name: "homepage" });
+        location.reload();
+       })
         .catch(err => {
           this.showAlert = true;
 
           console.log("error loginn", err);
         });
+      } catch (error) {
+        console.log("td", error)
+      }
+      
     },
     clearLogin() {
       (this.username = ""), (this.password = "");

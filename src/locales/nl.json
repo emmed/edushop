@@ -1,3 +1,6 @@
 {
-    "message": "hallo i18n !!"
+    "message": "goeiedag i18n !!",
+    "nav": {
+      "books": "Boeken"
+    }
 }

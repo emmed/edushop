@@ -52,6 +52,7 @@
             v-if="this.token==null"
           >{{this.log_status}}</a>
         </li>
+
         <li class="nav-item">
           <a
             class="nav-link pr-2 h5"
@@ -114,18 +115,17 @@ export default {
   props: [],
   data() {
     return {
-      categories: [],
-      token: localStorage.getItem("token") || null,
+      categories: [], 
+      token: localStorage.getItem("token") ? localStorage.getItem("token"): null,
       log_status: localStorage.getItem("token") ? "log out" : "log in",
       username: localStorage.getItem("userName"),
       user_id: localStorage.getItem("userId"),
-      wgCounter: 0,
+      wgCounter: localStorage.getItem("lengthCart"),
+      items: localStorage.getItem("wgItem")
     };
   },
   mounted(){
-    if(localStorage.getItem("wgItem")){
-      this.wgCounter ++;
-    }
+   
   },
   methods: {
     postAd() {
@@ -140,10 +140,11 @@ export default {
       this.$root.$emit("message", category_name);
     },
     logout() {
+      console.log("dddddddddddddddddddddddddddd")
       localStorage.removeItem("token");
       localStorage.removeItem("logStatus");
       localStorage.removeItem("userName");
-      localStorage.removeItem("userId");
+      localStorage.removeItem("userid");
       this.token = null;
       this.log_status = "Log in";
     }
