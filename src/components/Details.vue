@@ -104,10 +104,13 @@ export default {
         this.items = []
 
         this.items.push(localStorage.getItem("wgItem"))
+        console.log(localStorage.getItem("wgItem"),"wgitem")
         // ["36,36,36"] we willen ["36","36","36"]
+        console.log(this.items,"items")
         this.items2 = this.items[0].split(',')
-        this.items2.push(this.products[this.idDetail].toString());
-        // ["36","36","36","38"]   
+        this.items2.push(this.products[this.idDetail].id.toString());
+        // ["36","36","36","38"] 
+        console.log(this.items2,"items2")  
         localStorage.setItem("lengthCart", this.items2.length);
 
         console.log(this.items2, "itmes")
@@ -116,7 +119,8 @@ export default {
         }
         else {
      
-      this.items.push(this.products[this.idDetail].toString()); 
+      this.items.push(this.products[this.idDetail].id.toString());
+      console.log(this.products[this.idDetail].id,"id") 
       localStorage.setItem("lengthCart", 1);
        localStorage.setItem("wgItem", this.items);
         }
