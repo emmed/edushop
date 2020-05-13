@@ -16,6 +16,28 @@ import Faq from './components/Faq.vue';
 import ShoppingCart from './components/ShoppingCart.vue';
 
 Vue.use(VueRouter);
+
+
+
+// function guardMyroute(to, from, next)
+// {
+//  var isAuthenticated= false;
+// //this is just an example. You will have to find a better or 
+// // centralised way to handle you localstorage data handling 
+// if(localStorage.getItem('token'))
+//   isAuthenticated = true;
+//  else
+//   isAuthenticated= false;
+//  if(isAuthenticated) 
+//  {
+//   next(); // allow to enter route
+//  } 
+//  else
+//  {
+//   next('/login'); // go to '/login';
+//  }
+// }
+
 export const router = new VueRouter({
   routes: [{
       path: '/',
@@ -33,6 +55,11 @@ export const router = new VueRouter({
       component: Update
     },
     {
+      path: '/shoppingcart',
+      name: 'shoppingcart',
+      component: ShoppingCart,
+    },
+    {
       path: '/list/',
       name: 'list',
       component: List,
@@ -41,12 +68,26 @@ export const router = new VueRouter({
       path: '/post_an_ad',
       name: 'post_an_ad',
       component: Post_an_ad,
+
+     // beforeEnter : guardMyroute,
+
+
+      // beforeEnter: (to, from, next) => {
+      //   if(window.token == null){
+      //     next('/login')
+      //   }else {
+      //     next()
+      //   }
+      // }
     },
   
     {
       path: '/login',
       name: 'login',
       component:Login,
+      //beforeEnter : guardMyroute,
+
+   
     },
     {
       path: '/bookpackage',
@@ -57,6 +98,15 @@ export const router = new VueRouter({
       path: '/useradmin',
       name: 'useradmin',
       component: UserAdmin,
+    //  beforeEnter : guardMyroute,
+
+      // beforeEnter: (to, from, next) => {
+      //   if(window.token == null){
+      //     next('/login')
+      //   }else {
+      //     next('/useradmin')
+      //   }
+      // }
     },
     {
       path: '/useradmin_placed_ads',
@@ -78,11 +128,6 @@ export const router = new VueRouter({
       name: 'faq',
       component: Faq,
     },
-    {
-      path: '/shoppingcart',
-      name: 'shoppingcart',
-      component: ShoppingCart,
-    }
 
 
   ]

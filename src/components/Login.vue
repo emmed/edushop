@@ -122,58 +122,57 @@ export default {
       token: localStorage.getItem("logAndToken"),
       log_status: "",
       showAlert: false,
-      id: null,
+      id: null
     };
   },
   methods: {
     login() {
       try {
-        axios.get('http://127.0.0.1:8000/users/?search=' + this.username)
+        axios
+          .get("http://127.0.0.1:8000/users/?search=" + this.username)
           .then(res => {
-            console.log(res.data,"ressss")
-          localStorage.setItem("userid", res.data["0"].id);
-          this.id = res.data["0"].id
+            console.log(res.data, "ressss");
+            localStorage.setItem("userid", res.data["0"].id);
+            this.id = res.data["0"].id;
           }),
-      axios
-        .post("http://127.0.0.1:8000/auth/", {
-          username: this.username,
-          password: this.password
-        })
-        .then(res => {
-          this.token = res.data.token;
-          this.log_status = "Log out";
+          axios
+            .post("http://127.0.0.1:8000/auth/", {
+              username: this.username,
+              password: this.password
+            })
+            .then(res => {
+              this.token = res.data.token;
+              this.log_status = "Log out";
 
+              this.$root.$emit(
+                "logAndToken",
+                this.log_status,
+                this.token,
+                this.username,
+                this.id
+              );
 
-          this.$root.$emit(
-            "logAndToken",
-            this.log_status,
-            this.token,
-            this.username,
-            this.id
-          );
+              console.log(
+                "emitted log data:",
+                res,
+                this.username,
+                this.password,
+                this.token
+              );
+              localStorage.setItem("token", this.token);
+              localStorage.setItem("logStatus", this.log_status);
+              localStorage.setItem("userName", this.username);
+              this.$router.push({ name: "homepage" });
+              location.reload();
+            })
+            .catch(err => {
+              this.showAlert = true;
 
-          console.log(
-            "emitted log data:",
-            res,
-            this.username,
-            this.password,
-            this.token,
-          );
-          localStorage.setItem("token", this.token);
-          localStorage.setItem("logStatus", this.log_status);
-          localStorage.setItem("userName", this.username);          
-         this.$router.push({ name: "homepage" });
-        location.reload();
-       })
-        .catch(err => {
-          this.showAlert = true;
-
-          console.log("error loginn", err);
-        });
+              console.log("error loginn", err);
+            });
       } catch (error) {
-        console.log("td", error)
+        console.log("td", error);
       }
-      
     },
     clearLogin() {
       (this.username = ""), (this.password = "");
@@ -194,7 +193,7 @@ export default {
             res,
             this.username,
             this.password,
-            this.token,
+            this.token
           );
         })
         .catch(err => {

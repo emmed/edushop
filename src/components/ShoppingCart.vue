@@ -70,12 +70,21 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "shoppingcart",
   data() {
-    return {};
+    return {
+      items: [],
+      items2: [],
+      wgItem: localStorage.getItem("wgItem") || null,
+    };
   },
   methods:{
+    getProduct(){
+
+    },
       deleteProduct(){
         var removeCartItemButton = document.getElementsByClassName('btn-link')
         console.log(removeCartItemButton)
@@ -86,6 +95,22 @@ export default {
             })
         }
       },
+  },
+  created(){
+      //   if(localStorage.getItem("wgItem") != null){
+
+      //   this.items = []
+      //   this.items.push(localStorage.getItem("wgItem"))
+      //   this.items2 = this.items[0].split(',')
+      //   this.items2.push(this.products[this.idDetail].toString());
+
+        
+      //  }
+      this.wgItem = localStorage.getItem("wgItem")
+       axios.get('http://127.0.0.1:8000/product/' + this.wgItem)
+        .then(res => (this.products = res.data["results"]),
+                console.log("producten restults", this.products))
+        .catch(err => console.log("error", err));
   }
 };
 </script>

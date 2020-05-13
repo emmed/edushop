@@ -1,88 +1,80 @@
 <template>
   <div>
-    <div class="container">
-      <article class>
-  
-          <div class="row justify-content-center">
-            <div class="col-xs-8">
-              <div class="panel panel-info">
-                <div class="panel-heading">
-                  <div class="panel-title">
-                    <div class="row">
-                      <div class="col-xs-6">
-                        <h5 class="my-3">
-                          <i class="fa fa-shopping-cart fa-lg blauke-t"></i> Shopping Cart
-                        </h5>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-xs-2">
-                      <img class="img-responsive" src="http://placehold.it/100x70">
-                    </div>
-                    <div class="col-xs-4">
-                      <h4 class="product-name px-4">
-                        <strong>Product name</strong>
-                      </h4>
-                      <h4 class>
-                        <small>Product description</small>
-                      </h4>
-                    </div>
-                    <div class="col-xs-6">
-                      <div class="col-xs-2">
-                        <button type="button" class="btn btn-link btn-xs">
-                          <i class="fa fa-trash"></i>
-                        </button>
-                      </div>
+    <div class="jumbotron">
+      <!--UPLOAD-->
+ 
+    <input type="file" @change="onFileSelected">
 
-                      <div class="col-xs-2">
-                        <h6>
-                          <strong>25.00</strong>
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                  <hr>
-               
-                </div>
-                <div class="panel-footer">
-                  <div class="row text-center">
-                    <div class="col-xs-9">
-                      <h4 class="text-right mr-4">
-                        Total
-                        <strong>$50.00</strong>
-                      </h4>
-                    </div>
-                    <div class="col-xs-3">
-                      <b-button type="button" class="btn btn-warning">Checkout</b-button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        
-          </div>
-        </div>
-      </article>
+ 
+<b-button @click="onUpload">click</b-button>
     </div>
   </div>
 </template>
 
 <script>
+
+import axios from "axios";
+
+
+
 export default {
   name: "Payment",
   data() {
-    return {};
+    return {
+    image: null
+    }; 
+  }, 
+  methods: {
+    onFileSelected(event){
+      this.image = event.target.files[0]
+      console.log(event)
+    },
+    onUpload(){
+      const fd = new FormData()
+      fd.append('image', this.image, this.image.name)
+      console.log(fd,"eeeeeeeeeeeeeee")
+      axios.post('http://127.0.0.1:8000/image/', fd)
+      .then(res => {
+        console.log(res, "res")
+      })
+    }
   }
-};
+  
+  }
+
+
+
+
 </script>
 
 <style>
-article {
-  background: white;
-  border-radius: 12px;
-  padding: 50px;
-  margin-top:10%;
-}
+
+ .dropbox {
+    outline: 2px dashed grey; /* the dash box */
+    outline-offset: -10px;
+    background: lightcyan;
+    color: dimgray;
+    padding: 10px 10px;
+    min-height: 200px; /* minimum height */
+    position: relative;
+    cursor: pointer;
+  }
+
+  .input-file {
+    opacity: 0; /* invisible but it's there! */
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    cursor: pointer;
+  }
+
+  .dropbox:hover {
+    background: lightblue; /* when mouse over to the drop zone, change color */
+  }
+
+  .dropbox p {
+    font-size: 1.2em;
+    text-align: center;
+    padding: 50px 0;
+  }
 </style>

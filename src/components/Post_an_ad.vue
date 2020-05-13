@@ -135,23 +135,28 @@
             </b-col>
           </b-row>
 
-          <!-- <b-row class="mb-4">
+          <b-row class="mb-4">
             <b-col cols="4">
-              <b-form-file
+              <input class="my-4" type="file" @change="onFileSelected">
+              <hr>
+              <!-- <b-form-file
                 v-model="form.image"
                 :state="Boolean(form.image)"
                 placeholder="Choose a image or drop it here..."
                 drop-placeholder="Drop image here..."
                 class="square_btn"
-              ></b-form-file>
+              ></b-form-file> -->
+
             </b-col>
-          </b-row> -->
+          </b-row>
         </b-container>
 
         <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Submit</b-button>
         <b-button @click="onReset()" type="reset" variant="danger">Reset</b-button>
       </b-form>
+
       <!-- </div> -->
+
       <b-card class="mt-3" header="Form Data Result">
         <pre class="m-0">{{ form }}</pre>
       </b-card>
@@ -172,26 +177,20 @@ const url_location = "http://127.0.0.1:8000/location/";
 export default {
   data() {
     return {
-  
       form: {
-        response: [],
-        user_id: "",
         title: "",
         description: "",
         price: "",
         category: null,
         school: null,
-        user: null,
         subject: null,
         major: null,
         condition: null,
         location: null,
-        //image: null,
+        image: null
       },
       categories: [{ text: "Select category", value: null }],
-      school: [
-  
-      ],
+      school: [],
       majors: [{ text: "Select major", value: null }],
       subjects: [{ text: "Select subject", value: null }],
       conditions: [{ text: "Select condition", value: null }],
@@ -201,31 +200,33 @@ export default {
       token: localStorage.getItem("token"),
       log_status: localStorage.getItem("logStatus"),
       username: localStorage.getItem("userName"),
-      user_id: localStorage.getItem("userid")
-
+      userId: localStorage.getItem("userid")
     };
   },
   methods: {
-
+    onFileSelected(event) {
+      this.form.image = event.target.files[0];
+      console.log(event);
+    },
     onSubmit(evt) {
+      const fd = new FormData()
+      fd.append('category', this.form.category)
+      fd.append('condition', this.form.condition)
+      fd.append('major', this.form.major)
+      fd.append('location', this.form.location)
+      fd.append('subject', this.form.subject)
+      fd.append('title', this.form.title)
+      fd.append('description', this.form.description)
+      fd.append('price', this.form.price)
+      fd.append('image', this.form.image)
+      fd.append('school', this.form.school)
+      fd.append('user', this.userId)
 
-      axios
-        .post(
-          "http://127.0.0.1:8000/product/",
-          {
-            category: this.form.category,
-            condition: this.form.condition,
-            major: this.form.major,
-            location: this.form.location,
-            subject: this.form.subject,
-            title: this.form.title,
-            description: this.form.description,
-            price: this.form.price,
-            school: this.form.school,
-            user: this.form.user,
-           // image: this.form.image,
-          },
-      
+      console.log(this.form.image)
+      console.log(this.form.image.name)
+      console.log(fd,"fd")
+      axios.post("http://127.0.0.1:8000/product/", fd
+
         )
         .then(response => {
           // this.$router.push('/post_and_ad');
@@ -237,6 +238,7 @@ export default {
       evt.preventDefault();
     },
     onReset(evt) {
+    
       evt.preventDefault();
       // Reset our form values
       this.form.title = "";
@@ -262,19 +264,7 @@ export default {
     }
   },
   created() {
-    // this.$root.$on("logAndToken", (log_status, token, username, user_id) => {
-    //   this.token = token;
-    //   this.log_status = log_status;
-    //   this.username = username;
-    //   this.user_id = user_id;
-    //   console.log(
-    //     "message received from login + token + username + user_id",
-    //     log_status,
-    //     token,
-    //     username,
-    //     user_id
-    //   );
-    // });
+
 
     axios
       .all([

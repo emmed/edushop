@@ -74,7 +74,7 @@ export default {
       products: [],
       category_id: this.$route.params.category_id,
       idDetail: this.$route.params.details_id,
-       items: [],
+      items: [],
       items2: []
     
       /* Made an instance in the data return function in order to 
@@ -104,10 +104,10 @@ export default {
         this.items = []
 
         this.items.push(localStorage.getItem("wgItem"))
-
+        // ["36,36,36"] we willen ["36","36","36"]
         this.items2 = this.items[0].split(',')
-
-        this.items2.push(this.products[this.idDetail].id.toString());
+        this.items2.push(this.products[this.idDetail].toString());
+        // ["36","36","36","38"]   
         localStorage.setItem("lengthCart", this.items2.length);
 
         console.log(this.items2, "itmes")
@@ -116,7 +116,7 @@ export default {
         }
         else {
      
-      this.items.push(this.products[this.idDetail].id.toString()); 
+      this.items.push(this.products[this.idDetail].toString()); 
       localStorage.setItem("lengthCart", 1);
        localStorage.setItem("wgItem", this.items);
         }
