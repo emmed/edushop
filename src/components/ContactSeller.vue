@@ -15,33 +15,28 @@
           <div class="contact-info">
             <h4 class="text-left blauke-t mb-3">Sellers information</h4>
 
-            <p class="text-left">Med Em</p>
+            <p class="text-left">{{userId}}</p>
             <p class="text-left">Student Ehb</p>
             <p class="text-left">Show other ads by Med</p>
           </div>
         </div>
-         <div class="col-md-9" >
+        <div class="col-md-9">
           <b-form @submit="onSubmit" @reset="onReset" v-if="show">
             <b-col cols="8" :class="{error: validation.hasError('email')}">
-             
               <b-form-group id="input-group-2" label-for="input-2">
                 <b-form-input
                   id="input-2"
                   v-model="email"
                   required
                   placeholder="Your E-mail address"
-                
                 ></b-form-input>
- <div class="message my-2">{{ validation.firstError('email') }}</div>
-                <!-- <b-form-invalid-feedback :state="input_validation">Must be a valid Email.</b-form-invalid-feedback>
-                <b-form-valid-feedback :state="input_validation">That's better!</b-form-valid-feedback> -->
+                <div class="message my-2">{{ validation.firstError('email') }}</div>
               </b-form-group>
             </b-col>
 
             <b-col cols="8">
               <b-form-group id="input-group-2" label-for="input-2">
-                <b-form-input id="input-2" v-model="subject" required placeholder="Subject"  ></b-form-input>
-                
+                <b-form-input id="input-2" v-model="subject" required placeholder="Subject"></b-form-input>
               </b-form-group>
             </b-col>
 
@@ -52,8 +47,7 @@
                 placeholder="Description"
                 v-model="description"
                 required
-               ></b-form-textarea>
-              
+              ></b-form-textarea>
             </b-col>
             <b-form-group id="input-group-2" label-for="input-2">
               <div class="col-sm-offset-2 col-sm-10">
@@ -62,50 +56,43 @@
             </b-form-group>
           </b-form>
         </div>
-        <b-card class="mt-3" header="Form Data Result">
-          <pre class="m-0">email:{{ email }}, subject:{{subject}}, description:{{description}}</pre>
-        </b-card>
+       
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
+//import axios from "axios";
 import Vue from "vue";
 import SimpleVueValidation from "simple-vue-validator";
 const Validator = SimpleVueValidation.Validator;
 Vue.use(SimpleVueValidation);
+//var url_product = "http://127.0.0.1:8000/users/";
 
 export default {
-    
   name: "ContactSeller",
   data() {
     return {
-        
-      
-        email: "",
-        subject: "",
-        descripiton: "",
-         
-      
+      userId: localStorage.getItem("userName"),
+      email: "", 
+      subject: "",
+      descripiton: "",
       show: true,
-      showAlert: false  
+      showAlert: false
     };
   },
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
       alert(JSON.stringify(this.form));
-  
     },
-    submit: function () {
-        this.$validate()
-          .then(function (success) {
-            if (success) {
-              alert('Validation succeeded!');
-            }
-          });
+    submit: function() {
+      this.$validate().then(function(success) {
+        if (success) {
+          alert("Validation succeeded!");
+        }
+      });
     },
     onReset(evt) {
       evt.preventDefault();
@@ -118,23 +105,32 @@ export default {
       this.$nextTick(() => {
         this.show = true;
       });
-    }, 
- 
-  
+    }
+  },
+  created() {
+    // axios
+    //   .get(url_user)
+    //   .then(
+    //     res => (
+    //       (this.user = res.data),
+    //       console.log("user", this.user, "res.data", res.data)
+    //     ),
+    //     console.log("user na", this.user)
+    //   );
   },
   computed: {
     input_validation() {
-       return  this.form.email.length > 4;
+      return this.form.email.length > 4;
     }
-
   },
   validators: {
-      email: function (value) {
-        return Validator.value(value).required().email();
-      }
-    },
-  
-}
+    email: function(value) {
+      return Validator.value(value)
+        .required()
+        .email();
+    }
+  }
+};
 </script>
 
 <style scoped>

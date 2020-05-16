@@ -1,19 +1,22 @@
 <template>
   <div>
-    <div class="jumbotron">
-      <!--UPLOAD-->
- 
-    <input type="file" @change="onFileSelected">
 
- 
-<b-button @click="onUpload">click</b-button>
-    </div>
+<div class="jumbotron">
+
+
+<b-input v-model="title" type="text"></b-input>
+<b-input v-model="counter" type="text"></b-input>
+
+<b-button v-on:click="onSubmit" type=button variant="danger">submit</b-button>
+
+
+  </div>
   </div>
 </template>
 
 <script>
 
-import axios from "axios";
+//import axios from "axios";
 
 
 
@@ -21,23 +24,15 @@ export default {
   name: "Payment",
   data() {
     return {
-    image: null
+      title: '',
+      counter: '',
     }; 
   }, 
   methods: {
-    onFileSelected(event){
-      this.image = event.target.files[0]
-      console.log(event)
-    },
-    onUpload(){
-      const fd = new FormData()
-      fd.append('image', this.image, this.image.name)
-      console.log(fd,"eeeeeeeeeeeeeee")
-      axios.post('http://127.0.0.1:8000/image/', fd)
-      .then(res => {
-        console.log(res, "res")
-      })
-    }
+ onSubmit(){
+   this.$root.$emit("random",this.title,this.counter)
+   console.log("random", this.title, "counter=", this.counter)
+ }
   }
   
   }

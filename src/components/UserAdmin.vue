@@ -86,7 +86,6 @@ data() {
           console.log(index, "index")
       axios.delete(`http://127.0.0.1:8000/product/${id}`)
       .then(this.products.splice(index,1))
-      //window.location.reload()
       },
 
  

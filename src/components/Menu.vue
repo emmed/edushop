@@ -19,12 +19,20 @@
         </b-button>
       </div>
       <ul class="navbar-nav flex-row mr-lg-0">
-               <li class="nav-item">
-                         <a @click.prevent="$router.push({ name: 'shoppingcart' }).catch(err => {})" class="nav-link"><span class="badge badge-warning">{{this.wgCounter}}</span> <i class="fa fa-shopping-cart fa-lg"></i>    
-</a></li>    
+        <!-- <li class="nav-item">
+  <a v-if="this.token!=null" @click.prevent="$router.push({ name: 'shoppingcart' }).catch(err => {})" class="nav-link"><span class="badge badge-warning">{{this.wgCounter}}</span> <i class="fa fa-shopping-cart fa-lg"></i></a>
+  </li>   -->
+          <li class="nav-item">
+  <a v-if="this.tokenRoot!=null || this.token" @click.prevent="$router.push({ name: 'shoppingcart' }).catch(err => {})" class="nav-link"><span class="badge badge-warning">{{this.wgCounterRoot}}</span> <i class="fa fa-shopping-cart fa-lg"></i></a>
+  </li>    
         <li class="nav-item">
           <a class="nav-link h5 mr-0" v-if="this.token!=null">
             <small>{{this.username}}</small>,
+          </a>
+        </li>       
+         <li class="nav-item">
+          <a class="nav-link h5 mr-0" v-if="this.tokenRoot!=null">
+            <small>{{this.usernameRoot}}</small>,
           </a>
         </li>
         <li class="nav-item">
@@ -33,6 +41,14 @@
             type="button"
             @click.prevent="$router.push({ name: 'useradmin' }).catch(err => {})"
             v-if="this.token!=null"
+          >Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link ml-0 pr-2 h5 font-weight-bold"
+            type="button"
+            @click.prevent="$router.push({ name: 'useradmin' }).catch(err => {})"
+            v-if="this.tokenRoot!=null"
           >Dashboard</a>
         </li>
         <li class="nav-item">
@@ -49,9 +65,27 @@
             class="nav-link pr-2 h5"
             type="button"
             @click.prevent="$router.push({ name: 'login' }).catch(err => {})"
-            v-if="this.token==null"
+            v-if="this.token==null && this.tokenRoot==null"
           >{{this.log_status}}</a>
         </li>
+          
+        <li class="nav-item">
+          <a
+            class="nav-link pr-2 h5"
+            type="button"
+            @click.prevent="$router.push({ name: 'login' }).catch(err => {})"
+            v-if="this.tokenRoot!=null"
+            v-on:click="logout()"
+          >{{this.logStatusRoot}}</a>
+        </li>
+        <!-- <li class="nav-item">
+          <a
+            class="nav-link pr-2 h5"
+            type="button"
+            @click.prevent="$router.push({ name: 'login' }).catch(err => {})"
+            v-if="this.tokenRoot==null"
+          >{{this.logStatusRoot}}</a>
+        </li> -->
 
         <li class="nav-item">
           <a
@@ -92,6 +126,11 @@
             >{{category.name}}</a>
           </li>
         </ul>
+        <span >{{this.title}}</span>
+        <span >{{this.counter}}</span>
+
+        <!-- <ul ><input  v-model="title" type="text"></ul>
+        <ul ><input  v-model="counter" type="text"></ul> -->
         <div class="my-2 my-lg-0">
           <b-button
             class="btn_package my-2 my-sm-0"
@@ -117,15 +156,34 @@ export default {
     return {
       categories: [], 
       token: localStorage.getItem("token") ? localStorage.getItem("token"): null,
-      log_status: localStorage.getItem("token") ? "log out" : "log in",
+      log_status: localStorage.getItem("token") ? "Log out" : "log in",
       username: localStorage.getItem("userName"),
       user_id: localStorage.getItem("userId"),
       wgCounter: localStorage.getItem("lengthCart"),
-      items: localStorage.getItem("wgItem")
+      items: localStorage.getItem("wgItem"),
+      usernameRoot: '',
+      logStatusRoot: '',
+      tokenRoot: null,
+      wgCounterRoot: localStorage.getItem("lengthCart")
     };
   },
   mounted(){
-   
+   this.$root.$on("logAndToken", (log_status, token, username, id) => {
+     console.log(id, "username", username + "token" + token)
+     this.logStatusRoot = log_status
+     this.usernameRoot = username 
+     this.tokenRoot = token
+   });
+
+
+      this.$root.$on("lengthShopCart", (lengthCart) => {
+        this.wgCounterRoot = lengthCart
+     
+   });
+  //     this.$root.$on("random",(title,counter ) => {
+  //    this.title = title
+  //    this.counter = counter 
+  //  });
   },
   methods: {
     postAd() {
@@ -140,13 +198,17 @@ export default {
       this.$root.$emit("message", category_name);
     },
     logout() {
-      console.log("dddddddddddddddddddddddddddd")
       localStorage.removeItem("token");
       localStorage.removeItem("logStatus");
       localStorage.removeItem("userName");
       localStorage.removeItem("userid");
+      localStorage.removeItem("lengthCart");
+      localStorage.removeItem("wgItem");
+      this.$root.$emit("lengthShopCart",'')
       this.token = null;
+      this.tokenRoot = null;
       this.log_status = "Log in";
+      this.logStatusRoot ="Log in"
     }
   },
   created() {
@@ -172,6 +234,10 @@ export default {
 
 .btn_post_ad:active {
   background-color: white;
+}
+.btn_post_ad:focus {
+  background-color: white;  
+  color: #004fff;
 }
 .btn_post_ad:visited {
   background-color: white;

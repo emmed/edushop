@@ -66,7 +66,7 @@
                   :options="school"
                   required
                 >
-                  <optgroup label="Erasmushogeschool | EHB">
+                  <optgroup  label="Erasmushogeschool | EHB">
                     <option>Campus Kaai</option>
                     <option>Campus Bloemberg</option>
                   </optgroup>
@@ -125,7 +125,7 @@
           </b-row>
 
           <b-row class="mt-4">
-            <b-col cols="11">
+            <b-col cols="11 m-3">
               <b-form-textarea
                 rows="6"
                 id="textarea-default"
@@ -137,31 +137,25 @@
 
           <b-row class="mb-4">
             <b-col cols="4">
-              <input class="my-4" type="file" @change="onFileSelected">
-              <hr>
-              <!-- <b-form-file
+              <b-form-file
+                type="file"
+                @change="onFileSelected"
                 v-model="form.image"
                 :state="Boolean(form.image)"
                 placeholder="Choose a image or drop it here..."
                 drop-placeholder="Drop image here..."
                 class="square_btn"
-              ></b-form-file> -->
-
+              ></b-form-file>
             </b-col>
           </b-row>
         </b-container>
-
-        <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Submit</b-button>
+        <b-button class="btn btn_post m-3"   @click="showDismissibleAlert=true" type="submit" >Submit</b-button>
         <b-button @click="onReset()" type="reset" variant="danger">Reset</b-button>
       </b-form>
-
-      <!-- </div> -->
-
-      <b-card class="mt-3" header="Form Data Result">
+      <!-- <b-card class="mt-3" header="Form Data Result">
         <pre class="m-0">{{ form }}</pre>
-      </b-card>
+      </b-card> -->
 
-      <!-- <div v-if="this.token==null">Log in first</div> -->
     </div>
   </div>
 </template>
@@ -243,11 +237,14 @@ export default {
       // Reset our form values
       this.form.title = "";
       this.form.category = null;
-      this.form.school_ad = null;
+      this.form.school = null;
       this.form.major = null;
       this.form.subject = null;
+      this.form.description = null;
       this.form.condition = null;
       this.form.location = null;
+      this.form.imgae = null;
+      this.form.price = null;
       // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {
@@ -299,6 +296,29 @@ export default {
 </script>
 
 <style>
+
+.btn_post {
+  background-color: #ffbf00;
+  color: white;
+  font-weight: 800;
+  border: none;
+}
+
+.btn_post:hover {
+  background-color: #004fff;
+}
+.btn_post:focus {
+  background-color: #ffbf00;
+  color: white;
+}
+
+.btn_post:active {
+  background-color: white;
+}
+.btn_post:visited {
+  background-color: white;
+}
+
 .title {
   color: #004fff;
   font-weight: 600;

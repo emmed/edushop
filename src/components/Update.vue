@@ -124,7 +124,7 @@
           </b-row>
 
           <b-row class="mt-4">
-            <b-col cols="11">
+            <b-col cols="11 m-3">
               <b-form-textarea
                 rows="6"
                 id="textarea-default"
@@ -135,21 +135,22 @@
           </b-row>
 
           <!-- <b-row class="mb-4">
-            <b-col cols="3" v-for="n in 3" :key="n.id">
+            <b-col cols="4">
               <b-form-file
-                v-model="form.file"
-                :state="Boolean(form.file)"
+                type="file"
+                @change="onFileSelected"
+                v-model="form.image"
+                :state="Boolean(form.image)"
                 placeholder="Choose a image or drop it here..."
                 drop-placeholder="Drop image here..."
-                accept=".jpg, .png"
                 class="square_btn"
               ></b-form-file>
             </b-col>
-          </b-row>-->
+          </b-row> -->
 
         </b-container>
 
-        <b-button @click="showDismissibleAlert=true" type="submit" variant="primary">Update</b-button>
+        <b-button class="btn_post_update" @click="showDismissibleAlert=true" type="submit" variant="primary">Update</b-button>
       
       </b-form>
       <!-- </div> -->
@@ -359,6 +360,29 @@ export default {
 </script>
 
 <style>
+.btn_post_update {
+  background-color: #ffbf00;
+  color: white;
+  font-weight: 800;
+  border: none;
+}
+
+.btn_post_update:hover {
+  background-color: rgb(28, 199, 13);
+}
+.btn_post_update:focus {
+  background-color: #ffbf00;
+  color: white;
+}
+
+.btn_post_update:active {
+  background-color: white;
+}
+.btn_post_update:visited {
+  background-color: white;
+}
+
+
 .title {
   color: #004fff;
   font-weight: 600;

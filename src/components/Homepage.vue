@@ -58,8 +58,7 @@ export default {
   created() {
     axios
       .get(url)
-      .then(res => (this.products = res.data["results"]),
-        console.log("producten restults", this.products)
+      .then(res => (this.products = res.data["results"])
       )
       .catch(err => console.log("error", err));
   }

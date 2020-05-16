@@ -16,22 +16,22 @@
                   </div>
                 </div>
               </div>
-              <div class="panel-body" v-bind:key="product.id" v-for="product in products">
-                <div class="row">
-                  <div class="col-xs-2">
+              <div class="panel-body" v-bind:key="product.id" v-for="(product, index) in products">
+                <div class="row" >
+                  <div class="col-xs-2" type="button">
                     <img class="img-responsive" src="http://placehold.it/100x70">
                   </div>
-                  <div class="col-xs-4">
+                  <div class="col-xs-4" type="button">
                     <h4 class="product-name px-4">
                       <strong>{{product.title}}</strong>
                     </h4>
-                    <h4 class="">
+                    <h4 class="" >
                       <small>{{product.description}}</small>
                     </h4>
                   </div>
                   <div class="col-xs-6">
                     <div class="col-xs-2">
-                      <button type="button" class="btn btn-link">
+                      <button v-on:click="deleteProduct(product.id, index)" type="button" class="btn btn-link">
                         <i class="fa fa-trash"></i>
                       </button>
                     </div>
@@ -50,7 +50,7 @@
                   <div class="col-xs-9">
                     <h4 class="text-right mr-4">
                       Total
-                      <strong>$50.00</strong>
+                      <strong>€ 50</strong>
                     </h4>
                   </div>
                   <div class="col-xs-3">
@@ -79,19 +79,41 @@ export default {
     };
   },
   methods: {
-    getProduct() {},
-    deleteProduct() {
-      var removeCartItemButton = document.getElementsByClassName("btn-link");
-      console.log(removeCartItemButton);
-      for (let i = 0; i < removeCartItemButton.length; i++) {
-        var button = removeCartItemButton[i];
-        button.addEventListener("click", function() {
-          console.log("clicked");
-        });
+    // deleteProduct() {
+    //   var removeCartItemButton = document.getElementsByClassName("btn-link");
+    //   console.log(removeCartItemButton);
+    //   for (let i = 0; i < removeCartItemButton.length; i++) {
+    //     var button = removeCartItemButton[i];
+    //     button.addEventListener("click", function() {
+    //       console.log("clicked");
+    //     });
+    //   }
+    // },  
+    deleteProduct(id, index){
+          console.log(index, "index")
+          this.products.splice(index,1)
+
+          this.items2.splice(index,1)
+          console.log("itmesssssss",this.items2)
+          localStorage.setItem("wgItem", this.items2);
+          localStorage.setItem("lengthCart", this.items2.length);
+          if(localStorage.getItem("lengthCart") == 0){
+              localStorage.removeItem("wgItem");
+              localStorage.removeItem("lengthCart")
+              this.$root.$emit("lengthShopCart", '') 
+          }else{
+
+          this.$root.$emit("lengthShopCart", localStorage.getItem("lengthCart")) 
+          }
+// for (var  i = 0;i <products.length;i++){
+//   sums += products[i].price
+// }
+      // axios.delete(`http://127.0.0.1:8000/product/${id}`)
+      // .then()
       }
-    }
   },
   created() {
+    console.log("eeeeeeeeeeeeeeeeeee")
     this.items = [];
     this.items.push(localStorage.getItem("wgItem"));
     this.items2 = this.items["0"].split(",");

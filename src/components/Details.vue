@@ -29,9 +29,9 @@
           <h5 class="blauke-t text-left ml-3">{{products[idDetail].title}}</h5>
           <p class="my-4 col-lg-8 text-muted text-left">{{products[idDetail].description}}</p>
           <ul class="spec text-left ml-3">
-            <li>Category: {{products[idDetail].category}}</li>
-            <li>Condition: {{products[idDetail].condition}}</li>
-            <li>Posted: {{products[idDetail].date_created}}</li>
+            <li><small class="text-muted"> Category: </small>{{products[idDetail].category}}</li>
+            <li><small class="text-muted"> Condition: </small> {{products[idDetail].condition}}</li>
+            <li><small class="text-muted"> Posted: </small> {{products[idDetail].date_created}}</li>
           </ul>
           <p class="h4 prijs blauke-t text-left">€{{products[idDetail].price}}</p>
           <b-button
@@ -46,14 +46,11 @@
           @click.prevent="$router.push({ name: 'contactseller' })"
           type="button"
         >
-          <u>Contact seller</u>
+          <u>Contact {{products[idDetail].user_name}}</u>
         </h6>
         <br>
         <ul class="contact text-left col-lg-8">
-          <li>Med Em</li>
-          <li>Student EHB</li>
-          <li></li>
-          <li>Show other ads by Med</li>
+          <li class="text-muted">{{products[idDetail].school}}</li>
         </ul>
       </div>
     </div>
@@ -64,8 +61,7 @@
 import axios from "axios";
 
 var url_product = "";
-
-export default {
+ export default {
   name: "Details",
   // passaing the array as a prop from the parent App.vue to the child component
   data() {
@@ -75,7 +71,8 @@ export default {
       category_id: this.$route.params.category_id,
       idDetail: this.$route.params.details_id,
       items: [],
-      items2: []
+      items2: [],
+      user: null,
     
       /* Made an instance in the data return function in order to 
         call the data from the API, and loop in it. AND avoid mutating the initial property 
@@ -124,10 +121,10 @@ export default {
       localStorage.setItem("lengthCart", 1);
        localStorage.setItem("wgItem", this.items);
         }
-    },
-removeRow(index){
-   this.wgArray.splice(index, 1)
-}
+        this.$root.$emit("lengthShopCart", localStorage.getItem("lengthCart")) 
+        
+        },
+
   }
 };
 </script>
