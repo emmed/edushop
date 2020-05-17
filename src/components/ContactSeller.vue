@@ -13,11 +13,11 @@
       <div class="row">
         <div class="col-md-3">
           <div class="contact-info">
-            <h4 class="text-left blauke-t mb-3">Sellers information</h4>
+            <h4 class="text-left blauke-t mb-3">{{userName}} information</h4>
 
-            <p class="text-left">{{userId}}</p>
+            <p class="text-left">{{emailSeller}}</p>
             <p class="text-left">Student Ehb</p>
-            <p class="text-left">Show other ads by Med</p>
+            <p class="text-left">Show other ads by {{userName}}</p>
           </div>
         </div>
         <div class="col-md-9">
@@ -63,19 +63,19 @@
 </template>
 
 <script>
-//import axios from "axios";
+import axios from 'axios'
 import Vue from "vue";
 import SimpleVueValidation from "simple-vue-validator";
 const Validator = SimpleVueValidation.Validator;
 Vue.use(SimpleVueValidation);
-//var url_product = "http://127.0.0.1:8000/users/";
-
+const url_user = 'http://127.0.0.1:8000/users/'
 export default {
   name: "ContactSeller",
   data() {
     return {
-      userId: localStorage.getItem("userName"),
-      email: "", 
+      userName: "",
+      emailSeller: "", 
+      email:"",
       subject: "",
       descripiton: "",
       show: true,
@@ -86,13 +86,6 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       alert(JSON.stringify(this.form));
-    },
-    submit: function() {
-      this.$validate().then(function(success) {
-        if (success) {
-          alert("Validation succeeded!");
-        }
-      });
     },
     onReset(evt) {
       evt.preventDefault();
@@ -107,21 +100,13 @@ export default {
       });
     }
   },
-  created() {
-    // axios
-    //   .get(url_user)
-    //   .then(
-    //     res => (
-    //       (this.user = res.data),
-    //       console.log("user", this.user, "res.data", res.data)
-    //     ),
-    //     console.log("user na", this.user)
-    //   );
-  },
-  computed: {
-    input_validation() {
-      return this.form.email.length > 4;
-    }
+  created(){
+    axios
+        .get(url_user)
+        .then(res => (
+          (this.user = res.data),console.log("user", this.user, "res.data", res.data)
+          ), console.log("user na", this.user)
+      )
   },
   validators: {
     email: function(value) {

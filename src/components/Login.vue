@@ -1,8 +1,6 @@
 <template>
   <div>
-    <!-- <b-alert v-model="showDismissibleAlert" variant="danger" dismissible>
-      Dismissible Alert!
-    </b-alert>-->
+
     <div class="login-wrap">
       <div class="login-html">
         <input id="tab-1" type="radio" name="tab" class="sign-in" v-on:click="clearLogin()" checked>
@@ -52,8 +50,14 @@
           <b-form @submit.prevent="register" v-if="token==null">
             <div class="for-pwd-htm">
               <div class="group">
+              <b-alert :show="showAlert" variant="success">You are successfully registered</b-alert>
                 <label for="user" class="label">Username</label>
                 <input id="user" type="text" class="input" required v-model="username">
+              </div>
+              <div class="group" :class="{error: validation.hasError('email')}">
+                <label for="email" class="label">Email</label>
+                <input id="email" type="text" class="input" required v-model="email">
+                  <div class="message my-2">{{ validation.firstError('email') }}</div>
               </div>
               <div class="group" :class="{error: validation.hasError('password')}">
                 <label for="pass" class="label">Password</label>
@@ -91,12 +95,13 @@
               <div class="group">
                 <input type="submit" class="button" value="Sign up!" v-on:click="succes_register()">
               </div>
-              <div class="hr"></div>
             </div>
           </b-form>
         </div>
       </div>
     </div>
+
+
   </div>
 </template>
 
@@ -114,6 +119,7 @@ export default {
   components: { Password },
   data() {
     return {
+      email: '',
       username: "",
       user: null,
       password: "",
@@ -134,6 +140,9 @@ export default {
             console.log(res.data, "ressss");
             localStorage.setItem("userid", res.data["0"].id);
             this.id = res.data["0"].id;
+            localStorage.setItem("userEmail", res.data["0"].email);
+            this.email = res.data["0"].email;
+
           }),
           axios
             .post("http://127.0.0.1:8000/auth/", {
@@ -175,25 +184,29 @@ export default {
       }
     },
     clearLogin() {
-      (this.username = ""), (this.password = "");
+      (this.username = ""), (this.password = ""),(this.showAlert = false);
     },
     register() {
       axios
         .post("http://127.0.0.1:8000/users/", {
           username: this.username,
-          password: this.password
+          password: this.password,
+          email: this.email,
         })
         .then(res => {
           this.showAlert = false;
           console.log("res after .then()", res);
           this.token = res.data.token;
           this.log_status = "Log out";
+          this.showAlert = true;
+
           console.log(
             "Login NEW::: user:",
             res,
             this.username,
             this.password,
-            this.token
+            this.token,
+            this.email,
           );
         })
         .catch(err => {
@@ -203,14 +216,6 @@ export default {
           console.log("error loginn", err);
           console.log("res:::", this.password, this.username);
         });
-    },
-    submit: function() {
-      this.submitted = true;
-      this.$validate().then(function(success) {
-        if (success) {
-          alert("Validation succeeded!");
-        }
-      });
     }
   },
   computed: {
@@ -230,6 +235,11 @@ export default {
           .required()
           .match(password);
       }
+    },
+     email: function(value) {
+      return Validator.value(value)
+        .required()
+        .email();
     }
   }
 };
@@ -262,7 +272,7 @@ a {
   width: 100%;
   margin: auto;
   max-width: 510px;
-  min-height: 610px;
+  min-height: 710px;
   position: relative;
   background: no-repeat center;
   background-size: cover;

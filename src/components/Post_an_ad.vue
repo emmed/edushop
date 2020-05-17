@@ -33,7 +33,7 @@
                 <option disabled value>Select major</option>
                 <option v-bind:key="major.id" v-for="major in majors">{{major.major}}</option>
               </b-form-select>
-              <span>Selected: {{ form.major }}</span>
+              <small class="form-text text-muted">Select your major</small>
             </b-col>
 
             <b-col cols="5 m-3">
@@ -41,7 +41,7 @@
                 <option disabled value>Select category</option>
                 <option v-bind:key="category.id" v-for="category in categories">{{category.name}}</option>
               </b-form-select>
-              <span>Selected: {{ form.category }}</span>
+              <small class="form-text text-muted">Select your category</small>
             </b-col>
 
             <b-col cols="5 m-3">
@@ -49,7 +49,7 @@
                 <option disabled value>Select subject</option>
                 <option v-bind:key="subject.id" v-for="subject in subjects">{{subject.subject}}</option>
               </b-form-select>
-              <span>Selected: {{ form.subject }}</span>
+              <small class="form-text text-muted">Select your subject</small>
             </b-col>
 
             <!-- <b-col cols="5 m-3">
@@ -91,7 +91,7 @@
                   v-for="condition in conditions"
                 >{{condition.condition}}</option>
               </b-form-select>
-              <span>Selected: {{ form.condition }}</span>
+              <small class="form-text text-muted">Select your condition</small>
             </b-col>
 
             <b-col cols="5 m-3">
@@ -104,13 +104,14 @@
                 >{{location.location}}</option>
               </b-form-select>
               <span>
-                <small>Selected: {{ form.location }}</small>
+              <small class="form-text text-muted">Select your location</small>
               </span>
             </b-col>
 
             <b-col cols="5 m-3">
               <b-form-group id="input-group-2" label-for="input-2">
                 <b-form-input
+                type="number"
                   id="input-2"
                   v-model="form.price"
                   required
@@ -150,7 +151,7 @@
           </b-row>
         </b-container>
         <b-button class="btn btn_post m-3"   @click="showDismissibleAlert=true" type="submit" >Submit</b-button>
-        <b-button @click="onReset()" type="reset" variant="danger">Reset</b-button>
+        <b-button @click="onReset()" type="reset" variant="info">Reset</b-button>
       </b-form>
       <!-- <b-card class="mt-3" header="Form Data Result">
         <pre class="m-0">{{ form }}</pre>
@@ -223,7 +224,7 @@ export default {
 
         )
         .then(response => {
-          // this.$router.push('/post_and_ad');
+           //this.$router.push('/homepage');
           console.log("response saved", response);
         })
         .catch(response => {

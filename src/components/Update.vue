@@ -153,13 +153,9 @@
         <b-button class="btn_post_update" @click="showDismissibleAlert=true" type="submit" variant="primary">Update</b-button>
       
       </b-form>
-      <!-- </div> -->
-      <b-card class="mt-3" header="Form Data Result">
-        <pre class="m-0">{{ form }}</pre>
-      </b-card>
+     
 
-      <!-- <div v-if="this.token==null">Log in first</div> -->
-    </div>
+     </div>
   </div>
 </template>
 

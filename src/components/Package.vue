@@ -6,7 +6,7 @@
         <div class="col-sm-3 col-md-3">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h5 class="panel-title blauke">Find your bookpackage</h5>
+              <h5 class="panel-title blauke">Find your package</h5>
             </div>
 
             <b-col cols=" m-3">
@@ -39,7 +39,7 @@
                 <option disabled value>Select major</option>
                 <option v-bind:key="major.id" v-for="major in majors">{{major.major}}</option>
               </b-form-select>
-              <span>Selected: {{ form.major }}</span>
+              <small class="form-text text-muted">Select your major</small>
             </b-col>
 
             <b-col cols=" m-3">
@@ -47,7 +47,7 @@
                 <option disabled value>Select category</option>
                 <option v-bind:key="category.id" v-for="category in categories">{{category.name}}</option>
               </b-form-select>
-              <span>Selected: {{ form.category }}</span>
+              <small class="form-text text-muted">Select your category</small>
             </b-col>
 
             <b-col cols=" m-3">
@@ -55,10 +55,15 @@
                 <option disabled value>Select subject</option>
                 <option v-bind:key="subject.id" v-for="subject in subjects">{{subject.subject}}</option>
               </b-form-select>
-              <span>Selected: {{ form.subject }}</span>
+              <small class="form-text text-muted">Select your subject</small>
             </b-col>
             <div class="group">
-              <b-button v-on:click="onSubmit()" class="btn_find m-2" size="lg" variant="warning">Find</b-button>
+              <b-button
+                v-on:click="onSubmit()"
+                class="btn_find m-2"
+                size="lg"
+                variant="warning"
+              >Find</b-button>
               <b-button v-on:click="onReset()" class="btn_find" size="lg" variant="info">Reset</b-button>
             </div>
             <div class="hr"></div>
@@ -66,26 +71,26 @@
         </div>
         <div class="col-sm-9 col-md-9">
           <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title mb-4 blauke">Dashboard</h3>
-            </div>
-            <div class="row ">
-            <b-card
-             style="max-width: 340px;"
-              class="m-3 "
-              v-bind:key="product.id"
-              v-for="product in products"
-              @click.prevent="goToDetails({index})"
-              type="button"
-              :img-src="`${product.image}`"
-            >
-              <h5 class="blauke-t pull-left mr-3">{{product.title}}</h5>
-              <b-card-text class="ty mt-5">
-               <p class="text-muted"> {{product.description}}</p>
-                
-               <p class="mt-5 font-weight-bold">{{product.major}}</p>
+            <div class="row">
+              <b-card
+                style="max-width: 340px;"
+                class="m-3"
+                v-bind:key="product.id"
+                v-for="product in products"
+                @click.prevent="goToDetails({index})"
+                type="button"
+                :img-src="`${product.image}`"
+              >
+                <h5 class="blauke-t pull-left mr-3">{{product.title}}</h5>
+                <b-card-text class="ty mt-5">
+                  <p class="text-muted">{{product.description}}</p>
+                  <hr>
+                  <span class="badge badge-warning p-2 m-2">{{product.major}}</span>
+                  <span class="badge badge-dark p-2">{{product.school}}</span>
+                  <span class="badge badge-primary p-2 ml-2">{{product.subject}}</span>
+                  <span class="badge badge-success p-2 ml-2">{{product.category}}</span>
                 </b-card-text>
-            </b-card>
+              </b-card>
             </div>
           </div>
         </div>
@@ -105,7 +110,7 @@ const url_condition = "http://127.0.0.1:8000/condition/";
 const url_location = "http://127.0.0.1:8000/location/";
 
 export default {
-  name: "Bookpackage",
+  name: "Package",
   data() {
     return {
       products: [],
@@ -132,7 +137,7 @@ export default {
   methods: {
     onSubmit() {
       console.log("knop onSubmit werkt");
-      var url = ""
+      var url = "";
       if (this.form.category) {
         url = url + "category__name=" + this.form.category;
       }
@@ -145,25 +150,27 @@ export default {
       if (this.form.school) {
         url = url + "&school=" + this.form.school;
       }
-            console.log(url_product + "?" + url,"=>url");
-  axios
-      .get(url_product + "?" + url) 
-      .then(res => (this.products = res.data["results"]), console.log(this.products,'products'))
-      .catch(err => console.log("error", err));
+      console.log(url_product + "?" + url, "=>url");
+      axios
+        .get(url_product + "?" + url)
+        .then(
+          res => (this.products = res.data["results"]),
+          console.log(this.products, "products")
+        )
+        .catch(err => console.log("error", err));
     },
     onReset() {
-      
-        // Reset our form values
-        this.form.category = null
-        this.form.major = null
-        this.form.subject = null
-        this.form.school = null
-        // Trick to reset/clear native browser form validation state
-        this.show = false
-        this.$nextTick(() => {
-          this.show = true
-        })
-      },
+      // Reset our form values
+      this.form.category = null;
+      this.form.major = null;
+      this.form.subject = null;
+      this.form.school = null;
+      // Trick to reset/clear native browser form validation state
+      this.show = false;
+      this.$nextTick(() => {
+        this.show = true;
+      });
+    },
     goToDetails(index) {
       this.$router.push({
         path: `details/${index["index"]}/${this.category}`
@@ -246,7 +253,8 @@ export default {
   font-size: 15px;
 }
 @media only screen and (max-width: 600px) {
-   .jumbotron{
-background: red;  }
+  .jumbotron {
+    background: red;
+  }
 }
 </style>

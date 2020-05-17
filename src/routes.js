@@ -6,7 +6,7 @@ import List from './components/List.vue';
 import Post_an_ad from './components/Post_an_ad.vue';
 import Update from './components/Update.vue';
 import Login from './components/Login.vue';
-import Bookpackage from './components/Bookpackage.vue';
+import Package from './components/Package.vue';
 import UserAdmin from './components/UserAdmin.vue';
 import UserAdminPlacedAds from './components/UserAdminPlacedAds.vue';
 import Details from './components/Details.vue';
@@ -90,9 +90,9 @@ export const router = new VueRouter({
    
     },
     {
-      path: '/bookpackage',
-      name: 'bookpackage',
-      component: Bookpackage,
+      path: '/package',
+      name: 'package',
+      component: Package,
     },
     {
       path: '/useradmin',

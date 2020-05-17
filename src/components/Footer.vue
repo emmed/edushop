@@ -27,8 +27,8 @@
               </li>
               <li>
                 <a
-                  @click.prevent="$router.push({ name: 'bookpackage' }).catch(err => {})" type="button"
-                >Bookpackage</a>
+                  @click.prevent="$router.push({ name: 'package' }).catch(err => {})" type="button"
+                >Package</a>
               </li>
               <li>
                 <a @click.prevent="$router.push({ name: 'faq' }).catch(err => {})" type="button">FAQ</a>

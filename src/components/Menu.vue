@@ -21,16 +21,23 @@
       <ul class="navbar-nav flex-row mr-lg-0">
         <!-- <li class="nav-item">
   <a v-if="this.token!=null" @click.prevent="$router.push({ name: 'shoppingcart' }).catch(err => {})" class="nav-link"><span class="badge badge-warning">{{this.wgCounter}}</span> <i class="fa fa-shopping-cart fa-lg"></i></a>
-  </li>   -->
-          <li class="nav-item">
-  <a v-if="this.tokenRoot!=null || this.token" @click.prevent="$router.push({ name: 'shoppingcart' }).catch(err => {})" class="nav-link"><span class="badge badge-warning">{{this.wgCounterRoot}}</span> <i class="fa fa-shopping-cart fa-lg"></i></a>
-  </li>    
+        </li>-->
+        <li class="nav-item">
+          <a
+            v-if="this.tokenRoot!=null || this.token"
+            @click.prevent="$router.push({ name: 'shoppingcart' }).catch(err => {})"
+            class="nav-link"
+          >
+            <span class="badge badge-warning">{{this.wgCounterRoot}}</span>
+            <i class="fa fa-shopping-cart fa-lg"></i>
+          </a>
+        </li>
         <li class="nav-item">
           <a class="nav-link h5 mr-0" v-if="this.token!=null">
             <small>{{this.username}}</small>,
           </a>
-        </li>       
-         <li class="nav-item">
+        </li>
+        <li class="nav-item">
           <a class="nav-link h5 mr-0" v-if="this.tokenRoot!=null">
             <small>{{this.usernameRoot}}</small>,
           </a>
@@ -68,7 +75,7 @@
             v-if="this.token==null && this.tokenRoot==null"
           >{{this.log_status}}</a>
         </li>
-          
+
         <li class="nav-item">
           <a
             class="nav-link pr-2 h5"
@@ -85,7 +92,7 @@
             @click.prevent="$router.push({ name: 'login' }).catch(err => {})"
             v-if="this.tokenRoot==null"
           >{{this.logStatusRoot}}</a>
-        </li> -->
+        </li>-->
 
         <li class="nav-item">
           <a
@@ -126,18 +133,18 @@
             >{{category.name}}</a>
           </li>
         </ul>
-        <span >{{this.title}}</span>
-        <span >{{this.counter}}</span>
+        <span>{{this.title}}</span>
+        <span>{{this.counter}}</span>
 
         <!-- <ul ><input  v-model="title" type="text"></ul>
-        <ul ><input  v-model="counter" type="text"></ul> -->
+        <ul ><input  v-model="counter" type="text"></ul>-->
         <div class="my-2 my-lg-0">
           <b-button
             class="btn_package my-2 my-sm-0"
             variant="outline-warning"
             size="lg"
-            @click.prevent="$router.replace({ name: 'bookpackage' }).catch(err => {})"
-          >Find your book package</b-button>
+            @click.prevent="$router.replace({ name: 'package' }).catch(err => {})"
+          >Find your package</b-button>
         </div>
       </div>
     </nav>
@@ -154,36 +161,36 @@ export default {
   props: [],
   data() {
     return {
-      categories: [], 
-      token: localStorage.getItem("token") ? localStorage.getItem("token"): null,
+      categories: [],
+      token: localStorage.getItem("token")
+        ? localStorage.getItem("token")
+        : null,
       log_status: localStorage.getItem("token") ? "Log out" : "log in",
       username: localStorage.getItem("userName"),
       user_id: localStorage.getItem("userId"),
       wgCounter: localStorage.getItem("lengthCart"),
       items: localStorage.getItem("wgItem"),
-      usernameRoot: '',
-      logStatusRoot: '',
+      usernameRoot: "",
+      logStatusRoot: "",
       tokenRoot: null,
       wgCounterRoot: localStorage.getItem("lengthCart")
     };
   },
-  mounted(){
-   this.$root.$on("logAndToken", (log_status, token, username, id) => {
-     console.log(id, "username", username + "token" + token)
-     this.logStatusRoot = log_status
-     this.usernameRoot = username 
-     this.tokenRoot = token
-   });
+  mounted() {
+    this.$root.$on("logAndToken", (log_status, token, username, id) => {
+      console.log(id, "username", username + "token" + token);
+      this.logStatusRoot = log_status;
+      this.usernameRoot = username;
+      this.tokenRoot = token;
+    });
 
-
-      this.$root.$on("lengthShopCart", (lengthCart) => {
-        this.wgCounterRoot = lengthCart
-     
-   });
-  //     this.$root.$on("random",(title,counter ) => {
-  //    this.title = title
-  //    this.counter = counter 
-  //  });
+    this.$root.$on("lengthShopCart", lengthCart => {
+      this.wgCounterRoot = lengthCart;
+    });
+    //     this.$root.$on("random",(title,counter ) => {
+    //    this.title = title
+    //    this.counter = counter
+    //  });
   },
   methods: {
     postAd() {
@@ -204,11 +211,11 @@ export default {
       localStorage.removeItem("userid");
       localStorage.removeItem("lengthCart");
       localStorage.removeItem("wgItem");
-      this.$root.$emit("lengthShopCart",'')
+      this.$root.$emit("lengthShopCart", "");
       this.token = null;
       this.tokenRoot = null;
       this.log_status = "Log in";
-      this.logStatusRoot ="Log in"
+      this.logStatusRoot = "Log in";
     }
   },
   created() {
@@ -221,7 +228,6 @@ export default {
 </script>
 
 <style >
-
 .btn_post_ad {
   background-color: white;
   color: #004fff;
@@ -236,7 +242,7 @@ export default {
   background-color: white;
 }
 .btn_post_ad:focus {
-  background-color: white;  
+  background-color: white;
   color: #004fff;
 }
 .btn_post_ad:visited {
