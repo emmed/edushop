@@ -35,28 +35,35 @@
             </b-col>
 
             <b-col cols=" m-3">
-              <b-form-select v-model="form.major">
-                <option disabled value>Select major</option>
-                <option v-bind:key="major.id" v-for="major in majors">{{major.major}}</option>
-              </b-form-select>
-              <small class="form-text text-muted">Select your major</small>
+   <multiselect v-model="form.major" :options="majors"
+              track-by="major" 
+              label="major"
+              :show-labels="false"
+              placeholder="Select your Major" :searchable="true" 
+              :allow-empty="true">
+                </multiselect>
             </b-col>
 
             <b-col cols=" m-3">
-              <b-form-select v-model="form.category">
-                <option disabled value>Select category</option>
-                <option v-bind:key="category.id" v-for="category in categories">{{category.name}}</option>
-              </b-form-select>
-              <small class="form-text text-muted">Select your category</small>
-            </b-col>
+              <multiselect v-model="form.category" :options="categories"
+              track-by="name" 
+              label="name"
+              :show-labels="false"
+              placeholder="Select your Category" :searchable="true" 
+              :allow-empty="true">
+                </multiselect>
+                </b-col>
 
             <b-col cols=" m-3">
-              <b-form-select v-model="form.subject">
-                <option disabled value>Select subject</option>
-                <option v-bind:key="subject.id" v-for="subject in subjects">{{subject.subject}}</option>
-              </b-form-select>
-              <small class="form-text text-muted">Select your subject</small>
-            </b-col>
+             <multiselect v-model="form.subject" :options="subjects"
+              track-by="subject" 
+              label="subject"
+              :show-labels="false"
+              placeholder="Select your Subject" :searchable="true" 
+              :allow-empty="true">
+                </multiselect>
+                </b-col>
+
             <div class="group">
               <b-button
                 v-on:click="onSubmit()"
@@ -107,7 +114,6 @@ const url_category = "http://127.0.0.1:8000/category/";
 const url_subject = "http://127.0.0.1:8000/subject/";
 const url_major = "http://127.0.0.1:8000/major/";
 const url_condition = "http://127.0.0.1:8000/condition/";
-const url_location = "http://127.0.0.1:8000/location/";
 
 export default {
   name: "Package",
@@ -121,16 +127,12 @@ export default {
         major: null,
         subject: null,
         condition: null,
-        location: null
       },
       categories: [{ text: "Select category", value: null }],
-      school: [
-        //  { text: 'Select school', value: null }, 'KUL', 'Erasmushogeschool - Ehb', 'VUB'
-      ],
+      school: [],
       majors: [{ text: "Select major", value: null }],
       subjects: [{ text: "Select subject", value: null }],
       conditions: [{ text: "Select condition", value: null }],
-      locations: [{ text: "Select location", value: null }],
       show: true
     };
   },
@@ -139,13 +141,13 @@ export default {
       console.log("knop onSubmit werkt");
       var url = "";
       if (this.form.category) {
-        url = url + "category__name=" + this.form.category;
+        url = url + "category__name=" + this.form.category.name;
       }
       if (this.form.major) {
-        url = url + "&major__major=" + this.form.major;
+        url = url + "&major__major=" + this.form.major.major;
       }
       if (this.form.subject) {
-        url = url + "&subject__subject=" + this.form.subject;
+        url = url + "&subject__subject=" + this.form.subject.subject;
       }
       if (this.form.school) {
         url = url + "&school=" + this.form.school;
@@ -170,11 +172,14 @@ export default {
       this.$nextTick(() => {
         this.show = true;
       });
+      axios.get(url_product)
+      .then( res =>(
+        this.products = res.data["results"]
+      ))
     },
     goToDetails(index) {
       this.$router.push({
         path: `details/${index["index"]}/${this.category}`
-        //path: `details/${index["index"]}`
       });
       console.log(index);
     }
@@ -186,8 +191,7 @@ export default {
         axios.get(url_major),
         axios.get(url_category),
         axios.get(url_subject),
-        axios.get(url_condition),
-        axios.get(url_location)
+        axios.get(url_condition)
       ])
       .then(
         axios.spread(
@@ -196,15 +200,13 @@ export default {
             majorRes,
             categoryRes,
             subjectRes,
-            conditionRes,
-            locationRes
+            conditionRes
           ) => {
             (this.products = productRes.data["results"]),
               (this.majors = majorRes.data),
               (this.categories = categoryRes.data),
               (this.subjects = subjectRes.data),
               (this.conditions = conditionRes.data),
-              (this.locations = locationRes.data),
               console.log(
                 "chunk of responses",
                 productRes,
@@ -212,7 +214,6 @@ export default {
                 subjectRes,
                 majorRes,
                 conditionRes,
-                locationRes
               );
           }
         )

@@ -29,41 +29,42 @@
             </b-col>
 
             <b-col cols="5 m-3">
-              <b-form-select v-model="form.major">
-                <option disabled value>Select major</option>
-                <option v-bind:key="major.id" v-for="major in majors">{{major.major}}</option>
-              </b-form-select>
-              <small class="form-text text-muted">Select your major</small>
+              <multiselect v-model="form.major" :options="majors"
+              track-by="major" 
+              label="major"
+              :show-labels="false"
+              placeholder="Select your Major" :searchable="true" 
+              :allow-empty="true">
+                </multiselect>
             </b-col>
 
-            <b-col cols="5 m-3">
-              <b-form-select v-model="form.category">
-                <option disabled value>Select category</option>
-                <option v-bind:key="category.id" v-for="category in categories">{{category.name}}</option>
-              </b-form-select>
-              <small class="form-text text-muted">Select your category</small>
-            </b-col>
 
-            <b-col cols="5 m-3">
-              <b-form-select v-model="form.subject">
-                <option disabled value>Select subject</option>
-                <option v-bind:key="subject.id" v-for="subject in subjects">{{subject.subject}}</option>
-              </b-form-select>
-              <small class="form-text text-muted">Select your subject</small>
-            </b-col>
+    <b-col cols="5 m-3">
+                <multiselect v-model="form.category" :options="categories"
+              track-by="name" 
+              label="name"
+              :show-labels="false"
+              placeholder="Select your Category" :searchable="false" 
+              :allow-empty="true">
+                </multiselect>
+      </b-col>
 
-            <!-- <b-col cols="5 m-3">
-              <b-form-group id="input-group-3" label-for="input-3">
-                <b-form-select id="input-3" v-model="form.school" :options="school" required></b-form-select>
-              </b-form-group>
-            </b-col>-->
+        <b-col cols="5 m-3">
+               <multiselect v-model="form.subject" :options="subjects"
+              track-by="subject" 
+              label="subject"
+              :show-labels="false"
+              placeholder="Select your Subject" :searchable="true" 
+              :allow-empty="true">
+                </multiselect>
+          </b-col>
 
             <b-col cols="5 m-3">
               <div class="form-group">
                 <select
                   class="selectpicker form-control"
                   v-model="form.school"
-                  :options="school"
+                  :options="schools"
                   required
                 >
                   <optgroup  label="Erasmushogeschool | EHB">
@@ -84,29 +85,28 @@
             </b-col>
 
             <b-col cols="5 m-3">
-              <b-form-select v-model="form.condition">
-                <option disabled value>Select condition</option>
-                <option
-                  v-bind:key="condition.id"
-                  v-for="condition in conditions"
-                >{{condition.condition}}</option>
-              </b-form-select>
-              <small class="form-text text-muted">Select your condition</small>
+              <multiselect v-model="form.condition" :options="conditions"
+              track-by="condition" 
+              label="condition"
+              :show-labels="false"
+              placeholder="Select your Condition" 
+              :searchable="false" 
+              :allow-empty="true">
+                </multiselect>
             </b-col>
 
             <b-col cols="5 m-3">
-              <b-form-select v-model="form.location">
-                <option disabled value>Select location</option>
-                <option
-                  v-bind:key="location.id"
-                  v-for="location in locations"
-                  v-on:click="saveLocation()"
-                >{{location.location}}</option>
-              </b-form-select>
+              <multiselect v-model="form.city" :options="cities"
+               :custom-label="cityonSearch" 
+               placeholder="Select your City" 
+               :show-labels="false"
+               label="id" 
+               track-by="name">
+              </multiselect>
               <span>
-              <small class="form-text text-muted">Select your location</small>
+              <small class="form-text text-muted">Select your City</small>
               </span>
-            </b-col>
+             </b-col>
 
             <b-col cols="5 m-3">
               <b-form-group id="input-group-2" label-for="input-2">
@@ -124,6 +124,7 @@
               </b-form-group>
             </b-col>
           </b-row>
+
 
           <b-row class="mt-4">
             <b-col cols="11 m-3">
@@ -168,7 +169,7 @@ const url_category = "http://127.0.0.1:8000/category/";
 const url_subject = "http://127.0.0.1:8000/subject/";
 const url_major = "http://127.0.0.1:8000/major/";
 const url_condition = "http://127.0.0.1:8000/condition/";
-const url_location = "http://127.0.0.1:8000/location/";
+const url_city = "http://127.0.0.1:8000/city/";
 export default {
   data() {
     return {
@@ -178,18 +179,18 @@ export default {
         price: "",
         category: null,
         school: null,
+        city: null,
         subject: null,
         major: null,
         condition: null,
-        location: null,
         image: null
       },
       categories: [{ text: "Select category", value: null }],
-      school: [],
+      schools: [],
+      cities: [],
       majors: [{ text: "Select major", value: null }],
       subjects: [{ text: "Select subject", value: null }],
       conditions: [{ text: "Select condition", value: null }],
-      locations: [{ text: "Select location", value: null }],
       show: true,
       showDismissibleAlert: false,
       token: localStorage.getItem("token"),
@@ -205,11 +206,11 @@ export default {
     },
     onSubmit(evt) {
       const fd = new FormData()
-      fd.append('category', this.form.category)
-      fd.append('condition', this.form.condition)
-      fd.append('major', this.form.major)
-      fd.append('location', this.form.location)
-      fd.append('subject', this.form.subject)
+      fd.append('category', this.form.category.name)
+      fd.append('condition', this.form.condition.condition)
+      fd.append('major', this.form.major.major)
+      fd.append('city', this.form.city.name)
+      fd.append('subject', this.form.subject.subject)
       fd.append('title', this.form.title)
       fd.append('description', this.form.description)
       fd.append('price', this.form.price)
@@ -217,13 +218,12 @@ export default {
       fd.append('school', this.form.school)
       fd.append('user', this.userId)
 
-      console.log(this.form.image)
-      console.log(this.form.image.name)
       console.log(fd,"fd")
       axios.post("http://127.0.0.1:8000/product/", fd
 
         )
         .then(response => {
+          console.log("url","http://127.0.0.1:8000/product/" + fd)
            //this.$router.push('/homepage');
           console.log("response saved", response);
         })
@@ -243,7 +243,7 @@ export default {
       this.form.subject = null;
       this.form.description = null;
       this.form.condition = null;
-      this.form.location = null;
+      this.form.city = null;
       this.form.imgae = null;
       this.form.price = null;
       // Trick to reset/clear native browser form validation state
@@ -251,6 +251,9 @@ export default {
       this.$nextTick(() => {
         this.show = true;
       });
+    },
+     cityonSearch ({name}) {
+      return `${name}`
     }
   },
   computed: {
@@ -267,26 +270,27 @@ export default {
     axios
       .all([
         axios.get(url_major),
+        axios.get(url_city),
         axios.get(url_category),
         axios.get(url_subject),
         axios.get(url_condition),
-        axios.get(url_location)
       ])
       .then(
         axios.spread(
-          (majorRes, categoryRes, subjectRes, conditionRes, locationRes) => {
+          (majorRes, cityRes, categoryRes, subjectRes, conditionRes) => {
             (this.majors = majorRes.data),
+            (this.cities = cityRes.data),
               (this.categories = categoryRes.data),
               (this.subjects = subjectRes.data),
               (this.conditions = conditionRes.data),
-              (this.locations = locationRes.data),
               console.log(
                 "chunk of responses",
                 categoryRes,
                 subjectRes,
                 majorRes,
                 conditionRes,
-                locationRes
+                cityRes, 
+                this.cities
               );
           }
         )
@@ -295,6 +299,9 @@ export default {
   }
 };
 </script>
+<!-- New step!
+     Add Multiselect CSS. Can be added as a static asset or inside a component. -->
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <style>
 

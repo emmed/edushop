@@ -172,7 +172,6 @@ export default {
               localStorage.setItem("logStatus", this.log_status);
               localStorage.setItem("userName", this.username);
               this.$router.push({ name: "homepage" });
-              //location.reload();
             })
             .catch(err => {
               this.showAlert = true;

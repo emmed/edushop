@@ -28,34 +28,34 @@
               </b-form-group>
             </b-col>
             <b-col cols="5 m-3">
-              <b-form-select v-model="form.major">
-                <option disabled value>Select major</option>
-                <option v-bind:key="major.id" v-for="major in majors">{{major.major}}</option>
-              </b-form-select>
-              <span>Selected: {{ form.major }}</span>
+           <multiselect v-model="form.major" :options="majors"
+              track-by="major" 
+              label="major"
+              :show-labels="false"
+              placeholder="Select your Major" :searchable="true" 
+              :allow-empty="true">
+                </multiselect>
             </b-col>
 
             <b-col cols="5 m-3">
-              <b-form-select v-model="form.category">
-                <option disabled value>Select category</option>
-                <option v-bind:key="category.id" v-for="category in categories">{{category.name}}</option>
-              </b-form-select>
-              <span>Selected: {{ form.category }}</span>
+             <multiselect v-model="form.category" :options="categories"
+              track-by="name" 
+              label="name"
+              :show-labels="false"
+              placeholder="Select your Category" :searchable="false" 
+              :allow-empty="true">
+                </multiselect>
             </b-col>
 
             <b-col cols="5 m-3">
-              <b-form-select v-model="form.subject">
-                <option disabled value>Select subject</option>
-                <option v-bind:key="subject.id" v-for="subject in subjects">{{subject.subject}}</option>
-              </b-form-select>
-              <span>Selected: {{ form.subject }}</span>
+                   <multiselect v-model="form.subject" :options="subjects"
+              track-by="subject" 
+              label="subject"
+              :show-labels="false"
+              placeholder="Select your Subject" :searchable="true" 
+              :allow-empty="true">
+                </multiselect>
             </b-col>
-
-            <!-- <b-col cols="5 m-3">
-              <b-form-group id="input-group-3" label-for="input-3">
-                <b-form-select id="input-3" v-model="form.school" :options="school" required></b-form-select>
-              </b-form-group>
-            </b-col>-->
 
             <b-col cols="5 m-3">
               <div class="form-group">
@@ -83,28 +83,24 @@
             </b-col>
 
             <b-col cols="5 m-3">
-              <b-form-select v-model="form.condition">
-                <option disabled value>Select condition</option>
-                <option
-                  v-bind:key="condition.id"
-                  v-for="condition in conditions"
-                >{{condition.condition}}</option>
-              </b-form-select>
-              <span>Selected: {{ form.condition }}</span>
+            <multiselect v-model="form.condition" :options="conditions"
+              track-by="condition" 
+              label="condition"
+              :show-labels="false"
+              placeholder="Select your Condition" 
+              :searchable="false" 
+              :allow-empty="true">
+                </multiselect>
             </b-col>
 
             <b-col cols="5 m-3">
-              <b-form-select v-model="form.location">
-                <option value>Select location</option>
-                <option
-                  v-bind:key="location.id"
-                  v-for="location in locations"
-                  v-on:click="saveLocation()"
-                >{{location.location}}</option>
-              </b-form-select>
-              <span>
-                <small>Selected: {{ form.location }}</small>
-              </span>
+    <multiselect v-model="form.city" :options="cities"
+               :custom-label="cityonSearch" 
+               placeholder="Select your City" 
+               :show-labels="false"
+               label="id" 
+               track-by="name">
+              </multiselect>
             </b-col>
 
             <b-col cols="5 m-3">
@@ -134,7 +130,7 @@
             </b-col>
           </b-row>
 
-          <!-- <b-row class="mb-4">
+          <b-row class="mb-4">
             <b-col cols="4">
               <b-form-file
                 type="file"
@@ -146,7 +142,7 @@
                 class="square_btn"
               ></b-form-file>
             </b-col>
-          </b-row> -->
+          </b-row>
 
         </b-container>
 
@@ -165,7 +161,7 @@ const url_category = "http://127.0.0.1:8000/category/";
 const url_subject = "http://127.0.0.1:8000/subject/";
 const url_major = "http://127.0.0.1:8000/major/";
 const url_condition = "http://127.0.0.1:8000/condition/";
-const url_location = "http://127.0.0.1:8000/location/";
+const url_city = "http://127.0.0.1:8000/city/";
 export default {
   name: "update",
   data() {
@@ -181,8 +177,8 @@ export default {
         subject: null,
         major: null,
         condition: null,
-        location: null
-        // image: null,
+        city: null,
+        image: null,
       },
       product_id: this.$route.params.product_id,
       product_index: this.$route.params.index,
@@ -192,7 +188,7 @@ export default {
       majors: [],
       subjects: [],
       conditions: [],
-      locations: [],
+      cities: [],
       show: true,
       showDismissibleAlert: false,
       token: null,
@@ -234,33 +230,52 @@ export default {
 
   },
   methods: {
+     onFileSelected(event) {
+      this.form.image = event.target.files[0];
+      console.log(event);
+    },
     onSubmit(evt) {
+ const fd = new FormData()
+   fd.append('category', this.form.category.name)
+      fd.append('condition', this.form.condition.condition)
+      fd.append('major', this.form.major.major)
+      fd.append('city', this.form.city.name)
+      fd.append('subject', this.form.subject.subject)
+      fd.append('title', this.form.title)
+      fd.append('description', this.form.description)
+      fd.append('price', this.form.price)
+      fd.append('image', this.form.image)
+      fd.append('school', this.form.school)
+      fd.append('user', this.form.user)
+   
+      console.log(fd,"fd")
       axios
-        .put("http://127.0.0.1:8000/product/" + this.product_id + "/", {
+        .put("http://127.0.0.1:8000/product/" + this.product_id + "/" ,fd
           // id: this.product_id,
-          category: this.form.category,
-          condition: this.form.condition,
-          major: this.form.major,
-          location: this.form.location,
-          subject: this.form.subject,
-          title: this.form.title,
-          description: this.form.description,
-          price: this.form.price,
-          school: this.form.school,
-          user: this.form.user
-        })
+          // category: this.form.category,
+          // condition: this.form.condition,
+          // major: this.form.major,
+          // location: this.form.location,
+          // subject: this.form.subject,
+          // title: this.form.title,
+          // description: this.form.description,
+          // price: this.form.price,
+          // school: this.form.school,
+          // user: this.form.user
+        )
         .then(response => {
           // this.$router.push('/post_and_ad');
           console.log("response saved", response);
           console.log("id", this.form.user)
         })
-        console.log("id buiten de then", this.form.user)
-
         .catch(response => {
           console.log("catch response", response);
         });
       evt.preventDefault();
     },
+     cityonSearch ({name}) {
+      return `${name}`
+    }
 
   },
   computed: {
@@ -280,7 +295,7 @@ export default {
         axios.get(url_category),
         axios.get(url_subject),
         axios.get(url_condition),
-        axios.get(url_location),
+        axios.get(url_city),
         axios.get("http://127.0.0.1:8000/product/" + this.product_id)
       ])
       .then(
@@ -290,21 +305,21 @@ export default {
             categoryRes,
             subjectRes,
             conditionRes,
-            locationRes,
+            cityRes,
             res
           ) => {
             (this.majors = majorRes.data),
               (this.categories = categoryRes.data),
               (this.subjects = subjectRes.data),
               (this.conditions = conditionRes.data),
-              (this.locations = locationRes.data),
+              (this.cities = cityRes.data),
               [
                 (this.product = res.data),
                 console.log(res.data, "res"),
                 (this.form.category = this.product.category),
                 (this.form.condition = this.product.condition),
                 (this.form.major = this.product.major),
-                (this.form.location = this.product.location),
+                (this.form.cityRes = this.product.cityRes),
                 (this.form.subject = this.product.subject),
                 (this.form.title = this.product.title),
                 (this.form.description = this.product.description),
@@ -320,37 +335,12 @@ export default {
                 subjectRes,
                 majorRes,
                 conditionRes,
-                locationRes
+                cityRes
               );
           }
         )
       )
       .catch(err => console.log("error", err));
-
-    // this.$root.$on("prodUpdate", (id, index) => {
-    //   this.id = id;
-    //   this.index = index;
-    //   console.log("eerste testke", this.id, this.index);
-    //   axios
-    //     .get("http://127.0.0.1:8000/product/" + id)
-    //     .then(res => [
-    //       (this.product = res.data),
-    //       console.log(this.product, "product2"),
-    //       console.log(res.data, "res"),
-    //       (this.form.category = this.product.category),
-    //       (this.form.condition = this.product.condition),
-    //       (this.form.major = this.product.major),
-    //       (this.form.location = this.product.location),
-    //       (this.form.subject = this.product.subject),
-    //       (this.form.title = this.product.title),
-    //       (this.form.description = this.product.description),
-    //       (this.form.price = this.product.price),
-    //       (this.form.school = this.product.school),
-    //       (this.form.user_id = this.product.user_id),
-    //       console.log(this.product, "product"),
-    //       console.log(this.form.category, "categorys")
-    //     ]);
-    // });
   }
 };
 </script>

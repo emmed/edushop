@@ -74,7 +74,6 @@ data() {
           major: null,
           subject: null,
           condition: null,
-          location: null,
           file: null,
           descripiton: '',
           price: null

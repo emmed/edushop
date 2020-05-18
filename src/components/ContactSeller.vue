@@ -17,7 +17,7 @@
 
             <p class="text-left">{{emailSeller}}</p>
             <p class="text-left">Student Ehb</p>
-            <p class="text-left">Show other ads by {{userName}}</p>
+            <p class="text-left">Show other ads by {{user_name}}</p>
           </div>
         </div>
         <div class="col-md-9">
@@ -80,6 +80,7 @@ export default {
       descripiton: "",
       show: true,
       showAlert: false
+
     };
   },
   methods: {

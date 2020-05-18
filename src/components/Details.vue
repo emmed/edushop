@@ -43,7 +43,7 @@
         </div>
         <h6
           class="contact-link col-md-4 geel-t text-left h5"
-          @click.prevent="$router.push({ name: 'contactseller' })"
+          @click.prevent="$router.push({ name: `contactseller`})"
           type="button"
         >
           <u>Contact {{products[idDetail].user_name}}</u>

@@ -34,7 +34,7 @@
                   <div class="col-xs-6">
                     <div class="col-xs-2">
                       <button
-                        v-on:click="deleteProduct(product.id, index)"
+                        v-on:click="deleteProduct(product.id, index,product.price)"
                         type="button"
                         class="btn btn-link"
                       >
@@ -81,16 +81,19 @@ export default {
     return {
       items: [],
       items2: [],
-      products: []
+      products: [],
+      sum:null
     };
   },
+
   methods: {
-    deleteProduct(id, index) {
+
+    deleteProduct(id, index,price) {
       console.log(index, "index");
       this.products.splice(index, 1);
 
       this.items2.splice(index, 1);
-      console.log("itmesssssss", this.items2);
+      this.sum -= price
       localStorage.setItem("wgItem", this.items2);
       localStorage.setItem("lengthCart", this.items2.length);
       if (localStorage.getItem("lengthCart") == 0) {
@@ -106,42 +109,19 @@ export default {
     this.items = [];
     this.items.push(localStorage.getItem("wgItem"));
     this.items2 = this.items["0"].split(",");
+    console.log("items2",this.items2)
     for (var i = 0; i < this.items2.length; i++) {
       axios
         .get("http://127.0.0.1:8000/product/" + this.items2["" + i + ""])
-        .then(res => this.products.push(res.data))
+        .then(res => (
+        this.sum += parseFloat(res.data.price),
+        this.products.push(res.data))
+        
+        )
         .catch(err => console.log("error", err));
     }
   },
-  computed: {
-    // priceTotal(){
-    //       for(let i = 0; i < this.products.length; i++){
-    //         let sum
-    //         sum += this.products[i].price
-    //         console.log("sum + ", sum)
-    //         console.log("thisproduct + ", this.products[i].price)
-    //       }
-    //     },
-
-    totalItem: function() {
-      let sum = 0;
-      for (let i = 0; i < this.products.length; i++) {
-        sum +=
-          parseFloat(this.products[i].price) *
-          parseFloat(this.products[i].quantity);
-      }
-
-      return sum;
-    },
-
-    totalAmount: function() {
-      var sum = 0;
-      this.payments.forEach(e => {
-        sum += e.amount;
-      });
-      return sum;
-    }
-  }
+  
 };
 </script>
 

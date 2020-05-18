@@ -19,7 +19,7 @@
             @click.prevent="goToDetails({index})"
             type="button"
           >
-            <b-card-text class="text-muted">{{product.location}} </b-card-text>
+            <b-card-text class="text-muted">{{product.city}} </b-card-text>
           </b-card>
         </div>
       </div>
@@ -58,7 +58,7 @@ export default {
   created() {
     axios
       .get(url)
-      .then(res => (this.products = res.data["results"])
+      .then(res => (this.products = res.data["results"], console.log(this.products))
       )
       .catch(err => console.log("error", err));
   }

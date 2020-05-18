@@ -133,8 +133,6 @@
             >{{category.name}}</a>
           </li>
         </ul>
-        <span>{{this.title}}</span>
-        <span>{{this.counter}}</span>
 
         <!-- <ul ><input  v-model="title" type="text"></ul>
         <ul ><input  v-model="counter" type="text"></ul>-->

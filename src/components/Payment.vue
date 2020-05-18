@@ -2,37 +2,27 @@
   <div>
 
 <div class="jumbotron">
-
-
-<b-input v-model="title" type="text"></b-input>
-<b-input v-model="counter" type="text"></b-input>
-
-<b-button v-on:click="onSubmit" type=button variant="danger">submit</b-button>
-
+  
+<div>
+  <multiselect v-model="value" :options="options"></multiselect>
+</div>
 
   </div>
   </div>
 </template>
 
 <script>
-
-//import axios from "axios";
-
-
-
 export default {
   name: "Payment",
   data() {
     return {
-      title: '',
-      counter: '',
+      value: '',
+       options: ['list', 'of', 'options']
+
     }; 
   }, 
   methods: {
- onSubmit(){
-   this.$root.$emit("random",this.title,this.counter)
-   console.log("random", this.title, "counter=", this.counter)
- }
+
   }
   
   }
@@ -41,7 +31,9 @@ export default {
 
 
 </script>
-
+<!-- New step!
+     Add Multiselect CSS. Can be added as a static asset or inside a component. -->
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
 
  .dropbox {
