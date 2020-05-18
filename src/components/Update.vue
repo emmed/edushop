@@ -28,9 +28,8 @@
               </b-form-group>
             </b-col>
             <b-col cols="5 m-3">
-           <multiselect v-model="form.major" :options="majors"
-              track-by="major" 
-              label="major"
+           <multiselect v-model="form.major" :options="majors2"
+
               :show-labels="false"
               placeholder="Select your Major" :searchable="true" 
               :allow-empty="true">
@@ -38,9 +37,7 @@
             </b-col>
 
             <b-col cols="5 m-3">
-             <multiselect v-model="form.category" :options="categories"
-              track-by="name" 
-              label="name"
+             <multiselect v-model="form.category" :options="categories2"
               :show-labels="false"
               placeholder="Select your Category" :searchable="false" 
               :allow-empty="true">
@@ -48,9 +45,7 @@
             </b-col>
 
             <b-col cols="5 m-3">
-                   <multiselect v-model="form.subject" :options="subjects"
-              track-by="subject" 
-              label="subject"
+                   <multiselect v-model="form.subject" :options="subjects2"
               :show-labels="false"
               placeholder="Select your Subject" :searchable="true" 
               :allow-empty="true">
@@ -83,23 +78,32 @@
             </b-col>
 
             <b-col cols="5 m-3">
-            <multiselect v-model="form.condition" :options="conditions"
+  <multiselect v-model="form.condition" :options="conditions2"
+               :allow-empty="true"
+               :show-labels="false"
+               :searchable="false" 
+               placeholder="Select your Condition" 
+
+             >
+                </multiselect>
+{{form.condition.condition}}
+
+            <!-- <multiselect v-model="form.condition" :options="conditions"
               track-by="condition" 
               label="condition"
               :show-labels="false"
               placeholder="Select your Condition" 
               :searchable="false" 
-              :allow-empty="true">
-                </multiselect>
+              :allow-empty="true"
+              >
+                </multiselect> -->
             </b-col>
 
             <b-col cols="5 m-3">
-    <multiselect v-model="form.city" :options="cities"
-               :custom-label="cityonSearch" 
+    <multiselect v-model="form.city" :options="cities2"
                placeholder="Select your City" 
                :show-labels="false"
-               label="id" 
-               track-by="name">
+               >
               </multiselect>
             </b-col>
 
@@ -167,6 +171,7 @@ export default {
   data() {
     return {
       form: {
+        
         response: [],
         user: null,
         title: "",
@@ -184,11 +189,16 @@ export default {
       product_index: this.$route.params.index,
       product: [],
       categories: [],
+      categories2: [],
       school: [],
       majors: [],
+      majors2: [],
       subjects: [],
+      subjects2: [],
       conditions: [],
+      conditions2:[],
       cities: [],
+      cities2: [],
       show: true,
       showDismissibleAlert: false,
       token: null,
@@ -198,21 +208,6 @@ export default {
     };
   },
   mounted() {
-    // var useriD;
-    // var loginUsername = this.username;
-          
-    //       axios
-    //         .get(`http://127.0.0.1:8000/users/`)
-    //         .then(function(response) {
-    //           response.data.forEach(function(user) {
-    //             if (user.username == loginUsername) {
-    //               useriD = user.id;
-    //             }
-    //           });
-    //           console.log(useriD, "loginUsername");
-    //         })
-    //         .catch(err => console.log("error", err));
-
     this.$root.$on("logAndToken", (log_status, token, username, user) => {
       this.token = token;
       this.log_status = log_status;
@@ -236,11 +231,11 @@ export default {
     },
     onSubmit(evt) {
  const fd = new FormData()
-   fd.append('category', this.form.category.name)
-      fd.append('condition', this.form.condition.condition)
-      fd.append('major', this.form.major.major)
-      fd.append('city', this.form.city.name)
-      fd.append('subject', this.form.subject.subject)
+   fd.append('category', this.form.category)
+      fd.append('condition', this.form.condition)
+      fd.append('major', this.form.major)
+      fd.append('city', this.form.city)
+      fd.append('subject', this.form.subject)
       fd.append('title', this.form.title)
       fd.append('description', this.form.description)
       fd.append('price', this.form.price)
@@ -251,17 +246,6 @@ export default {
       console.log(fd,"fd")
       axios
         .put("http://127.0.0.1:8000/product/" + this.product_id + "/" ,fd
-          // id: this.product_id,
-          // category: this.form.category,
-          // condition: this.form.condition,
-          // major: this.form.major,
-          // location: this.form.location,
-          // subject: this.form.subject,
-          // title: this.form.title,
-          // description: this.form.description,
-          // price: this.form.price,
-          // school: this.form.school,
-          // user: this.form.user
         )
         .then(response => {
           // this.$router.push('/post_and_ad');
@@ -272,9 +256,6 @@ export default {
           console.log("catch response", response);
         });
       evt.preventDefault();
-    },
-     cityonSearch ({name}) {
-      return `${name}`
     }
 
   },
@@ -319,7 +300,7 @@ export default {
                 (this.form.category = this.product.category),
                 (this.form.condition = this.product.condition),
                 (this.form.major = this.product.major),
-                (this.form.cityRes = this.product.cityRes),
+                (this.form.city = this.product.city),
                 (this.form.subject = this.product.subject),
                 (this.form.title = this.product.title),
                 (this.form.description = this.product.description),
@@ -327,8 +308,27 @@ export default {
                 (this.form.school = this.product.school),
                 (this.form.user = this.product.user),
                 console.log(this.product, "product"),
-                console.log(this.form.category, "categorys")
+                console.log("category: ",this.form.category),
+                console.log("subject: ", this.form.subject),
+                console.log("cities: ", this.form.city)
+
               ],
+              this.majors.forEach(element =>{
+                this.majors2.push(element.major)
+              }),
+              this.categories.forEach(element =>{
+                this.categories2.push(element.name)
+              }),
+                this.subjects.forEach(element =>{
+                this.subjects2.push(element.subject)
+              }),
+                this.conditions.forEach(element =>{
+                this.conditions2.push(element.condition)
+          
+              }),
+                this.cities.forEach(element =>{
+                this.cities2.push(element.name)
+              }),
               console.log(
                 "chunk of responses",
                 categoryRes,

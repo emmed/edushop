@@ -45,7 +45,7 @@
 <script>
 import axios from "axios";
 
-const url_product = "http://127.0.0.1:8000/product/?search=";
+const url_product = "http://127.0.0.1:8000/product/?category__name=";
 
 export default {
   name: "List",
